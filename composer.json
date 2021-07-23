@@ -13,12 +13,15 @@
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
+        "spatie/laravel-permission": "^4.2",
+        "tailflow/laravel-orion": "^2.1",
         "tymon/jwt-auth": "^1.0.1"
     },
     "require-dev": {
         "doctrine/dbal": "^2.12",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.8",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"

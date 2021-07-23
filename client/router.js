@@ -25,7 +25,12 @@ const routes = [
       { path: 'profile', name: 'settings.profile', component: page('settings/profile.vue') },
       { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
     ]
-  }
+  },
+
+  { path: '/users', name: 'users-list', component: page('users/list.vue') },
+  { path: '/users/create', name: 'users-create', component: page('users/create.vue') },
+  { path: '/users/:id?', name: 'users-view', component: page('users/_view.vue') },
+  { path: '/users/:id?/update', name: 'users-update', component: page('users/edit.vue') }
 ]
 
 export function createRouter () {

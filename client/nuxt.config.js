@@ -9,7 +9,7 @@ module.exports = {
 
   env: {
     apiUrl: process.env.API_URL || process.env.APP_URL + '/api',
-    appName: process.env.APP_NAME || 'Laravel Nuxt',
+    appName: process.env.APP_NAME || 'Attendance System',
     appLocale: process.env.APP_LOCALE || 'en',
     githubAuth: !!process.env.GITHUB_CLIENT_ID
   },
@@ -44,6 +44,10 @@ module.exports = {
     '~plugins/axios',
     '~plugins/fontawesome',
     '~plugins/nuxt-client-init',
+    '~plugins/element-ui.js',
+    '~plugins/datatable.js',
+    '~plugins/skeleton.js',
+    '~plugins/moment.js',
     { src: '~plugins/bootstrap', mode: 'client' }
   ],
 

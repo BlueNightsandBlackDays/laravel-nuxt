@@ -18,7 +18,7 @@
 
     <div class="text-center">
       <div class="title mb-4">
-        <span class="laravel">Laravel</span><span class="nuxt">Nuxt</span>
+        <span class="attendance">Attendance</span><span class="system">System</span>
         <!-- {{ title }} -->
       </div>
 
@@ -60,11 +60,11 @@ export default {
   font-size: 85px;
 }
 
-.laravel {
+.attendance {
   color: #2e495e;
 }
 
-.nuxt {
+.system {
   color: #00c48d;
 }
 </style>

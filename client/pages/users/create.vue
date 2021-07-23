@@ -1,12 +1,26 @@
 <template>
-  <div class="row">
-    <div class="col-lg-8 m-auto">
-      <card v-if="mustVerifyEmail" :title="$t('register')">
-        <div class="alert alert-success" role="alert">
-          {{ $t('verify_email_address') }}
+  <div class="container pd-x-0">
+    <card>
+      <!-- Card-header -->
+      <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
+        <div>
+          <h5 class="mg-b-5">
+            Create Users
+          </h5>
         </div>
-      </card>
-      <card v-else :title="$t('register')">
+        <div class="d-none d-md-block">
+          <el-tooltip class="item" effect="light" content="back to users" placement="top">
+            <nuxt-link
+              :to="{ name: 'users-list'}"
+              class="nav-link el-icon-back"
+            >
+              Back
+            </nuxt-link>
+          </el-tooltip>
+        </div>
+      </div>
+      <!-- Card-body -->
+      <div class="card-body col-lg-12">
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <!-- First name -->
           <div class="form-group row">
@@ -77,20 +91,22 @@
             </div>
           </div>
 
+          <!-- Buttons -->
           <div class="form-group row">
-            <div class="col-md-7 offset-md-3 d-flex">
-              <!-- Submit Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary">
-                {{ $t('register') }}
+            <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+              <!-- Reset Button -->
+              <el-button class="el-button el-button--default" @click="resetForm('ruleForm')">
+                {{ $t('Reset') }}
               </el-button>
-
-              <!-- GitHub Login Button -->
-              <login-with-github />
+              <!-- Submit Button -->
+              <el-button :loading="form.busy" class="el-button el-button--primary" @click="submitForm('ruleForm')">
+                {{ $t('Create') }}
+              </el-button>
             </div>
           </div>
         </form>
-      </card>
-    </div>
+      </div>
+    </card>
   </div>
 </template>
 
@@ -102,7 +118,8 @@ export default {
 
   data: () => ({
     form: new Form({
-      name: '',
+      first_name: '',
+      last_name: '',
       email: '',
       password: '',
       password_confirmation: ''
@@ -146,3 +163,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
