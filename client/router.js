@@ -30,7 +30,17 @@ const routes = [
   { path: '/users', name: 'users-list', component: page('users/list.vue') },
   { path: '/users/create', name: 'users-create', component: page('users/create.vue') },
   { path: '/users/:id?', name: 'users-view', component: page('users/_view.vue') },
-  { path: '/users/:id?/update', name: 'users-update', component: page('users/edit.vue') }
+  { path: '/users/:id?/update', name: 'users-update', component: page('users/edit.vue') },
+
+  { path: '/roles', name: 'roles-list', component: page('role/list.vue') },
+  { path: '/roles/create', name: 'roles-create', component: page('role/create.vue') },
+  { path: '/roles/:id?', name: 'roles-view', component: page('role/_view.vue') },
+  { path: '/roles/:id?/update', name: 'roles-update', component: page('role/edit.vue') },
+
+  { path: '/attendances', name: 'attendances-list', component: page('attendance/list.vue') },
+  { path: '/attendances/create', name: 'attendances-create', component: page('attendance/create.vue') },
+  { path: '/attendances/:id?', name: 'attendances-view', component: page('attendance/_view.vue') },
+  { path: '/attendances/:id?/update', name: 'attendances-update', component: page('attendance/edit.vue') }
 ]
 
 export function createRouter () {

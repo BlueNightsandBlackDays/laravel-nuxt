@@ -1,35 +1,47 @@
 <template>
   <card :title="$t('your_password')">
-    <form @submit.prevent="update" @keydown="form.onKeydown($event)">
+    <el-form class="demo-form">
       <alert-success :form="form" :message="$t('password_updated')" />
-
-      <!-- Password -->
+      <!-- Password row -->
       <div class="form-group row">
-        <label class="col-md-3 col-form-label text-md-right">{{ $t('new_password') }}</label>
+        <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
         <div class="col-md-7">
-          <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }" type="password" name="password" class="form-control">
+          <!-- Password -->
+          <el-input
+            v-model="form.password"
+            :class="{ 'is-invalid': form.errors.has('password') }"
+            type="password"
+            name="password"
+            autocomplete="off"
+          />
           <has-error :form="form" field="password" />
         </div>
       </div>
-
-      <!-- Password Confirmation -->
+      <!-- Confirm password row -->
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
         <div class="col-md-7">
-          <input v-model="form.password_confirmation" :class="{ 'is-invalid': form.errors.has('password_confirmation') }" type="password" name="password_confirmation" class="form-control">
+          <!-- Confirm password -->
+          <el-input
+            v-model="form.password_confirmation"
+            :class="{ 'is-invalid': form.errors.has('password_confirmation') }"
+            type="password"
+            name="password_confirmation"
+            autocomplete="off"
+          />
           <has-error :form="form" field="password_confirmation" />
         </div>
       </div>
-
-      <!-- Submit Button -->
+      <!-- Buttons row -->
       <div class="form-group row">
-        <div class="col-md-9 ml-md-auto">
-          <v-button :loading="form.busy" type="success">
+        <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+          <!-- Update Button -->
+          <el-button :loading="form.busy" class="el-button el-button--primary" @click="update()">
             {{ $t('update') }}
-          </v-button>
+          </el-button>
         </div>
       </div>
-    </form>
+    </el-form>
   </card>
 </template>
 
@@ -43,7 +55,8 @@ export default {
     form: new Form({
       password: '',
       password_confirmation: ''
-    })
+    }),
+    mustVerifyEmail: false
   }),
 
   head () {

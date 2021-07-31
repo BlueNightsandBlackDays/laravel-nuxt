@@ -7,7 +7,6 @@ export const state = () => ({
   loading: false,
   user: {},
   user_loading: false,
-  create_loading: false,
   update_loading: false,
   delete_loading: false
 })
@@ -20,7 +19,6 @@ export const getters = {
   loading: state => state.loading,
   user: state => state.user,
   user_loading: state => state.user_loading,
-  create_loading: state => state.create_loading,
   update_loading: state => state.update_loading,
   delete_loading: state => state.delete_loading
 }
@@ -60,9 +58,6 @@ export const mutations = {
   SET_ID (state, payload) {
     state.id = payload
   },
-  SET_CREATE_LOADING (state, payload) {
-    state.create_loading = payload
-  },
   SET_UPDATE_LOADING (state, payload) {
     state.update_loading = payload
   },
@@ -84,7 +79,7 @@ export const actions = {
   async fetchUsers ({ commit, dispatch }, params) {
     try {
       commit('SET_USERS_LOADING', true)
-      const { data } = await axios.get('/users', { params })
+      const data = await axios.get('/users', { params })
       commit('FETCH_USERS_SUCCESS', data)
     } catch (e) {
       commit('FETCH_USERS_FAILURE')
@@ -94,28 +89,17 @@ export const actions = {
     try {
       commit('SET_USER_LOADING', true)
       commit('RESET_USER')
-      const data = await axios.get(`/users/${payload.id}`)
+      const { data } = await axios.get(`/users/${payload.id}`)
       commit('FETCH_USER_SUCCESS', data)
     } catch (e) {
       commit('FETCH_USER_FAILURE')
-    }
-  },
-  async createUser ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_CREATE_LOADING', true)
-      const { data } = await axios.post('/users', payload)
-      commit('SET_CREATE_LOADING', false)
-      dispatch('messages/setMessages', { type: 'success', title: 'User created', description: `User (${data.full_name + ' - ' + data.email}) successfully created.` }, { root: true })
-    } catch (e) {
-      commit('SET_CREATE_LOADING', false)
     }
   },
   async updateUser ({ commit, dispatch }, payload) {
     try {
       commit('SET_UPDATE_LOADING', true)
       const { id, ...formData } = payload
-      const { data } = await axios.patch(`/users/${payload.id}`, formData)
-      dispatch('messages/setMessages', { type: 'success', title: 'User updated', description: `User (${data.full_name + ' - ' + data.email}) successfully updated.` }, { root: true })
+      await axios.patch(`/users/${payload.id}`, formData)
 
       commit('SET_UPDATE_LOADING', false)
     } catch (e) {
@@ -126,7 +110,6 @@ export const actions = {
     try {
       commit('SET_DELETE_LOADING', true)
       const { data } = await axios.delete(`/users/${payload}`)
-      dispatch('messages/setMessages', { type: 'success', title: 'User deleted', description: `User (${data.full_name + ' - ' + data.email}) successfully deleted.` }, { root: true })
 
       commit('DELETE_USER_SUCCESS', data)
       dispatch('fetchUsers', { limit: 10, page: 1 })

@@ -17,8 +17,7 @@ class UserTableSeeder extends Seeder
     {
         // Create users
         $super = User::create([
-            'first_name' => 'Super',
-            'last_name' => 'Admin',
+            'name' => 'Super Admin',
             'email' => 'meandmom14g@gmail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -26,8 +25,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         $default = User::create([
-            'first_name' => 'Default',
-            'last_name' => 'User',
+            'name' => 'Default User',
             'email' => 'user@etmsoftwareplc.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

@@ -2,21 +2,35 @@
   <div class="row">
     <div class="col-lg-8 m-auto">
       <card :title="$t('login')">
-        <form @submit.prevent="login" @keydown="form.onKeydown($event)">
-          <!-- Email -->
+        <el-form class="demo-ruleForm">
+          <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
             <div class="col-md-7">
-              <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" type="email" name="email" class="form-control">
+              <!-- Email -->
+              <el-input
+                v-model="form.email"
+                :class="{ 'is-invalid': form.errors.has('email') }"
+                type="email"
+                name="email"
+                autocomplete="off"
+              />
               <has-error :form="form" field="email" />
             </div>
           </div>
 
-          <!-- Password -->
+          <!-- Password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
             <div class="col-md-7">
-              <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }" type="password" name="password" class="form-control">
+              <!-- Password -->
+              <el-input
+                v-model="form.password"
+                :class="{ 'is-invalid': form.errors.has('password') }"
+                type="password"
+                name="password"
+                autocomplete="off"
+              />
               <has-error :form="form" field="password" />
             </div>
           </div>
@@ -25,28 +39,29 @@
           <div class="form-group row">
             <div class="col-md-3" />
             <div class="col-md-7 d-flex">
-              <checkbox v-model="remember" name="remember">
+              <el-checkbox v-model="remember" name="remember">
                 {{ $t('remember_me') }}
-              </checkbox>
+              </el-checkbox>
 
-              <router-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">
+              <nuxt-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">
                 {{ $t('forgot_password') }}
-              </router-link>
+              </nuxt-link>
             </div>
           </div>
 
+          <!-- Buttons row -->
           <div class="form-group row">
-            <div class="col-md-7 offset-md-3 d-flex">
-              <!-- Submit Button -->
-              <v-button :loading="form.busy">
+            <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+              <!-- Login Button -->
+              <el-button :loading="form.busy" class="el-button el-button--primary" @click="login()">
                 {{ $t('login') }}
-              </v-button>
-
-              <!-- GitHub Login Button -->
-              <login-with-github />
+              </el-button>
             </div>
+
+            <!-- GitHub Login Button -->
+            <login-with-github />
           </div>
-        </form>
+        </el-form>
       </card>
     </div>
   </div>
@@ -83,7 +98,7 @@ export default {
       }
 
       // Save the token.
-      this.$store.dispatch('auth/saveToken', {
+      await this.$store.dispatch('auth/saveToken', {
         token: data.token,
         remember: this.remember
       })
@@ -92,7 +107,7 @@ export default {
       await this.$store.dispatch('auth/fetchUser')
 
       // Redirect home.
-      this.$router.push({ name: 'home' })
+      await this.$router.push({ name: 'home' })
     }
   }
 }

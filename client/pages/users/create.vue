@@ -1,112 +1,144 @@
 <template>
+  <!-- Container -->
   <div class="container pd-x-0">
-    <card>
+    <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
           <h5 class="mg-b-5">
-            Create Users
+            {{ $t('create_users') }}
           </h5>
         </div>
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="back to users" placement="top">
             <nuxt-link
               :to="{ name: 'users-list'}"
-              class="nav-link el-icon-back"
+              class="el-button el-button--text"
             >
-              Back
+              <span class="el-icon-back" />
+              {{ $t('back') }}
             </nuxt-link>
           </el-tooltip>
         </div>
       </div>
       <!-- Card-body -->
       <div class="card-body col-lg-12">
-        <form @submit.prevent="register" @keydown="form.onKeydown($event)">
-          <!-- First name -->
+        <el-form ref="form" :model="form" class="demo-form">
+          <!-- First name row -->
           <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('first_name') }}</label>
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('name') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.first_name"
-                :class="{ 'is-invalid': form.errors.has('first_name') }"
-                type="text"
-                name="first_name"
-              />
-              <has-error :form="form" field="first_name" />
+              <!-- First name -->
+              <el-form-item prop="first_name" class="m-0 p-0">
+                <el-input
+                  v-model="form.first_name"
+                  :class="{ 'is-invalid': form.errors.has('first_name') }"
+                  type="text"
+                  name="name"
+                />
+                <has-error :form="form" field="first_name" />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Last name -->
+          <!-- Middle name row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
+            <div class="col-md-7">
+              <!-- Middle name -->
+              <el-form-item prop="middle_name" class="m-0 p-0">
+                <el-input
+                  v-model="form.middle_name"
+                  :class="{ 'is-invalid': form.errors.has('middle_name') }"
+                  type="text"
+                  name="name"
+                />
+                <has-error :form="form" field="middle_name" />
+              </el-form-item>
+            </div>
+          </div>
+          <!-- Last name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.last_name"
-                :class="{ 'is-invalid': form.errors.has('last_name') }"
-                type="text"
-                name="last_name"
-              />
-              <has-error :form="form" field="last_name" />
+              <!-- Last name -->
+              <el-form-item prop="last_name" class="m-0 p-0">
+                <el-input
+                  v-model="form.last_name"
+                  :class="{ 'is-invalid': form.errors.has('last_name') }"
+                  type="text"
+                  name="name"
+                />
+                <has-error :form="form" field="last_name" />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Email -->
+          <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.email"
-                :class="{ 'is-invalid' :form.errors.has('email') }"
-                type="email"
-                name="email"
-              />
-              <has-error :form="form" field="email" />
+              <!-- Email -->
+              <el-form-item prop="email" class="m-0 p-0">
+                <el-input
+                  v-model="form.email"
+                  :class="{ 'is-invalid': form.errors.has('email') }"
+                  type="email"
+                  name="email"
+                  autocomplete="off"
+                />
+                <has-error :form="form" field="email" />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Password -->
+          <!-- Password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.password"
-                :class="{ 'is-invalid': form.errors.has('password') }"
-                type="password" name="password"
-              />
-              <has-error :form="form" field="password" />
+              <!-- Password -->
+              <el-form-item prop="password" class="m-0 p-0">
+                <el-input
+                  v-model="form.password"
+                  :class="{ 'is-invalid': form.errors.has('password') }"
+                  type="password"
+                  name="password"
+                  autocomplete="off"
+                />
+                <has-error :form="form" field="password" />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Password Confirmation -->
+          <!-- Confirm password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.password_confirmation"
-                :class="{ 'is-invalid': form.errors.has('password_confirmation') }"
-                type="password"
-                name="password_confirmation"
-              />
-              <has-error :form="form" field="password_confirmation" />
+              <!-- Confirm password -->
+              <el-form-item prop="password_confirmation" class="m-0 p-0">
+                <el-input
+                  v-model="form.password_confirmation"
+                  :class="{ 'is-invalid': form.errors.has('password_confirmation') }"
+                  type="password"
+                  name="password_confirmation"
+                  autocomplete="off"
+                />
+                <has-error :form="form" field="password_confirmation" />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Buttons -->
+          <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
-              <el-button class="el-button el-button--default" @click="resetForm('ruleForm')">
-                {{ $t('Reset') }}
+              <el-button class="el-button el-button--default" @click="resetForm('form')">
+                {{ $t('reset') }}
               </el-button>
               <!-- Submit Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary" @click="submitForm('ruleForm')">
-                {{ $t('Create') }}
+              <el-button :loading="form.busy" class="el-button el-button--primary" @click="submitForm()">
+                {{ $t('create') }}
               </el-button>
             </div>
           </div>
-        </form>
+        </el-form>
       </div>
-    </card>
+    </div>
   </div>
 </template>
 
@@ -114,51 +146,42 @@
 import Form from 'vform'
 
 export default {
-  middleware: 'guest',
+  middleware: 'auth',
 
-  data: () => ({
-    form: new Form({
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      password_confirmation: ''
-    }),
-    mustVerifyEmail: false
-  }),
-
-  head () {
-    return { title: this.$t('register') }
+  data () {
+    return {
+      form: new Form({
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+      })
+    }
   },
-
+  head () {
+    return { title: this.$t('create') }
+  },
   methods: {
-    async register () {
-      let data
-
-      // Register the user.
+    async submitForm () {
       try {
-        const response = await this.form.post('/register')
-        data = response.data
+        await this.form.post('/users')
+        this.$notify.success({
+          title: 'Success',
+          message: 'User ' + this.form.first_name + ' ' + this.form.middle_name + ' successfully created.'
+        })
+        // Redirect users.
+        await this.$router.push({ name: 'users-list' })
       } catch (e) {
-        return
+        this.$notify.error({
+          title: 'Error',
+          message: e.message
+        })
       }
-
-      // Must verify email fist.
-      if (data.status) {
-        this.mustVerifyEmail = true
-      } else {
-        // Log in the user.
-        const { data: { token } } = await this.form.post('/login')
-
-        // Save the token.
-        this.$store.dispatch('auth/saveToken', { token })
-
-        // Update the user.
-        await this.$store.dispatch('auth/updateUser', { user: data })
-
-        // Redirect home.
-        this.$router.push({ name: 'home' })
-      }
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }

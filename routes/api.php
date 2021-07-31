@@ -29,6 +29,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
+
+    require __DIR__.'/user/user.php';
+    require __DIR__.'/Role/role.php';
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
@@ -43,6 +46,4 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::post('oauth/{driver}', [OAuthController::class, 'redirect']);
     Route::get('oauth/{driver}/callback', [OAuthController::class, 'handleCallback'])->name('oauth.callback');
-
-    require_once(__DIR__.'/user/');
 });

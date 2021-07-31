@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Orion\Facades\Orion;
 use App\Http\Controllers\User\UserController;
+//use Orion\Facades\Orion;
 
-Route::group(['as' => 'api.'], function() {
-    Orion::resource('users', UserController::class);
-});
+//Orion::resource('users', UserController::class);
+Route::resource('users', UserController::class);

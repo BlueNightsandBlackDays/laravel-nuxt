@@ -1,27 +1,26 @@
 <template>
-  <!-- Container -->
   <div class="container pd-x-0">
-    <div class="card">
+    <div class="white-bg">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
           <h5 class="mg-b-5">
-            {{ $t('users') }}
+            Roles
           </h5>
         </div>
         <div class="d-none d-md-block">
           <nuxt-link
-            :to="{ name: 'users-create'}"
+            :to="{ name: 'roles-create'}"
             class="el-button el-icon-plus el-button--small el-button--primary"
           >
-            {{ $t('create') }}
+            Create
           </nuxt-link>
         </div>
       </div>
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
-          :data="users"
+          :data="roles"
           :total="100"
           :loading="loading"
           :page-size="10"
@@ -45,17 +44,6 @@
             label="Name"
             sortable
             filter-hotelment="bottom-end"
-          >
-            <template slot-scope="scope">
-              <span class="text-muted"> {{ scope.row.first_name + ' ' + scope.row.middle_name }}</span>
-            </template>
-          </el-table-column>>
-          <!-- Email -->
-          <el-table-column
-            prop="email"
-            label="Email"
-            sortable
-            filter-hotelment="bottom-end"
           />
           <!-- Action buttons -->
           <el-table-column
@@ -70,13 +58,13 @@
                     <el-tooltip class="item" effect="light" content="view user" placement="top">
                       <nuxt-link
                         class="el-button el-icon-view el-button--small el-button--default"
-                        :to="{ name: 'users-view', params: { id: scope.row.id } }"
+                        :to="{ name: 'roles-view', params: { id: scope.row.id } }"
                       />
                     </el-tooltip>
                     <el-tooltip class="item" effect="light" content="update user" placement="top">
                       <nuxt-link
                         class="el-button el-icon-edit el-button--small el-button--primary"
-                        :to="{ name: 'users-update', params: { id: scope.row.id } }"
+                        :to="{ name: 'roles-update', params: { id: scope.row.id } }"
                       />
                     </el-tooltip>
                     <el-tooltip class="item" effect="light" content="delete user" placement="top">
@@ -98,6 +86,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   middleware: 'auth',
   data () {
@@ -109,26 +99,23 @@ export default {
       pageSize: 10
     }
   },
-  head () {
-    return { title: this.$t('users') }
-  },
-  computed: {
-    users () { return this.$store.state.users.users },
-    meta () { return this.$store.state.users.meta },
-    links () { return this.$store.state.users.links },
-    loading () { return this.$store.state.users.loading }
-  },
+  computed: mapGetters({
+    roles: 'roles/roles',
+    meta: 'roles/meta',
+    links: 'roles/links',
+    loading: 'roles/loading'
+  }),
   methods: {
     getTableData (query) {
-      this.$store.dispatch('users/fetchUsers', { limit: query.pageSize, page: query.page })
+      this.$store.dispatch('roles/fetchRoles', { limit: query.pageSize, page: query.page })
     },
     handleDelete (index, row) {
-      this.$confirm(`Are you sure you want to delete user ${row.name}?`).then(async (_) => {
+      this.$confirm(`Are you sure you want to delete ${row.name} role?`).then(async (_) => {
         try {
-          await this.$store.dispatch('users/deleteUser', row.id)
+          await this.$store.dispatch('roles/deleteRole', row.id)
           this.$notify.success({
             title: 'Success',
-            message: 'User successfully deleted.'
+            message: 'Role successfully deleted.'
           })
         } catch (e) {
           this.$notify.error({

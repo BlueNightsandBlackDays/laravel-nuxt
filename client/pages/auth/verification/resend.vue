@@ -2,27 +2,33 @@
   <div class="row">
     <div class="col-lg-8 m-auto">
       <card :title="$t('verify_email')">
-        <form @submit.prevent="send" @keydown="form.onKeydown($event)">
+        <el-form class="demo-ruleForm">
           <alert-success :form="form" :message="status" />
-
-          <!-- Email -->
+          <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
             <div class="col-md-7">
-              <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control" type="email" name="email">
+              <!-- Email -->
+              <el-input
+                v-model="form.email"
+                :class="{ 'is-invalid': form.errors.has('email') }"
+                type="email"
+                name="email"
+                autocomplete="off"
+              />
               <has-error :form="form" field="email" />
             </div>
           </div>
-
-          <!-- Submit Button -->
+          <!-- Buttons row -->
           <div class="form-group row">
-            <div class="col-md-9 ml-md-auto">
-              <v-button :loading="form.busy">
+            <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+              <!-- Send verification link Button -->
+              <el-button :loading="form.busy" class="el-button el-button--primary" @click="send()">
                 {{ $t('send_verification_link') }}
-              </v-button>
+              </el-button>
             </div>
           </div>
-        </form>
+        </el-form>
       </card>
     </div>
   </div>

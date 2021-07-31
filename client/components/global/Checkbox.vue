@@ -1,13 +1,13 @@
 <template>
   <div class="custom-control custom-checkbox d-flex">
-    <input
+    <el-input
       :id="id || name"
       :name="name"
       :checked="internalValue"
       type="checkbox"
       class="custom-control-input"
       @click="handleClick"
-    >
+    />
     <label :for="id || name" class="custom-control-label my-auto">
       <slot />
     </label>

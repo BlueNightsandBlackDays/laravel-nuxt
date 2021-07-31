@@ -1,58 +1,88 @@
 <template>
+  <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
-      <router-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
+      <!-- App name -->
+      <nuxt-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
         {{ appName }}
-      </router-link>
+      </nuxt-link>
 
-      <button :aria-label="$t('toggle_navigation')" class="navbar-toggler" type="button"
-              data-toggle="collapse" data-target="#navbarToggler"
-              aria-controls="navbarToggler" aria-expanded="false"
+      <!-- Navigation button -->
+      <el-button :aria-label="$t('toggle_navigation')" class="navbar-toggler" type="button"
+                 data-toggle="collapse" data-target="#navbarToggler"
+                 aria-controls="navbarToggler" aria-expanded="false"
       >
         <span class="navbar-toggler-icon" />
-      </button>
+      </el-button>
 
+      <!-- Language dropdown menu -->
       <div id="navbarToggler" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <locale-dropdown />
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li> -->
         </ul>
+      </div>
 
+      <!-- Menus -->
+      <div>
         <ul class="navbar-nav ml-auto">
           <!-- Authenticated -->
-          <li v-if="user" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-dark"
-               href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-            >
-              <img :src="user.photo_url" class="rounded-circle profile-photo mr-1">
-              {{ user.name }}
-            </a>
-            <div class="dropdown-menu">
-              <router-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
-                <fa icon="cog" fixed-width />
-                {{ $t('settings') }}
-              </router-link>
-
-              <div class="dropdown-divider" />
-              <a class="dropdown-item pl-3" href="#" @click.prevent="logout">
-                <fa icon="sign-out-alt" fixed-width />
-                {{ $t('logout') }}
+          <template v-if="user">
+            <li class="nav-item">
+              <nuxt-link
+                :to="{ name: 'users-list'}"
+                class="nav-link"
+              >
+                {{ $t('users') }}
+              </nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link
+                :to="{ name: 'roles-list'}"
+                class="nav-link"
+              >
+                {{ $t('roles') }}
+              </nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link
+                :to="{ name: 'attendances-list'}"
+                class="nav-link"
+              >
+                {{ $t('attendances') }}
+              </nuxt-link>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-dark"
+                 href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+              >
+                <img :src="user.photo_url" alt="" class="rounded-circle profile-photo mr-1">
+                {{ user.first_name + ' ' + user.middle_name }}
               </a>
-            </div>
-          </li>
+              <div class="dropdown-menu">
+                <nuxt-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
+                  <fa icon="cog" fixed-width />
+                  {{ $t('settings') }}
+                </nuxt-link>
+
+                <div class="dropdown-divider" />
+                <a class="dropdown-item pl-3" href="#" @click.prevent="logout">
+                  <fa icon="sign-out-alt" fixed-width />
+                  {{ $t('logout') }}
+                </a>
+              </div>
+            </li>
+          </template>
           <!-- Guest -->
           <template v-else>
             <li class="nav-item">
-              <router-link :to="{ name: 'login' }" class="nav-link" active-class="active">
+              <nuxt-link :to="{ name: 'login' }" class="nav-link" active-class="active">
                 {{ $t('login') }}
-              </router-link>
+              </nuxt-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
+              <nuxt-link :to="{ name: 'register' }" class="nav-link" active-class="active">
                 {{ $t('register') }}
-              </router-link>
+              </nuxt-link>
             </li>
           </template>
         </ul>
@@ -84,7 +114,7 @@ export default {
       await this.$store.dispatch('auth/logout')
 
       // Redirect to login.
-      this.$router.push({ name: 'login' })
+      await this.$router.push({ name: 'login' })
     }
   }
 }

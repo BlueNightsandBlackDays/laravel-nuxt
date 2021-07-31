@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+
 class SpaController extends Controller
 {
     /**
      * Get the SPA view.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function __invoke()
+    public function __invoke(): Response
     {
         $path = public_path('_nuxt/index.html');
 

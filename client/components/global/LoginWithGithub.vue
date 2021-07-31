@@ -1,8 +1,8 @@
 <template>
-  <button v-if="githubAuth" type="button" class="btn btn-dark ml-auto" @click="login">
+  <el-button v-if="githubAuth" type="button" class="btn btn-dark ml-auto" @click="login">
     {{ $t('login_with') }}
     <fa :icon="['fab', 'github']" />
-  </button>
+  </el-button>
 </template>
 
 <script>

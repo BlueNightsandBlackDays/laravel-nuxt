@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
     /**
      * Update the user's profile information.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
+     * @throws ValidationException
      */
-    public function update(Request $request)
+    public function update(Request $request): Response
     {
         $user = $request->user();
 

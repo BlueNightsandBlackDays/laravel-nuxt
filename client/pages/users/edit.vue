@@ -1,164 +1,168 @@
 <template>
+  <!-- Container -->
   <div class="container pd-x-0">
-    <card>
+    <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
           <h5 class="mg-b-5">
-            Update User
+            {{ $t('update_user') }}
           </h5>
         </div>
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="back to users" placement="top">
             <nuxt-link
               :to="{ name: 'users-list'}"
-              class="nav-link el-icon-back"
+              class="el-button el-button--text"
             >
-              Back
+              <span class="el-icon-back" />
+              {{ $t('back') }}
             </nuxt-link>
           </el-tooltip>
         </div>
       </div>
       <!-- Card-body -->
       <div class="card-body col-lg-12">
-        <form @submit.prevent="register" @keydown="form.onKeydown($event)">
-          <!-- First name -->
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="demo-ruleForm">
+          <!-- First name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('first_name') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.first_name"
-                :class="{ 'is-invalid': form.errors.has('first_name') }"
-                type="text"
-                name="first_name"
-              />
-              <has-error :form="form" field="first_name" />
+              <!-- First name -->
+              <el-form-item prop="first_name">
+                <el-input
+                  v-model="ruleForm.first_name"
+                  type="text"
+                  name="name"
+                />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Last name -->
+          <!-- Middle name row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
+            <div class="col-md-7">
+              <!-- Middle name -->
+              <el-form-item prop="middle_name">
+                <el-input
+                  v-model="ruleForm.middle_name"
+                  type="text"
+                  name="name"
+                />
+              </el-form-item>
+            </div>
+          </div>
+          <!-- Last name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.last_name"
-                :class="{ 'is-invalid': form.errors.has('last_name') }"
-                type="text"
-                name="last_name"
-              />
-              <has-error :form="form" field="last_name" />
+              <!-- Last name -->
+              <el-form-item prop="last_name">
+                <el-input
+                  v-model="ruleForm.last_name"
+                  type="text"
+                  name="name"
+                />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Email -->
+          <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
             <div class="col-md-7">
-              <el-input
-                v-model="form.email"
-                :class="{ 'is-invalid' :form.errors.has('email') }"
-                type="email"
-                name="email"
-              />
-              <has-error :form="form" field="email" />
+              <!-- Email -->
+              <el-form-item prop="email">
+                <el-input
+                  v-model="ruleForm.email"
+                  type="email"
+                  name="email"
+                  autocomplete="off"
+                />
+              </el-form-item>
             </div>
           </div>
-
-          <!-- Password -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
-            <div class="col-md-7">
-              <el-input
-                v-model="form.password"
-                :class="{ 'is-invalid': form.errors.has('password') }"
-                type="password" name="password"
-              />
-              <has-error :form="form" field="password" />
-            </div>
-          </div>
-
-          <!-- Password Confirmation -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
-            <div class="col-md-7">
-              <el-input
-                v-model="form.password_confirmation"
-                :class="{ 'is-invalid': form.errors.has('password_confirmation') }"
-                type="password"
-                name="password_confirmation"
-              />
-              <has-error :form="form" field="password_confirmation" />
-            </div>
-          </div>
-
-          <!-- Buttons -->
+          <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
               <el-button class="el-button el-button--default" @click="resetForm('ruleForm')">
-                {{ $t('Reset') }}
+                {{ $t('reset') }}
               </el-button>
               <!-- Submit Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary" @click="submitForm('ruleForm')">
-                {{ $t('Update') }}
+              <el-button class="el-button el-button--primary" @click="submitForm('ruleForm')">
+                {{ $t('update') }}
               </el-button>
             </div>
           </div>
-        </form>
+        </el-form>
       </div>
-    </card>
+    </div>
   </div>
 </template>
 
 <script>
-import Form from 'vform'
+import { mapGetters } from 'vuex'
 
 export default {
-  middleware: 'guest',
+  middleware: 'auth',
 
-  data: () => ({
-    form: new Form({
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      password_confirmation: ''
-    }),
-    mustVerifyEmail: false
-  }),
-
-  head () {
-    return { title: this.$t('register') }
+  data () {
+    return {
+      ruleForm: {
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        email: ''
+      },
+      rules: {
+        first_name: [{ required: true, message: 'Please type name', trigger: 'blur' }],
+        middle_name: [{ required: true, message: 'Please type name', trigger: 'blur' }],
+        last_name: [{ required: true, message: 'Please type name', trigger: 'blur' }],
+        email: [{ required: true, message: 'Please type email', trigger: 'blur' }]
+      }
+    }
   },
-
+  head () {
+    return { title: this.$t('update') }
+  },
+  computed: mapGetters({
+    user: 'users/user',
+    loading: 'users/user_loading'
+  }),
+  async mounted () {
+    await this.getData()
+  },
   methods: {
-    async register () {
-      let data
-
-      // Register the user.
-      try {
-        const response = await this.form.post('/register')
-        data = response.data
-      } catch (e) {
-        return
-      }
-
-      // Must verify email fist.
-      if (data.status) {
-        this.mustVerifyEmail = true
-      } else {
-        // Log in the user.
-        const { data: { token } } = await this.form.post('/login')
-
-        // Save the token.
-        this.$store.dispatch('auth/saveToken', { token })
-
-        // Update the user.
-        await this.$store.dispatch('auth/updateUser', { user: data })
-
-        // Redirect home.
-        this.$router.push({ name: 'home' })
-      }
+    async getData () {
+      await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
+      this.ruleForm.id = this.user.id
+      this.ruleForm.first_name = this.user.first_name
+      this.ruleForm.middle_name = this.user.middle_name
+      this.ruleForm.last_name = this.user.last_name
+      this.ruleForm.email = this.user.email
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          try {
+            await this.$store.dispatch('users/updateUser', this.ruleForm)
+            this.$notify.success({
+              title: 'Success',
+              message: 'User successfully updated.'
+            })
+          } catch (e) {
+            this.$notify.error({
+              title: 'Error',
+              message: e.message
+            })
+          }
+        } else {
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }

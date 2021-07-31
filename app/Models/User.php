@@ -7,15 +7,16 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
-    use HasRoles,
-        Notifiable,
-        HasFactory;
+    use Notifiable,
+        HasFactory,
+        HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +25,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      */
     protected $fillable = [
         'first_name',
+        'middle_name',
         'last_name',
         'email',
         'password',
@@ -54,36 +56,15 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'full_name',
         'photo_url',
     ];
-
-    /**
-     * Get the profile full name attribute.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return $this->last_name
-            ? $this->first_name.' '.$this->last_name
-            : $this->first_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNameAttribute()
-    {
-        return $this->full_name;
-    }
 
     /**
      * Get the profile photo URL attribute.
      *
      * @return string
      */
-    public function getPhotoUrlAttribute(): string
+    public function getPhotoUrlAttribute()
     {
         return vsprintf('https://www.gravatar.com/avatar/%s.jpg?s=200&d=%s', [
             md5(strtolower($this->email)),
@@ -96,7 +77,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      *
      * @return HasMany
      */
-    public function oauthProviders(): HasMany
+    public function oauthProviders()
     {
         return $this->hasMany(OAuthProvider::class);
     }
@@ -125,7 +106,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     /**
      * @return int
      */
-    public function getJWTIdentifier(): int
+    public function getJWTIdentifier()
     {
         return $this->getKey();
     }
@@ -133,7 +114,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     /**
      * @return array
      */
-    public function getJWTCustomClaims(): array
+    public function getJWTCustomClaims()
     {
         return [];
     }
