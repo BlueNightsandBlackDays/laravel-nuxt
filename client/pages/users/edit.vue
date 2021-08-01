@@ -1,11 +1,12 @@
 <template>
   <!-- Container -->
   <div class="container pd-x-0">
+    <!-- Update user -->
     <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
-          <h5 class="mg-b-5">
+          <h5 class="mg-b-5 mt-2">
             {{ $t('update_user') }}
           </h5>
         </div>
@@ -23,15 +24,15 @@
       </div>
       <!-- Card-body -->
       <div class="card-body col-lg-12">
-        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="demo-ruleForm">
+        <el-form ref="form" :model="form" :rules="rules" class="demo-form">
           <!-- First name row -->
           <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('first_name') }}</label>
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('name') }}</label>
             <div class="col-md-7">
               <!-- First name -->
-              <el-form-item prop="first_name">
+              <el-form-item prop="first_name" class="m-1 p-0">
                 <el-input
-                  v-model="ruleForm.first_name"
+                  v-model="form.first_name"
                   type="text"
                   name="name"
                 />
@@ -43,9 +44,9 @@
             <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
             <div class="col-md-7">
               <!-- Middle name -->
-              <el-form-item prop="middle_name">
+              <el-form-item prop="middle_name" class="m-1 p-0">
                 <el-input
-                  v-model="ruleForm.middle_name"
+                  v-model="form.middle_name"
                   type="text"
                   name="name"
                 />
@@ -57,9 +58,9 @@
             <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
             <div class="col-md-7">
               <!-- Last name -->
-              <el-form-item prop="last_name">
+              <el-form-item prop="last_name" class="m-1 p-0">
                 <el-input
-                  v-model="ruleForm.last_name"
+                  v-model="form.last_name"
                   type="text"
                   name="name"
                 />
@@ -71,9 +72,9 @@
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
             <div class="col-md-7">
               <!-- Email -->
-              <el-form-item prop="email">
+              <el-form-item prop="email" class="m-1 p-0">
                 <el-input
-                  v-model="ruleForm.email"
+                  v-model="form.email"
                   type="email"
                   name="email"
                   autocomplete="off"
@@ -85,12 +86,71 @@
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
-              <el-button class="el-button el-button--default" @click="resetForm('ruleForm')">
+              <el-button class="el-button el-button--default" @click="resetForm('form')">
                 {{ $t('reset') }}
               </el-button>
               <!-- Submit Button -->
-              <el-button class="el-button el-button--primary" @click="submitForm('ruleForm')">
+              <el-button :loading="form.busy" class="el-button el-button--primary" @click="updateUser('form')">
                 {{ $t('update') }}
+              </el-button>
+            </div>
+          </div>
+        </el-form>
+      </div>
+    </div>
+    <!-- Update password -->
+    <div class="card">
+      <!-- Password card-header -->
+      <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
+        <div>
+          <h5 class="mg-b-5 mt-2">
+            {{ $t('change_password') }}
+          </h5>
+        </div>
+      </div>
+      <!-- Password card-body -->
+      <div class="card-body col-lg-12">
+        <el-form ref="passwordForm" :model="passwordForm" :rules="rules" class="demo-form">
+          <!-- Password row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
+            <div class="col-md-7">
+              <!-- Password -->
+              <el-form-item prop="password" class="m-1 p-0">
+                <el-input
+                  v-model="passwordForm.password"
+                  type="password"
+                  name="password"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </div>
+          </div>
+          <!-- Confirm password row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
+            <div class="col-md-7">
+              <!-- Confirm password -->
+              <el-form-item prop="password_confirmation" class="m-1 p-0">
+                <el-input
+                  v-model="passwordForm.password_confirmation"
+                  type="password"
+                  name="password_confirmation"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </div>
+          </div>
+          <!-- Buttons row -->
+          <div class="form-group row">
+            <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+              <!-- Reset Button -->
+              <el-button class="el-button el-button--default" @click="resetForm('passwordForm')">
+                {{ $t('reset') }}
+              </el-button>
+              <!-- Submit Button -->
+              <el-button :loading="passwordForm.busy" class="el-button el-button--primary" @click="updatePassword('passwordForm')">
+                {{ $t('change_password') }}
               </el-button>
             </div>
           </div>
@@ -101,24 +161,54 @@
 </template>
 
 <script>
+import Form from 'vform'
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   middleware: 'auth',
 
   data () {
+    const validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Password is required please enter a password'))
+      } else if (value.length < 6) {
+        callback(new Error('Password must be at least 6 characters'))
+      } else {
+        if (this.passwordForm.password_confirmation !== '') {
+          this.$refs.passwordForm.validateField('password_confirmation')
+        }
+        callback()
+      }
+    }
+    const validatePasswordConfirm = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please enter the password again'))
+      } else if (value !== this.passwordForm.password) {
+        callback(new Error('Passwords don\'t match!'))
+      } else {
+        callback()
+      }
+    }
     return {
-      ruleForm: {
+      form: new Form({
+        id: '',
         first_name: '',
         middle_name: '',
         last_name: '',
         email: ''
-      },
+      }),
+      passwordForm: new Form({
+        password: '',
+        password_confirmation: ''
+      }),
       rules: {
-        first_name: [{ required: true, message: 'Please type name', trigger: 'blur' }],
-        middle_name: [{ required: true, message: 'Please type name', trigger: 'blur' }],
-        last_name: [{ required: true, message: 'Please type name', trigger: 'blur' }],
-        email: [{ required: true, message: 'Please type email', trigger: 'blur' }]
+        first_name: [{ required: true, message: 'First name is required please enter first name', trigger: 'blur' }],
+        middle_name: [{ required: true, message: 'Middle name is required please enter middle name', trigger: 'blur' }],
+        last_name: [{ required: true, message: 'Last name is required please enter last name', trigger: 'blur' }],
+        email: [{ required: true, message: 'Email is required please enter email', trigger: 'blur' }],
+        password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
+        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }]
       }
     }
   },
@@ -135,21 +225,23 @@ export default {
   methods: {
     async getData () {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
-      this.ruleForm.id = this.user.id
-      this.ruleForm.first_name = this.user.first_name
-      this.ruleForm.middle_name = this.user.middle_name
-      this.ruleForm.last_name = this.user.last_name
-      this.ruleForm.email = this.user.email
+      this.form.id = this.user.id
+      this.form.first_name = this.user.first_name
+      this.form.middle_name = this.user.middle_name
+      this.form.last_name = this.user.last_name
+      this.form.email = this.user.email
     },
-    submitForm (formName) {
-      this.$refs[formName].validate(async (valid) => {
+    updateUser (formRule) {
+      this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            await this.$store.dispatch('users/updateUser', this.ruleForm)
+            await axios.patch(`/users/${this.form.id}`, this.form)
             this.$notify.success({
               title: 'Success',
-              message: 'User successfully updated.'
+              message: 'User ' + this.form.first_name + ' ' + this.form.middle_name + ' successfully updated.'
             })
+            // Redirect users.
+            await this.$router.push({ name: 'users-list' })
           } catch (e) {
             this.$notify.error({
               title: 'Error',
@@ -161,8 +253,30 @@ export default {
         }
       })
     },
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
+    updatePassword (formRule) {
+      this.$refs[formRule].validate(async (valid) => {
+        if (valid) {
+          try {
+            await axios.patch(`/users/password/${this.form.id}`, this.passwordForm)
+            this.$notify.success({
+              title: 'Success',
+              message: 'User password successfully changed.'
+            })
+            // Redirect users.
+            await this.$router.push({ name: 'users-list' })
+          } catch (e) {
+            this.$notify.error({
+              title: 'Error',
+              message: e.message
+            })
+          }
+        } else {
+          return false
+        }
+      })
+    },
+    resetForm (formRule) {
+      this.$refs[formRule].resetFields()
     }
   }
 }

@@ -94,9 +94,8 @@ export const actions = {
   async createRole ({ commit, dispatch }, payload) {
     try {
       commit('SET_CREATE_LOADING', true)
-      const { data } = await axios.post('/roles', payload)
+      await axios.post('/roles', payload)
       commit('SET_CREATE_LOADING', false)
-      dispatch('messages/setMessages', { type: 'success', title: 'Role created', description: `Role (${data.name}) successfully created.` }, { root: true })
     } catch (e) {
       commit('SET_CREATE_LOADING', false)
     }
@@ -105,9 +104,8 @@ export const actions = {
     try {
       commit('SET_UPDATE_LOADING', true)
       const { id, ...formData } = payload
-      const { data } = await axios.patch(`/roles/${payload.id}`, formData)
+      await axios.patch(`/roles/${payload.id}`, formData)
       commit('SET_UPDATE_LOADING', false)
-      dispatch('messages/setMessages', { type: 'success', title: 'Role updated', description: `Role (${data.name}) successfully updated.` }, { root: true })
     } catch (e) {
       commit('SET_UPDATE_LOADING', false)
     }
@@ -116,7 +114,6 @@ export const actions = {
     try {
       commit('SET_DELETE_LOADING', true)
       const { data } = await axios.delete(`/roles/${payload}`)
-      dispatch('messages/setMessages', { type: 'success', title: 'Role deleted', description: `Role (${data.name}) successfully deleted.` }, { root: true })
       commit('DELETE_ROLE_SUCCESS', data)
       dispatch('fetchRoles', { limit: 10, page: 1 })
     } catch (e) {

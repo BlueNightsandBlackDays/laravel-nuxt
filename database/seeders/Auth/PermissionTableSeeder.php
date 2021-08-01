@@ -4,54 +4,57 @@ namespace Database\Seeders\Auth;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class PermissionTableSeeder extends Seeder
 {
+    // User
+    public static $USER_PERMISSIONS = [
+        'view-any-user' => 'view any user',
+        'create-user' => 'create user',
+        'view-user' => 'view user',
+        'update-user' => 'update user',
+        'delete-user' => 'delete user',
+    ];
+
+    // Role
+    public static $ROLE_PERMISSIONS = [
+        'view-any-role' => 'view any role',
+        'create-role' => 'create role',
+        'view-role' => 'view role',
+        'update-role' => 'update role',
+        'delete-role' => 'delete role',
+    ];
+
+    // Attendance
+    public static $ATTENDANCE_PERMISSIONS = [
+        'view-any-attendance' => 'view any attendance',
+        'create-attendance' => 'create attendance',
+        'view-attendance' => 'view attendance',
+        'update-attendance' => 'update attendance',
+        'delete-attendance' => 'delete attendance',
+    ];
+
     /**
      * Run the database seeds.
      *
-     * @return void
+     * @return array
      */
-    public function run()
+    public static function getAllPermissions(): array
     {
-        //Create roles
-        $admin = Role::create([
-            'name' => 'admin_role'
-        ]);
-        $user = Role::create([
-            'name' => 'default_role'
-        ]);
+        return array_merge(
+            self::$USER_PERMISSIONS,
+            self::$ROLE_PERMISSIONS,
+            self::$ATTENDANCE_PERMISSIONS,
+        );
+    }
 
-        $permissions = [
-            // User
-            'view-any-user' => 'view any user',
-            'create-user' => 'create user',
-            'view-user' => 'view user',
-            'update-user' => 'update user',
-            'delete-user' => 'delete user',
-            'restore-user' => 'restore user',
-            'force-delete-user' => 'force delete user',
-            'impersonate-user' => 'impersonate user',
-
-            // Role
-            'view-any-role' => 'view any role',
-            'create-role' => 'create role',
-            'view-role' => 'view role',
-            'update-role' => 'update role',
-            'delete-role' => 'delete role',
-            'restore-role' => 'restore role',
-            'force-delete-role' => 'force delete role',
-
-        ];
-
+    // Create Permissions
+    public static function createPermissions(array $permissions)
+    {
         foreach ($permissions as $permission) {
-            // Create Permissions
             Permission::create([
                 'name' => $permission
             ]);
-
-            $admin->givePermissionTo($permission);
         }
     }
 }

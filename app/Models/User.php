@@ -60,11 +60,21 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     ];
 
     /**
+     * Get the admin.
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->roles()->where('id', 1)->exists();
+    }
+
+    /**
      * Get the profile photo URL attribute.
      *
      * @return string
      */
-    public function getPhotoUrlAttribute()
+    public function getPhotoUrlAttribute(): string
     {
         return vsprintf('https://www.gravatar.com/avatar/%s.jpg?s=200&d=%s', [
             md5(strtolower($this->email)),
@@ -77,7 +87,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      *
      * @return HasMany
      */
-    public function oauthProviders()
+    public function oauthProviders(): HasMany
     {
         return $this->hasMany(OAuthProvider::class);
     }
@@ -106,7 +116,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     /**
      * @return int
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): int
     {
         return $this->getKey();
     }
@@ -114,8 +124,18 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     /**
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    /**
+     * Get the attendance.
+     *
+     * @return HasMany
+     */
+    public function timeEntries(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
     }
 }

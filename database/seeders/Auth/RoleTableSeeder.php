@@ -14,7 +14,6 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        //User::find(1)->assignRole('admin_role');
-        //User::find(2)->assignRole('default_role');
+        //
     }
 }

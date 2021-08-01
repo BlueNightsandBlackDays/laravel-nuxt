@@ -6,9 +6,7 @@ export const state = () => ({
   meta: {},
   loading: false,
   user: {},
-  user_loading: false,
-  update_loading: false,
-  delete_loading: false
+  user_loading: false
 })
 
 // getters
@@ -18,9 +16,7 @@ export const getters = {
   meta: state => state.meta,
   loading: state => state.loading,
   user: state => state.user,
-  user_loading: state => state.user_loading,
-  update_loading: state => state.update_loading,
-  delete_loading: state => state.delete_loading
+  user_loading: state => state.user_loading
 }
 
 // mutations
@@ -58,12 +54,6 @@ export const mutations = {
   SET_ID (state, payload) {
     state.id = payload
   },
-  SET_UPDATE_LOADING (state, payload) {
-    state.update_loading = payload
-  },
-  SET_DELETE_LOADING (state, payload) {
-    state.delete_loading = payload
-  },
   RESET_USERS (state) {
     state.users = []
     state.meta = {}
@@ -93,28 +83,6 @@ export const actions = {
       commit('FETCH_USER_SUCCESS', data)
     } catch (e) {
       commit('FETCH_USER_FAILURE')
-    }
-  },
-  async updateUser ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_UPDATE_LOADING', true)
-      const { id, ...formData } = payload
-      await axios.patch(`/users/${payload.id}`, formData)
-
-      commit('SET_UPDATE_LOADING', false)
-    } catch (e) {
-      commit('SET_UPDATE_LOADING', false)
-    }
-  },
-  async deleteUser ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_DELETE_LOADING', true)
-      const { data } = await axios.delete(`/users/${payload}`)
-
-      commit('DELETE_USER_SUCCESS', data)
-      dispatch('fetchUsers', { limit: 10, page: 1 })
-    } catch (e) {
-      commit('SET_DELETE_LOADING', false)
     }
   }
 }

@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $users = User::all();
         return response()->json($users);
@@ -24,9 +27,8 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return JsonResponse
      */
-    public function create(): JsonResponse
+    public function create()
     {
         //
     }
@@ -52,21 +54,20 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return JsonResponse
+     * @param  User $user
+     * @return UserResource
      */
-    public function show($id): JsonResponse
+    public function show(User $user): UserResource
     {
-        //
+        return new UserResource($user);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return JsonResponse
+     * @param int $id
      */
-    public function edit($id): JsonResponse
+    public function edit(int $id)
     {
         //
     }
@@ -74,22 +75,27 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param UpdateUserRequest $request
+     * @param User $user
+     * @return bool
      */
-    public function update(Request $request): JsonResponse
+    public function update(UpdateUserRequest $request, User $user): bool
     {
-        $user = $request->user();
+        return $user->update($request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  User $user
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(User $user): JsonResponse
     {
-        //
+        if(auth()->user()->getAuthIdentifier() == $user->id) {
+            return response()->json('Can\'t delete');
+        }
+        $user->delete();
+        return response()->json('deleted');
     }
 }

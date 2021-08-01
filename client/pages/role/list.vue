@@ -1,20 +1,22 @@
 <template>
   <div class="container pd-x-0">
-    <div class="white-bg">
+    <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
-          <h5 class="mg-b-5">
-            Roles
+          <h5 class="mg-b-5 mt-2">
+            {{ $t('roles') }}
           </h5>
         </div>
         <div class="d-none d-md-block">
-          <nuxt-link
-            :to="{ name: 'roles-create'}"
-            class="el-button el-icon-plus el-button--small el-button--primary"
-          >
-            Create
-          </nuxt-link>
+          <el-tooltip class="item" effect="light" content="create new role" placement="top">
+            <nuxt-link
+              :to="{ name: 'roles-create'}"
+              class="el-button el-icon-plus el-button--small el-button--primary"
+            >
+              {{ $t('create') }}
+            </nuxt-link>
+          </el-tooltip>
         </div>
       </div>
       <!-- Card-body -->
@@ -24,10 +26,10 @@
           :total="100"
           :loading="loading"
           :page-size="10"
-          :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
+          :pagination-props="{ background: true, pageSizes: [10] }"
           :filters="filters"
           layout="tool, table, pagination"
-          @query-change="getTableData"
+          @query-change="getRoles"
         >
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
@@ -38,6 +40,18 @@
             </div>
           </div>
 
+          <!-- #id -->
+          <el-table-column
+            prop="name"
+            label="Name"
+            sortable
+            filter-hotelment="bottom-end"
+            width="100"
+          >
+            <template slot-scope="scope">
+              <span class="text-muted"> #{{ scope.row.id }}</span>
+            </template>
+          </el-table-column>>
           <!-- Name -->
           <el-table-column
             prop="name"
@@ -45,6 +59,25 @@
             sortable
             filter-hotelment="bottom-end"
           />
+
+          <el-table-column
+            prop="created_at"
+            label="Create At"
+            sortable
+            filter-hotelment="bottom-end"
+          >
+            <template slot-scope="scope">
+              <span class="text-muted">{{ scope.row.created_at }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="updated_at"
+            label="Last updated"
+            sortable filter-hotelment="bottom-end">
+            <template slot-scope="scope">
+              <span class="text-muted">{{ scope.row.updated_at }}</span>
+            </template>
+          </el-table-column>
           <!-- Action buttons -->
           <el-table-column
             :label="$t('action')"
@@ -55,19 +88,13 @@
               <div class="d-flex">
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                    <el-tooltip class="item" effect="light" content="view user" placement="top">
-                      <nuxt-link
-                        class="el-button el-icon-view el-button--small el-button--default"
-                        :to="{ name: 'roles-view', params: { id: scope.row.id } }"
-                      />
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="update user" placement="top">
+                    <el-tooltip class="item" effect="light" content="update role" placement="top">
                       <nuxt-link
                         class="el-button el-icon-edit el-button--small el-button--primary"
                         :to="{ name: 'roles-update', params: { id: scope.row.id } }"
                       />
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="delete user" placement="top">
+                    <el-tooltip class="item" effect="light" content="delete role" placement="top">
                       <a
                         href="#"
                         class="el-button el-icon-delete el-button--small el-button--danger"
@@ -106,7 +133,7 @@ export default {
     loading: 'roles/loading'
   }),
   methods: {
-    getTableData (query) {
+    getRoles (query) {
       this.$store.dispatch('roles/fetchRoles', { limit: query.pageSize, page: query.page })
     },
     handleDelete (index, row) {

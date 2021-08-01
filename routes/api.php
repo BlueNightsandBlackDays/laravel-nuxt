@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     require __DIR__.'/user/user.php';
     require __DIR__.'/Role/role.php';
+    require __DIR__.'/permission/permission.php';
+    require __DIR__.'/attendance/attendance.php';
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

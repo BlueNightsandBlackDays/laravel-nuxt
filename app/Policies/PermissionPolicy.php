@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Role;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RolePolicy
+class PermissionPolicy
 {
     use HandlesAuthorization;
 
@@ -25,13 +25,14 @@ class RolePolicy
      * Determine whether the user can view the model.
      *
      * @param User $user
-     * @param Role $model
+     * @param Permission $model
      * @return mixed
      */
-    public function view(User $user, Role $model): bool
+    public function view(User $user, Permission $model): bool
     {
         return true;
     }
+
 
     /**
      * Determine whether the user can create models.
@@ -48,10 +49,10 @@ class RolePolicy
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param Role $model
+     * @param Permission $model
      * @return mixed
      */
-    public function update(User $user, Role $model): bool
+    public function update(User $user, Permission $model): bool
     {
         return true;
     }
@@ -60,10 +61,10 @@ class RolePolicy
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param Role $model
+     * @param Permission $model
      * @return mixed
      */
-    public function delete(User $user, Role $model): bool
+    public function delete(User $user, Permission $model): bool
     {
         return true;
     }
@@ -72,10 +73,10 @@ class RolePolicy
      * Determine whether the user can restore the model.
      *
      * @param User $user
-     * @param Role $model
+     * @param Permission $model
      * @return mixed
      */
-    public function restore(User $user, Role $model): bool
+    public function restore(User $user, Permission $model): bool
     {
         return true;
     }
@@ -84,10 +85,10 @@ class RolePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param User $user
-     * @param Role $model
+     * @param Permission $model
      * @return mixed
      */
-    public function forceDelete(User $user, Role $model): bool
+    public function forceDelete(User $user, Permission $model): bool
     {
         return true;
     }

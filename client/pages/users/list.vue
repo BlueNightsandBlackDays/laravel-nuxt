@@ -5,17 +5,19 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
-          <h5 class="mg-b-5">
+          <h5 class="mg-b-5 mt-2">
             {{ $t('users') }}
           </h5>
         </div>
         <div class="d-none d-md-block">
-          <nuxt-link
-            :to="{ name: 'users-create'}"
-            class="el-button el-icon-plus el-button--small el-button--primary"
-          >
-            {{ $t('create') }}
-          </nuxt-link>
+          <el-tooltip class="item" effect="light" content="create new user" placement="top">
+            <nuxt-link
+              :to="{ name: 'users-create'}"
+              class="el-button el-icon-plus el-button--small el-button--primary"
+            >
+              {{ $t('create') }}
+            </nuxt-link>
+          </el-tooltip>
         </div>
       </div>
       <!-- Card-body -->
@@ -28,16 +30,39 @@
           :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
           :filters="filters"
           layout="tool, table, pagination"
-          @query-change="getTableData"
+          @query-change="getUsers"
         >
+          <!-- Search -->
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-input class="float-right" clearable size="mini" hotelholder="Search" autosize>
-                <i slot="prefix" class="el-input__icon el-icon-search" />
-              </el-input>
+              <el-form :model="filters" class="demo-form">
+                <el-input
+                  v-model="filters.search"
+                  type="search"
+                  name="search"
+                  class="float-right" clearable size="mini"
+                  hotelholder="Search"
+                  autosize
+                >
+                  <i slot="prefix" class="el-input__icon el-icon-search" />
+                </el-input>
+              </el-form>
             </div>
           </div>
+
+          <!-- id -->
+          <el-table-column
+            prop="id"
+            label="#ID"
+            sortable
+            filter-hotelment="bottom-end"
+            width="100"
+          >
+            <template slot-scope="scope">
+              <span class="text-muted"> #{{ scope.row.id }}</span>
+            </template>
+          </el-table-column>
 
           <!-- Name -->
           <el-table-column
@@ -49,7 +74,7 @@
             <template slot-scope="scope">
               <span class="text-muted"> {{ scope.row.first_name + ' ' + scope.row.middle_name }}</span>
             </template>
-          </el-table-column>>
+          </el-table-column>
           <!-- Email -->
           <el-table-column
             prop="email"
@@ -98,14 +123,17 @@
 </template>
 
 <script>
+import axios from 'axios'
+import Form from 'vform'
+
 export default {
   middleware: 'auth',
   data () {
     return {
       limit: 10,
-      filters: {
+      filters: new Form({
         search: ''
-      },
+      }),
       pageSize: 10
     }
   },
@@ -119,13 +147,13 @@ export default {
     loading () { return this.$store.state.users.loading }
   },
   methods: {
-    getTableData (query) {
+    getUsers (query) {
       this.$store.dispatch('users/fetchUsers', { limit: query.pageSize, page: query.page })
     },
     handleDelete (index, row) {
-      this.$confirm(`Are you sure you want to delete user ${row.name}?`).then(async (_) => {
+      this.$confirm(`Are you sure you want to delete user ${row.first_name} ${row.middle_name}?`).then(async (_) => {
         try {
-          await this.$store.dispatch('users/deleteUser', row.id)
+          await axios.delete(`/users/${row.id}`)
           this.$notify.success({
             title: 'Success',
             message: 'User successfully deleted.'
