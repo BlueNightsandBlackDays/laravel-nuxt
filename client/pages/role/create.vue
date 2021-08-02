@@ -42,7 +42,7 @@
           </div>
 
           <!-- Permission row -->
-          <PermissionList ref="permission" @permissions="updatePermissions" />
+
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
@@ -65,17 +65,14 @@
 <script>
 import Form from 'vform'
 import { mapGetters } from 'vuex'
-import PermissionList from '../../components/permission/PermissionList'
 
 export default {
-  components: { PermissionList },
   middleware: 'auth',
 
   data () {
     return {
       form: new Form({
-        name: '',
-        permissions: []
+        name: ''
       }),
       loader: false,
       rules: {
@@ -86,13 +83,7 @@ export default {
   computed: mapGetters({
     create_loading: 'roles/create_loading'
   }),
-  mounted () {
-    this.$refs.permission.getData()
-  },
   methods: {
-    updatePermissions (permissions) {
-      this.form.permissions = permissions
-    },
     createRole (formRule) {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
@@ -116,7 +107,6 @@ export default {
       })
     },
     resetForm (formRule) {
-      this.$refs.permission.reset()
       this.$refs[formRule].resetFields()
     }
   }

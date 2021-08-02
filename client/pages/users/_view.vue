@@ -24,11 +24,6 @@
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <div class="col-sm-8 col-md-7 col-lg mg-t-20 mg-sm-t-0 mg-lg-t-25">
-          <div>
-            <PuSkeleton>
-              <img :src="user.photo_url" alt="" class="profile-photo mr-1">
-            </PuSkeleton>
-          </div>
           <h5 class="mg-b-2 tx-spacing--1">
             <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
           </h5>
@@ -48,6 +43,7 @@
         </div>
         <!-- Attendance list -->
         <data-tables-server
+          :data="attendance.data"
           :total="100"
           :loading="attendance_loading"
           :page-size="10"
@@ -88,23 +84,10 @@
             </template>
           </el-table-column>
 
-          <!-- User id -->
-          <el-table-column
-            prop="user_id"
-            label="#User ID"
-            sortable
-            filter-hotelment="bottom-end"
-            width="150"
-          >
-            <template slot-scope="scope">
-              <span class="text-muted"> #{{ scope.row.user_id }}</span>
-            </template>
-          </el-table-column>
-
           <!-- Start time -->
           <el-table-column
             prop="time_start"
-            label="Name"
+            label="Start Time"
             sortable
             filter-hotelment="bottom-end"
           >
@@ -116,7 +99,7 @@
           <!-- End time -->
           <el-table-column
             prop="time_end"
-            label="Name"
+            label="End Time"
             sortable
             filter-hotelment="bottom-end"
           >

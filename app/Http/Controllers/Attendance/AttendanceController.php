@@ -76,7 +76,7 @@ class AttendanceController extends Controller
         //$attendance->load('user');
         //return response()->json($attendance);
 
-        $attendance = Attendance::all()->where('user_id', $id);
+        $attendance = Attendance::all()->where('user_id', $id)->toArray();
 
         return new AttendanceResource($attendance);
     }

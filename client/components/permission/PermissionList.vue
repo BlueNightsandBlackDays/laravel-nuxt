@@ -11,7 +11,7 @@
     <PuSkeleton v-if="loading" style="height: 100px" />
 
     <el-collapse v-else v-model="activeNames" class="row mt-3">
-      <el-collapse-item v-for="(groupedPermission,key) in permissions" :key="key" :name="key" class="col-12 col-lg-6 col-xl-4">
+      <el-collapse-item v-for="(groupedPermission,key) in all_permissions" :key="key" :name="key" class="col-12 col-lg-6 col-xl-4">
         <template slot="title">
           <div class="d-flex w-100">
             <span class="text-capitalize tx-16 text-secondary">
@@ -61,7 +61,7 @@ export default {
     }
   },
   computed: mapGetters({
-    permissions: 'permissions/groupedPermissions',
+    // permissions: 'permissions/groupedPermissions',
     all_permissions: 'permissions/permissions',
     loading: 'permissions/loading'
   }),

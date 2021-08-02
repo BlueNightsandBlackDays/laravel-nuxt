@@ -43,7 +43,7 @@
           <!-- #id -->
           <el-table-column
             prop="name"
-            label="Name"
+            label="#ID"
             sortable
             filter-hotelment="bottom-end"
             width="100"
