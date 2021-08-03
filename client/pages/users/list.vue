@@ -1,5 +1,5 @@
 <template>
-  <!-- Container -->
+  <!-- User list container -->
   <div class="container pd-x-0">
     <div class="card">
       <!-- Card-header -->
@@ -54,7 +54,7 @@
           <!-- id -->
           <el-table-column
             prop="id"
-            label="#ID"
+            :label="$t('id')"
             sortable
             filter-hotelment="bottom-end"
             width="100"
@@ -67,7 +67,7 @@
           <!-- Name -->
           <el-table-column
             prop="name"
-            label="Name"
+            :label="$t('name')"
             sortable
             filter-hotelment="bottom-end"
           >
@@ -75,13 +75,15 @@
               <span class="text-muted"> {{ scope.row.first_name + ' ' + scope.row.middle_name }}</span>
             </template>
           </el-table-column>
+
           <!-- Email -->
           <el-table-column
             prop="email"
-            label="Email"
+            :label="$t('email')"
             sortable
             filter-hotelment="bottom-end"
           />
+
           <!-- Action buttons -->
           <el-table-column
             :label="$t('action')"

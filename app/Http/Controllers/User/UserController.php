@@ -7,6 +7,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Resources\UserResource;
 
@@ -20,6 +21,10 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if ($request->user()->cannot('view any user', User::class)) {
+            abort(403, 'You don\'t have permission');
+        }
+
         $users = User::all();
         return response()->json($users);
     }
@@ -28,9 +33,10 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      *
      */
-    public function create()
+    public function create(): JsonResponse
     {
-        //
+        $roles = Role::query()->get()->pluck('name', 'name');
+        return response()->json($roles);
     }
 
     /**
@@ -48,6 +54,10 @@ class UserController extends Controller
             'email' => $request['email'],
             'password' => bcrypt($request['password']),
         ]);
+
+        $user = \Spatie\Permission\Models\Role::findByName('user');
+        $users->assignRole($user);
+
         return response()->json($users);
     }
 
@@ -95,6 +105,7 @@ class UserController extends Controller
         if(auth()->user()->getAuthIdentifier() == $user->id) {
             return response()->json('Can\'t delete');
         }
+
         $user->delete();
         return response()->json('deleted');
     }

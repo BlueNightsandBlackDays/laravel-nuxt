@@ -123,14 +123,16 @@ export default {
       filters: {
         search: ''
       },
-      pageSize: 10
+      pageSize: 10,
     }
   },
   computed: mapGetters({
     roles: 'roles/roles',
     meta: 'roles/meta',
     links: 'roles/links',
-    loading: 'roles/loading'
+    loading: 'roles/loading',
+    all_permissions: 'permissions/permissions',
+    permissions_loading: 'permissions/loading'
   }),
   methods: {
     getRoles (query) {

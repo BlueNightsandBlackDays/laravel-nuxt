@@ -45,6 +45,7 @@ export const actions = {
   async fetchPermissions ({ commit, dispatch }, payload) {
     try {
       commit('SET_PERMISSIONS_LOADING', true)
+      commit('RESET_PERMISSIONS')
       const data = await axios.get('/permissions', { params: payload })
       commit('FETCH_PERMISSIONS_SUCCESS', data)
     } catch (e) {

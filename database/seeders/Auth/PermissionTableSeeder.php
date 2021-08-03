@@ -3,6 +3,7 @@
 namespace Database\Seeders\Auth;
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class PermissionTableSeeder extends Seeder
@@ -51,10 +52,26 @@ class PermissionTableSeeder extends Seeder
     // Create Permissions
     public static function createPermissions(array $permissions)
     {
+        // Create admin role
+        $admin = Role::create([
+            'name' => 'admin'
+        ]);
+
+        // Create default role
+        $user = Role::create([
+            'name' => 'user'
+        ]);
+
         foreach ($permissions as $permission) {
             Permission::create([
                 'name' => $permission
             ]);
+
+            // Give permission to admin
+            $admin->givePermissionTo($permission);
         }
+
+        // Give permission to default user
+        $user->givePermissionTo(['view attendance', 'update attendance']);
     }
 }

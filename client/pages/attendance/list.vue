@@ -11,13 +11,16 @@
         </div>
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="start or end work" placement="top">
-            <el-button
-              id="startWork"
-              class="el-button el-icon-stopwatch el-button--small el-button--primary"
-              @click="switchWorkStatus()"
+            <el-checkbox-button
+              true-label="Start Work"
+              false-label="Stop Work"
+              border
+              size="mini"
+              @change="switchWorkStatus()"
             >
-              <span>{{ $t('start_work') }}</span>
-            </el-button>
+              <span class="el-icon-stopwatch" />
+              {{ $t('start_work') }}
+            </el-checkbox-button>
           </el-tooltip>
         </div>
       </div>
@@ -86,7 +89,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ scope.row.time_start }}</span>
+              <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_start) }}</span>
             </template>
           </el-table-column>
 
@@ -98,7 +101,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ scope.row.time_end }}</span>
+              <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
           <!-- Action buttons -->
@@ -139,6 +142,7 @@
 import Form from 'vform'
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
   middleware: 'auth',
@@ -179,6 +183,11 @@ export default {
           title: 'Error',
           message: e.message
         })
+      }
+    },
+    formatAttendanceDate (starTime) {
+      if (starTime) {
+        return moment(String(starTime)).format('ddd, MMM Do YYYY, h:mm:ss a')
       }
     },
     handleDelete (index, row) {

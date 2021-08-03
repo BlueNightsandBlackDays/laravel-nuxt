@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -12,12 +13,14 @@ class UserPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param User $user
-     * @return mixed
+     * @param  User $user
+     * @return Response|bool
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
-        return true;
+        return $user->can('view any user');
+            //? Response::allow()
+            //: Response::deny('You don\'t have permission.');
     }
 
     /**
@@ -25,22 +28,22 @@ class UserPolicy
      *
      * @param User $user
      * @param User $model
-     * @return mixed
+     * @return Response|bool
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, user $model)
     {
-        return true;
+        return $user->can('view user');
     }
 
     /**
      * Determine whether the user can create models.
      *
      * @param User $user
-     * @return mixed
+     * @return Response|bool
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
-        return true;
+        return $user->can('create user');
     }
 
     /**
@@ -48,11 +51,11 @@ class UserPolicy
      *
      * @param User $user
      * @param User $model
-     * @return mixed
+     * @return Response|bool
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, user $model)
     {
-        return true;
+        return $user->can('update user');
     }
 
     /**
@@ -60,11 +63,11 @@ class UserPolicy
      *
      * @param User $user
      * @param User $model
-     * @return mixed
+     * @return Response|bool
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, user $model)
     {
-        return true;
+        return $user->can('delete user');
     }
 
     /**
@@ -72,11 +75,11 @@ class UserPolicy
      *
      * @param User $user
      * @param User $model
-     * @return mixed
+     * @return Response|bool
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, user $model)
     {
-        return true;
+        //
     }
 
     /**
@@ -84,10 +87,10 @@ class UserPolicy
      *
      * @param User $user
      * @param User $model
-     * @return mixed
+     * @return Response|bool
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, user $model)
     {
-        return true;
+        //
     }
 }

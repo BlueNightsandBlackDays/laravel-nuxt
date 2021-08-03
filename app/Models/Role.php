@@ -10,4 +10,14 @@ class Role extends SpatieRole
         'name',
         'guard_name'
     ];
+
+    /**
+     * Get the admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->name === ('admin');
+    }
 }

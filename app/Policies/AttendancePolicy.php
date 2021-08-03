@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Role;
+use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class RolePolicy
+class AttendancePolicy
 {
     use HandlesAuthorization;
 
@@ -19,19 +19,19 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view any role');
+        return $user->can('view any attendance');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param User $user
-     * @param Role $role
+     * @param Attendance $attendance
      * @return Response|bool
      */
-    public function view(User $user, Role $role)
+    public function view(User $user, Attendance $attendance)
     {
-        return $user->can('view role');
+        return $user->can('view attendance');
     }
 
     /**
@@ -42,41 +42,41 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $user->can('create role');
+        return $user->can('create attendance');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param Role $role
+     * @param Attendance $attendance
      * @return Response|bool
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, Attendance $attendance)
     {
-        return $user->can('update role');
+        return $user->can('update attendance');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param Role $role
+     * @param Attendance $attendance
      * @return Response|bool
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Attendance $attendance)
     {
-        return $user->can('delete role');
+        return $user->can('delete attendance');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param User $user
-     * @param Role $role
+     * @param Attendance $attendance
      * @return Response|bool
      */
-    public function restore(User $user, Role $role)
+    public function restore(User $user, Attendance $attendance)
     {
         //
     }
@@ -85,10 +85,10 @@ class RolePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param User $user
-     * @param Role $role
+     * @param Attendance $attendance
      * @return Response|bool
      */
-    public function forceDelete(User $user, Role $role)
+    public function forceDelete(User $user, Attendance $attendance)
     {
         //
     }

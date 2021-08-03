@@ -27,6 +27,8 @@
   "password": "Password",
   "forgot_password": "Forgot Your Password?",
   "confirm_password": "Confirm Password",
+  "id": "#ID",
+  "user_id": "#User_ID",
   "name": "Name",
   "first_name": "Name",
   "middle_name": "Father's Name",

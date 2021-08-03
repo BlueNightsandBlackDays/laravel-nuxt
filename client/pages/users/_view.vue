@@ -92,7 +92,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ scope.row.time_start }}</span>
+              <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_start) }}</span>
             </template>
           </el-table-column>
 
@@ -104,7 +104,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ scope.row.time_end }}</span>
+              <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
           <!-- Action buttons -->
@@ -138,6 +138,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Form from 'vform'
+import moment from 'moment'
 
 export default {
   middleware: 'auth',
@@ -160,10 +161,10 @@ export default {
     attendance_loading: 'attendance/attendance_loading'
   }),
   async mounted () {
-    await this.getData()
+    await this.getUser()
   },
   methods: {
-    async getData () {
+    async getUser () {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
     },
     handleEdit () {
@@ -173,6 +174,11 @@ export default {
       this.$store.dispatch('attendance/fetchAttendance', { id: this.$route.params.id })
     },
     deleteAttendance () {
+    },
+    formatAttendanceDate (starTime) {
+      if (starTime) {
+        return moment(String(starTime)).format('ddd, MMM Do YYYY, h:mm:ss a')
+      }
     }
   }
 }

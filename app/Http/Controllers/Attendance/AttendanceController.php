@@ -33,7 +33,7 @@ class AttendanceController extends Controller
     {
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return response()->json(compact('$users'));
+        return response()->json('$users');
     }
 
     /**

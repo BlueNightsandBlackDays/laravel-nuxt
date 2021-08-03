@@ -13,15 +13,15 @@ class Attendance extends Model
 
     public $table = 'attendances';
 
-    protected $dates = [
+    protected $fillable = [
+        'user_id',
         'time_start',
         'time_end',
         'created_at',
         'updated_at',
     ];
 
-    protected $fillable = [
-        'user_id',
+    protected $dates = [
         'time_start',
         'time_end',
         'created_at',
