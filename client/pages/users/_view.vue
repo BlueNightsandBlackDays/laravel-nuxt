@@ -56,25 +56,23 @@
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-form :model="filters" class="demo-form">
-                <el-input
-                  v-model="filters.search"
-                  type="search"
-                  name="search"
-                  class="float-right" clearable size="mini"
-                  hotelholder="Search"
-                  autosize
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search" />
-                </el-input>
-              </el-form>
+              <el-input
+                v-model.lazy="filters.search"
+                type="search"
+                name="search"
+                class="float-right" clearable size="mini"
+                hotelholder="Search"
+                autosize
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search" />
+              </el-input>
             </div>
           </div>
 
           <!-- id -->
           <el-table-column
             prop="id"
-            label="#ID"
+            :label="$t('id')"
             sortable
             filter-hotelment="bottom-end"
             width="100"
@@ -84,29 +82,54 @@
             </template>
           </el-table-column>
 
-          <!-- Start time -->
+          <!-- Date -->
           <el-table-column
-            prop="time_start"
-            label="Start Time"
+            prop="created_at"
+            :label="$t('date')"
             sortable
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_start) }}</span>
+              <span class="text-muted"> {{ formatAttendanceDate (scope.row.created_at) }}</span>
+            </template>
+          </el-table-column>
+
+          <!-- Start time -->
+          <el-table-column
+            prop="time_start"
+            :label="$t('time_start')"
+            sortable
+            filter-hotelment="bottom-end"
+          >
+            <template slot-scope="scope">
+              <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_start) }}</span>
             </template>
           </el-table-column>
 
           <!-- End time -->
           <el-table-column
             prop="time_end"
-            label="End Time"
+            :label="$t('time_end')"
             sortable
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_end) }}</span>
+              <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
+
+          <!-- Total hours -->
+          <el-table-column
+            prop="total_hours"
+            :label="$t('total_hours')"
+            sortable
+            filter-hotelment="bottom-end"
+          >
+            <template slot-scope="scope">
+              <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) }}</span>
+            </template>
+          </el-table-column>
+
           <!-- Action buttons -->
           <el-table-column
             :label="$t('action')"
@@ -137,17 +160,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Form from 'vform'
 import moment from 'moment'
 
 export default {
   middleware: 'auth',
   data () {
     return {
-      limit: 10,
-      filters: new Form({
+      filters: ({
         search: ''
       }),
+      limit: 10,
       pageSize: 10
     }
   },
@@ -170,24 +192,30 @@ export default {
     handleEdit () {
       this.$router.push({ name: 'users-update', params: { id: this.user.id } })
     },
-    getAttendance () {
+    getAttendance (query) {
       this.$store.dispatch('attendance/fetchAttendance', { id: this.$route.params.id })
     },
     deleteAttendance () {
     },
     formatAttendanceDate (starTime) {
       if (starTime) {
-        return moment(String(starTime)).format('ddd, MMM Do YYYY, h:mm:ss a')
+        return moment(String(starTime)).format('ddd, MMM Do YYYY')
       }
+    },
+    formatAttendanceTime (starTime) {
+      if (starTime) {
+        return moment(String(starTime)).format('h:mm:ss a')
+      }
+    },
+    timeDifference (startTime, endTime) {
+      const starT = moment(startTime)
+      const endT = moment(endTime)
+      return endT.diff(starT, 'hours')
     }
   }
 }
 </script>
 
 <style scoped>
-.profile-photo {
-  width: 8rem;
-  height: 8rem;
-  margin: 1rem 0;
-}
+
 </style>

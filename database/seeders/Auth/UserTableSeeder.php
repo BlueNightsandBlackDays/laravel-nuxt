@@ -2,10 +2,10 @@
 
 namespace Database\Seeders\Auth;
 
-use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class UserTableSeeder extends Seeder
 {
@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
     {
 
         // Create an admin user.
-        $cool_admin = User::create([
+        $cool_admin = User::query()->create([
             'first_name' => 'Cool',
             'middle_name' => 'Admin',
             'last_name' => 'User',
@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         // Create a default user.
-        $default_user = User::create([
+        $default_user = User::query()->create([
             'first_name' => 'Not Bad',
             'middle_name' => 'Default',
             'last_name' => 'User',

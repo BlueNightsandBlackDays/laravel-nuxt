@@ -21,10 +21,10 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  FETCH_ATTENDANCES_SUCCESS (state, users) {
-    state.attendances = users.data
-    state.links = users.links
-    state.meta = users.meta
+  FETCH_ATTENDANCES_SUCCESS (state, attendances) {
+    state.attendances = attendances.data
+    state.links = attendances.links
+    state.meta = attendances.meta
     state.loading = false
   },
   FETCH_ATTENDANCE_SUCCESS (state, payload) {
@@ -38,8 +38,8 @@ export const mutations = {
     state.meta = {}
   },
   FETCH_ATTENDANCE_FAILURE (state) {
-    state.attendance = []
     state.loading = false
+    state.attendance = []
   },
   SET_ATTENDANCES_LOADING (state, loading) {
     state.loading = loading

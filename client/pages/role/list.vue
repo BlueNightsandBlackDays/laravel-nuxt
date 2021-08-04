@@ -34,7 +34,14 @@
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-input class="float-right" clearable size="mini" hotelholder="Search" autosize>
+              <el-input
+                v-model.lazy="filters.search"
+                type="search"
+                name="search"
+                class="float-right" clearable size="mini"
+                hotelholder="Search"
+                autosize
+              >
                 <i slot="prefix" class="el-input__icon el-icon-search" />
               </el-input>
             </div>
@@ -119,11 +126,11 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      limit: 10,
       filters: {
         search: ''
       },
-      pageSize: 10,
+      limit: 10,
+      pageSize: 10
     }
   },
   computed: mapGetters({

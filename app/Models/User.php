@@ -60,16 +60,6 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     ];
 
     /**
-     * Get the admin.
-     *
-     * @return bool
-     */
-    public function getIsAdminAttribute(): bool
-    {
-        return $this->roles()->where('id', 1)->exists();
-    }
-
-    /**
      * Get the profile photo URL attribute.
      *
      * @return string

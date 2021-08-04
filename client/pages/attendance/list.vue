@@ -6,28 +6,27 @@
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
           <h5 class="mg-b-5 mt-2">
-            {{ $t('attendances') }}
+            {{ $t('attendance_list') }}
           </h5>
         </div>
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="start or end work" placement="top">
-            <el-checkbox-button
-              true-label="Start Work"
-              false-label="Stop Work"
-              border
-              size="mini"
-              @change="switchWorkStatus()"
+            <button
+              id="hide-seen"
+              ref="btnToggle"
+              class="el-button el-button--medium el-button--default"
+              @click="switchWorkStatus()"
             >
               <span class="el-icon-stopwatch" />
-              {{ $t('start_work') }}
-            </el-checkbox-button>
+              Start Work
+            </button>
           </el-tooltip>
         </div>
       </div>
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
-          :data="attendances"
+          :data="attendances.data"
           :total="100"
           :loading="loading"
           :page-size="10"
@@ -40,18 +39,16 @@
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-form :model="filters" class="demo-form">
-                <el-input
-                  v-model="filters.search"
-                  type="search"
-                  name="search"
-                  class="float-right" clearable size="mini"
-                  hotelholder="Search"
-                  autosize
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search" />
-                </el-input>
-              </el-form>
+              <el-input
+                v-model.lazy="filters.search"
+                type="search"
+                name="search"
+                class="float-right" clearable size="mini"
+                hotelholder="Search"
+                autosize
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search" />
+              </el-input>
             </div>
           </div>
 
@@ -117,7 +114,7 @@
                     <el-tooltip class="item" effect="light" content="view attendance" placement="top">
                       <nuxt-link
                         class="el-button el-icon-view el-button--small el-button--default"
-                        :to="{ name: 'users-view', params: { id: scope.row.id } }"
+                        :to="{ name: 'users-view', params: { id: scope.row.user_id } }"
                       />
                     </el-tooltip>
                     <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
@@ -139,7 +136,6 @@
 </template>
 
 <script>
-import Form from 'vform'
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 import moment from 'moment'
@@ -149,10 +145,10 @@ export default {
 
   data () {
     return {
-      limit: 10,
-      filters: new Form({
+      filters: ({
         search: ''
       }),
+      limit: 10,
       pageSize: 10
     }
   },
@@ -166,14 +162,16 @@ export default {
     loading: 'attendance/loading'
   }),
   methods: {
-    getAttendances (query) {
-      this.$store.dispatch('attendance/fetchAttendances', { limit: query.pageSize, page: query.page })
-    },
     async switchWorkStatus () {
       let data
       try {
         const response = await axios.post('/attendances/update-current/')
         data = response.data
+        if (data === 'Work time has started') {
+          this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> End Work'
+        } else {
+          this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> Start Work'
+        }
         this.$notify.info({
           title: 'Info',
           message: data
@@ -184,6 +182,9 @@ export default {
           message: e.message
         })
       }
+    },
+    getAttendances (query) {
+      this.$store.dispatch('attendance/fetchAttendances', { limit: query.pageSize, page: query.page })
     },
     formatAttendanceDate (starTime) {
       if (starTime) {

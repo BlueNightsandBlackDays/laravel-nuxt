@@ -2,12 +2,11 @@
 
 namespace Database\Seeders\Auth;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
-class RoleTableSeeder extends Seeder
+class UserPermissionTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +15,7 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        $admin = User::find(1);
+        $admin = User::query()->find(1);
         $permissions = Permission::all();
 
         foreach ($permissions as $permission) {

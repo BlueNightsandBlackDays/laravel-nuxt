@@ -19,7 +19,7 @@ class AttendanceController extends Controller
      */
     public function index(): JsonResponse
     {
-        $attendance = Attendance::all();
+        $attendance = Attendance::query()->orderByDesc('id')->simplePaginate(10);
 
         return response()->json($attendance);
     }
@@ -33,7 +33,7 @@ class AttendanceController extends Controller
     {
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return response()->json('$users');
+        return response()->json($users);
     }
 
     /**
@@ -44,7 +44,7 @@ class AttendanceController extends Controller
      */
     public function store(StoreAttendanceRequest $request): JsonResponse
     {
-        $attendance = Attendance::create($request->all());
+        $attendance = Attendance::query()->create($request->all());
 
         return response()->json($attendance);
     }
@@ -56,7 +56,7 @@ class AttendanceController extends Controller
      */
     public function showCurrent(): JsonResponse
     {
-        $attendance = Attendance::whereNull('time_end')
+        $attendance = Attendance::query()->whereNull('time_end')
             ->whereHas('user', function ($query) {
                 $query->where('id', auth()->id());
             })
@@ -71,12 +71,12 @@ class AttendanceController extends Controller
      * @param  int $id
      * @return AttendanceResource
      */
-    public function show($id): AttendanceResource
+    public function show(int $id): AttendanceResource
     {
         //$attendance->load('user');
         //return response()->json($attendance);
 
-        $attendance = Attendance::all()->where('user_id', $id)->toArray();
+        $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
 
         return new AttendanceResource($attendance);
     }
@@ -92,7 +92,7 @@ class AttendanceController extends Controller
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $attendance->load('user');
-        return response()->json(compact('$attendance'));
+        return response()->json(compact($users, $attendance));
     }
 
     /**
@@ -114,7 +114,7 @@ class AttendanceController extends Controller
      */
     public function updateCurrent(): JsonResponse
     {
-        $attendance = Attendance::whereNull('time_end')
+        $attendance = Attendance::query()->whereNull('time_end')
             ->whereHas('user', function ($query) {
                 $query->where('id', auth()->id());
             })

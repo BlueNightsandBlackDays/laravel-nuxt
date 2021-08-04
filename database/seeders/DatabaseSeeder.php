@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-//use Database\Seeders\Auth\PermissionTableSeeder;
-//use Database\Seeders\Auth\UserTableSeeder;
-use Database\Seeders\Auth\RoleTableSeeder;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\PermissionRegistrar;
+use Database\Seeders\Auth\PermissionTableSeeder;
+use Database\Seeders\Auth\UserTableSeeder;
+use Database\Seeders\Auth\UserPermissionTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,13 +17,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
         // \App\Models\User::factory(10)->create();
-        //$permission = PermissionTableSeeder::getAllPermissions();
-        //PermissionTableSeeder::createPermissions($permission);
+        $permission = PermissionTableSeeder::getAllPermissions();
+        PermissionTableSeeder::createPermissions($permission);
 
         $this->call([
-            //UserTableSeeder::class
-            RoleTableSeeder::class
+            UserTableSeeder::class,
+            UserPermissionTableSeeder::class
         ]);
     }
 }

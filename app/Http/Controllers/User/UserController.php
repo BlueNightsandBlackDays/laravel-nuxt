@@ -25,7 +25,7 @@ class UserController extends Controller
             abort(403, 'You don\'t have permission');
         }
 
-        $users = User::all();
+        $users = User::query()->orderBy('id')->simplePaginate(10);
         return response()->json($users);
     }
 
@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): JsonResponse
     {
-        $users = User::create([
+        $users = User::query()->create([
             'first_name' => $request['first_name'],
             'middle_name' => $request['middle_name'],
             'last_name' => $request['last_name'],

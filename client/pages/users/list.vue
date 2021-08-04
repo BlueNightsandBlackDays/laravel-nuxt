@@ -23,7 +23,7 @@
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
-          :data="users"
+          :data="users.data"
           :total="100"
           :loading="loading"
           :page-size="10"
@@ -36,18 +36,16 @@
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-form :model="filters" class="demo-form">
-                <el-input
-                  v-model="filters.search"
-                  type="search"
-                  name="search"
-                  class="float-right" clearable size="mini"
-                  hotelholder="Search"
-                  autosize
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search" />
-                </el-input>
-              </el-form>
+              <el-input
+                v-model.lazy="filters.search"
+                type="search"
+                name="search"
+                class="float-right" clearable size="mini"
+                hotelholder="Search"
+                autosize
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search" />
+              </el-input>
             </div>
           </div>
 
@@ -126,16 +124,15 @@
 
 <script>
 import axios from 'axios'
-import Form from 'vform'
 
 export default {
   middleware: 'auth',
   data () {
     return {
-      limit: 10,
-      filters: new Form({
+      filters: ({
         search: ''
       }),
+      limit: 10,
       pageSize: 10
     }
   },

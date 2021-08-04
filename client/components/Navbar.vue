@@ -48,7 +48,15 @@
                 :to="{ name: 'attendances-list'}"
                 class="nav-link"
               >
-                {{ $t('attendances') }}
+                {{ $t('attendance_list') }}
+              </nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link
+                :to="{ name: 'attendances-view'}"
+                class="nav-link"
+              >
+                {{ $t('attendance') }}
               </nuxt-link>
             </li>
             <li class="nav-item dropdown">
