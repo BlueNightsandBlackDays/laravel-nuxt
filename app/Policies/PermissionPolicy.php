@@ -12,6 +12,22 @@ class PermissionPolicy
     use HandlesAuthorization;
 
     /**
+     * Perform pre-authorization checks.
+     *
+     * @param  User  $user
+     * @param  string  $ability
+     * @return void|bool
+     */
+    public function before(User $user, $ability): bool
+    {
+        if ($user->isAdmin()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param User $user

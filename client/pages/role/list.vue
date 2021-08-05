@@ -74,7 +74,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted">{{ scope.row.created_at }}</span>
+              <span class="text-muted">{{ formatAttendanceDate (scope.row.created_at) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -82,7 +82,7 @@
             label="Last updated"
             sortable filter-hotelment="bottom-end">
             <template slot-scope="scope">
-              <span class="text-muted">{{ scope.row.updated_at }}</span>
+              <span class="text-muted">{{ formatAttendanceDate (scope.row.updated_at) }}</span>
             </template>
           </el-table-column>
           <!-- Action buttons -->
@@ -121,6 +121,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
   middleware: 'auth',
@@ -144,6 +145,11 @@ export default {
   methods: {
     getRoles (query) {
       this.$store.dispatch('roles/fetchRoles', { limit: query.pageSize, page: query.page })
+    },
+    formatAttendanceDate (starTime) {
+      if (starTime) {
+        return moment(String(starTime)).format('ddd, MMM Do YYYY')
+      }
     },
     handleDelete (index, row) {
       this.$confirm(`Are you sure you want to delete ${row.name} role?`).then(async (_) => {

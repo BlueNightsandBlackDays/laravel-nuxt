@@ -13,6 +13,16 @@ use App\Http\Requests\Attendance\UpdateAttendanceRequest;
 class AttendanceController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Attendance::class, 'attendances');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return JsonResponse
@@ -69,16 +79,13 @@ class AttendanceController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return AttendanceResource
+     * @return JsonResponse
      */
-    public function show(int $id): AttendanceResource
+    public function show(int $id): JsonResponse
     {
-        //$attendance->load('user');
-        //return response()->json($attendance);
-
         $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
 
-        return new AttendanceResource($attendance);
+        return response()->json($attendance);
     }
 
     /**

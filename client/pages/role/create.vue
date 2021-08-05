@@ -1,5 +1,5 @@
 <template>
-  <!-- Container -->
+  <!-- Role container -->
   <div class="container pd-x-0">
     <div class="card">
       <!-- Card-header -->
@@ -42,22 +42,11 @@
           </div>
 
           <!-- Permission row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('permissions') }}</label>
-            <div class="col-md-7">
-              <el-transfer />
-              <div>
-                {{ all_permissions.data }}
-              </div>
-            </div>
-          </div>
+
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
-              <el-button class="el-button el-button--default" @click="getData">
-                {{ $t('Get') }}
-              </el-button>
               <el-button class="el-button el-button--default" @click="resetForm('form')">
                 {{ $t('reset') }}
               </el-button>

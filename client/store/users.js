@@ -79,7 +79,7 @@ export const actions = {
     try {
       commit('SET_USER_LOADING', true)
       commit('RESET_USER')
-      const { data } = await axios.get(`/users/${payload.id}`)
+      const { data } = await axios.get(`/users/show/${payload.id}`)
       commit('FETCH_USER_SUCCESS', data)
     } catch (e) {
       commit('FETCH_USER_FAILURE')

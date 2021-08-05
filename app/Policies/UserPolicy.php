@@ -10,10 +10,19 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user): bool
+    /**
+     * Perform pre-authorization checks.
+     *
+     * @param  User  $user
+     * @param  string  $ability
+     * @return void|bool
+     */
+    public function before(User $user, $ability): bool
     {
         if ($user->isAdmin()) {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -26,8 +35,6 @@ class UserPolicy
     public function viewAny(User $user)
     {
         return $user->can('view any user');
-            //? Response::allow()
-            //: Response::deny('You don\'t have permission.');
     }
 
     /**

@@ -161,6 +161,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
+import axios from 'axios'
 
 export default {
   middleware: 'auth',
@@ -195,7 +196,21 @@ export default {
     getAttendance (query) {
       this.$store.dispatch('attendance/fetchAttendance', { id: this.$route.params.id })
     },
-    deleteAttendance () {
+    deleteAttendance (index, row) {
+      this.$confirm('Are you sure you want to delete this attendance entry?').then(async (_) => {
+        try {
+          await axios.delete(`/attendances/${row.id}`)
+          this.$notify.success({
+            title: 'Success',
+            message: 'Attendance successfully deleted.'
+          })
+        } catch (e) {
+          this.$notify.error({
+            title: 'Error',
+            message: e.message
+          })
+        }
+      }).catch((_) => {})
     },
     formatAttendanceDate (starTime) {
       if (starTime) {
@@ -210,7 +225,7 @@ export default {
     timeDifference (startTime, endTime) {
       const starT = moment(startTime)
       const endT = moment(endTime)
-      return endT.diff(starT, 'hours')
+      return endT.diff(starT, 'seconds')
     }
   }
 }

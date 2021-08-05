@@ -3,16 +3,26 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'users');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,10 +31,6 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        if ($request->user()->cannot('view any user', User::class)) {
-            abort(403, 'You don\'t have permission');
-        }
-
         $users = User::query()->orderBy('id')->simplePaginate(10);
         return response()->json($users);
     }
@@ -69,7 +75,7 @@ class UserController extends Controller
      */
     public function show(User $user): UserResource
     {
-        return new UserResource($user);
+        //return new UserResource($user);
     }
 
     /**

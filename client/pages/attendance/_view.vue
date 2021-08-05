@@ -182,7 +182,7 @@ export default {
     timeDifference (startTime, endTime) {
       const starT = moment(startTime)
       const endT = moment(endTime)
-      return endT.diff(starT, 'hours')
+      return endT.diff(starT, 'seconds')
     }
   }
 }
