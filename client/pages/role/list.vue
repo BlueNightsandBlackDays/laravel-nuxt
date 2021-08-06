@@ -74,14 +74,17 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted">{{ formatAttendanceDate (scope.row.created_at) }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="updated_at"
             label="Last updated"
-            sortable filter-hotelment="bottom-end">
+            sortable filter-hotelment="bottom-end"
+          >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted">{{ formatAttendanceDate (scope.row.updated_at) }}</span>
             </template>
           </el-table-column>

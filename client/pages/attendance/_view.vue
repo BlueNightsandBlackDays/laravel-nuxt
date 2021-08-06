@@ -40,25 +40,23 @@
           <div slot="tool" class="row my-2">
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-form :model="filters" class="demo-form">
-                <el-input
-                  v-model="filters.search"
-                  type="search"
-                  name="search"
-                  class="float-right" clearable size="mini"
-                  hotelholder="Search"
-                  autosize
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search" />
-                </el-input>
-              </el-form>
+              <el-input
+                v-model="filters.search"
+                type="search"
+                name="search"
+                class="float-right" clearable size="mini"
+                hotelholder="Search"
+                autosize
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search" />
+              </el-input>
             </div>
           </div>
 
           <!-- id -->
           <el-table-column
             prop="id"
-            label="#ID"
+            :label="$t('id')"
             sortable
             filter-hotelment="bottom-end"
             width="100"
@@ -76,6 +74,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceDate (scope.row.created_at) }}</span>
             </template>
           </el-table-column>
@@ -88,6 +87,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_start) }}</span>
             </template>
           </el-table-column>
@@ -100,6 +100,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
@@ -112,7 +113,8 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) }}</span>
+              <i class="el-icon-time" />
+              <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) + ' ' + $t('hours') }}</span>
             </template>
           </el-table-column>
         </data-tables-server>
@@ -122,7 +124,6 @@
 </template>
 
 <script>
-import Form from 'vform'
 import { mapGetters } from 'vuex'
 import moment from 'moment'
 import axios from 'axios'
@@ -131,7 +132,7 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      filters: new Form({
+      filters: ({
         search: ''
       })
     }

@@ -42,7 +42,29 @@
           </div>
 
           <!-- Permission row -->
-
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('permissions') }}</label>
+            <div class="col-md-7">
+              <!-- Role name -->
+              <el-form-item prop="permission" class="m-1 p-0">
+                <el-select
+                  v-model="form.selected_permissions"
+                  multiple
+                  :loading="loading"
+                  size="large"
+                  placeholder="Select Permissions"
+                  @focus="getData"
+                >
+                  <el-option
+                    v-for="permission in permissions.data"
+                    :key="permission.id"
+                    :label="permission.name"
+                    :value="permission.id"
+                  />
+                </el-select>
+              </el-form-item>
+            </div>
+          </div>
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
@@ -65,13 +87,15 @@
 <script>
 import Form from 'vform'
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   middleware: 'auth',
   data () {
     return {
       form: new Form({
-        name: ''
+        name: '',
+        selected_permissions: []
       }),
       loader: false,
       rules: {
@@ -80,7 +104,7 @@ export default {
     }
   },
   computed: mapGetters({
-    all_permissions: 'permissions/permissions',
+    permissions: 'permissions/permissions',
     loading: 'permissions/loading',
     create_loading: 'roles/create_loading'
   }),
@@ -92,7 +116,7 @@ export default {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            await this.$store.dispatch('roles/createRole', this.form)
+            await axios.post('/roles/create', this.form)
             this.$notify.success({
               title: 'Success',
               message: 'Role successfully created.'

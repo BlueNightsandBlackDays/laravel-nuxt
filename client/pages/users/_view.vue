@@ -90,6 +90,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceDate (scope.row.created_at) }}</span>
             </template>
           </el-table-column>
@@ -102,6 +103,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_start) }}</span>
             </template>
           </el-table-column>
@@ -114,6 +116,7 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
@@ -126,7 +129,8 @@
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) }}</span>
+              <i class="el-icon-time" />
+              <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) + ' ' + $t('hours') }}</span>
             </template>
           </el-table-column>
 
@@ -193,7 +197,7 @@ export default {
     handleEdit () {
       this.$router.push({ name: 'users-update', params: { id: this.user.id } })
     },
-    getAttendance (query) {
+    getAttendance () {
       this.$store.dispatch('attendance/fetchAttendance', { id: this.$route.params.id })
     },
     deleteAttendance (index, row) {

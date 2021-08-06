@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserResource;
+//use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -33,16 +32,6 @@ class UserController extends Controller
     {
         $users = User::query()->orderBy('id')->simplePaginate(10);
         return response()->json($users);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     */
-    public function create(): JsonResponse
-    {
-        $roles = Role::query()->get()->pluck('name', 'name');
-        return response()->json($roles);
     }
 
     /**
@@ -70,22 +59,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  User $user
-     * @return UserResource
+     * @param  int $id
      */
-    public function show(User $user): UserResource
+    public function show(int $id)
     {
         //return new UserResource($user);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     */
-    public function edit(int $id)
-    {
-        //
     }
 
     /**

@@ -65,11 +65,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
-        return User::create([
+        $user = User::create([
             'first_name' => $data['first_name'],
             'middle_name' => $data['middle_name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $userRole = \Spatie\Permission\Models\Role::findByName('user');
+        $user->assignRole($userRole);
+
+        return $user;
     }
 }

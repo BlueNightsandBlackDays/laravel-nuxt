@@ -42,6 +42,28 @@
           </div>
 
           <!-- Permission row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('permissions') }}</label>
+            <div class="col-md-7">
+              <!-- Role name -->
+              <el-form-item prop="permission" class="m-1 p-0">
+                <el-select
+                  v-model="form.selected_permissions"
+                  multiple
+                  placeholder="Select Permissions"
+                  @focus="getPermission"
+                >
+                  <el-option
+                    v-for="permission in permissions.data"
+                    :key="permission.id"
+                    :label="permission.name"
+                    :value="permission.id"
+                  />
+                </el-select>
+                <div> {{ form.selected_permissions }} </div>
+              </el-form-item>
+            </div>
+          </div>
 
           <!-- Buttons row -->
           <div class="form-group row">
@@ -71,7 +93,8 @@ export default {
   data () {
     return {
       form: new Form({
-        name: ''
+        name: '',
+        selected_permissions: []
       }),
       loader: false,
       rules: {
@@ -84,7 +107,9 @@ export default {
   },
   computed: mapGetters({
     role: 'roles/role',
-    loading: 'roles/role_loading'
+    loading: 'roles/role_loading',
+    permissions: 'permissions/permissions',
+    permission_loading: 'permissions/loading'
   }),
   async mounted () {
     await this.getRole()
@@ -92,8 +117,11 @@ export default {
   methods: {
     async getRole () {
       await this.$store.dispatch('roles/fetchRole', { id: this.$route.params.id })
-      this.form.id = this.role.id
+      this.form.id = this.role.data.id
       this.form.name = this.role.data.name
+    },
+    getPermission () {
+      this.$store.dispatch('permissions/fetchPermissions', { limit: 100 })
     },
     updateRole (formRule) {
       this.$refs[formRule].validate(async (valid) => {

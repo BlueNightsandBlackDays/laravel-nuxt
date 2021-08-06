@@ -9,19 +9,6 @@
             {{ $t('attendance_list') }}
           </h5>
         </div>
-        <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="start or end work" placement="top">
-            <button
-              id="hide-seen"
-              ref="btnToggle"
-              class="el-button el-button--medium el-button--default"
-              @click="switchWorkStatus()"
-            >
-              <span class="el-icon-stopwatch" />
-              Start Work
-            </button>
-          </el-tooltip>
-        </div>
       </div>
       <!-- Card-body -->
       <div class="card-body col-lg-12">
@@ -55,7 +42,7 @@
           <!-- id -->
           <el-table-column
             prop="id"
-            label="#ID"
+            :label="$t('id')"
             sortable
             filter-hotelment="bottom-end"
             width="100"
@@ -68,7 +55,7 @@
           <!-- User id -->
           <el-table-column
             prop="user_id"
-            label="#User ID"
+            :label="$t('user_id')"
             sortable
             filter-hotelment="bottom-end"
             width="150"
@@ -81,11 +68,12 @@
           <!-- Start time -->
           <el-table-column
             prop="time_start"
-            label="Start Time"
+            :label="$t('time_start')"
             sortable
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_start) }}</span>
             </template>
           </el-table-column>
@@ -93,11 +81,12 @@
           <!-- End time -->
           <el-table-column
             prop="time_end"
-            label="End Time"
+            :label="$t('time_end')"
             sortable
             filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
+              <i class="el-icon-time" />
               <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
@@ -162,27 +151,6 @@ export default {
     loading: 'attendance/loading'
   }),
   methods: {
-    async switchWorkStatus () {
-      let data
-      try {
-        const response = await axios.post('/attendances/update-current/')
-        data = response.data
-        if (data === 'Work time has started') {
-          this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> End Work'
-        } else {
-          this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> Start Work'
-        }
-        this.$notify.info({
-          title: 'Info',
-          message: data
-        })
-      } catch (e) {
-        this.$notify.error({
-          title: 'Error',
-          message: e.message
-        })
-      }
-    },
     getAttendances (query) {
       this.$store.dispatch('attendance/fetchAttendances', { limit: query.pageSize, page: query.page })
     },

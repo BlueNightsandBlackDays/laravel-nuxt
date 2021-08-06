@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AttendanceResource;
+//use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -35,18 +35,6 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return JsonResponse
-     */
-    public function create(): JsonResponse
-    {
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return response()->json($users);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  StoreAttendanceRequest  $request
@@ -62,44 +50,11 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return JsonResponse
-     */
-    public function showCurrent(): JsonResponse
-    {
-        $attendance = Attendance::query()->whereNull('time_end')
-            ->whereHas('user', function ($query) {
-                $query->where('id', auth()->id());
-            })
-            ->first();
-
-        return response()->json($attendance);
-    }
-
-    /**
-     * Display the specified resource.
-     *
      * @param  int $id
-     * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id)
     {
-        $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
-
-        return response()->json($attendance);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Attendance $attendance
-     * @return JsonResponse
-     */
-    public function edit(Attendance $attendance): JsonResponse
-    {
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $attendance->load('user');
-        return response()->json(compact($users, $attendance));
+        //
     }
 
     /**
@@ -137,7 +92,7 @@ class AttendanceController extends Controller
                 'Work time has stopped at ' . gmdate("H:i:s", $attendance->total_time) . ' hours'
             );
         } else {
-            auth()->user()->timeEntries()->create([
+            auth()->user()->attendanceEntries()->create([
                 'time_start' => now()
             ]);
 

@@ -124,7 +124,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      *
      * @return HasMany
      */
-    public function timeEntries(): HasMany
+    public function attendanceEntries(): HasMany
     {
         return $this->hasMany(Attendance::class);
     }
