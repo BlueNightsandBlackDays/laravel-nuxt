@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
-//use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +29,9 @@ class AttendanceController extends Controller
     public function index(): JsonResponse
     {
         $attendance = Attendance::query()->orderByDesc('id')->simplePaginate(10);
-
+/*        $attendance = Attendance::query()->addSelect(['name' => User::query()->select('name')
+            ->whereColumn('id', 'user.id')
+        ])->orderByDesc('id')->simplePaginate(10)->get();*/
         return response()->json($attendance);
     }
 
@@ -105,12 +106,9 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Attendance $attendance
-     * @return JsonResponse
      */
-    public function destroy(Attendance $attendance): JsonResponse
+    public function destroy()
     {
-        $attendance->delete();
-        return response()->json('deleted');
+        //
     }
 }

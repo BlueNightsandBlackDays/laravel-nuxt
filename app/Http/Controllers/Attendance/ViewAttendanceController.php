@@ -16,8 +16,24 @@ class ViewAttendanceController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
+        if(auth()->user()->getAuthIdentifier() == $id){
+            $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
 
-        return response()->json($attendance);
+            return response()->json($attendance);
+        }
+        return response()->json('Unauthorized');
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Attendance $attendance
+     * @return JsonResponse
+     */
+    public function destroy(Attendance $attendance): JsonResponse
+    {
+        $attendance->delete();
+        return response()->json('deleted');
     }
 }

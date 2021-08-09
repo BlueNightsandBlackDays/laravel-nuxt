@@ -123,6 +123,32 @@
               </el-form-item>
             </div>
           </div>
+
+          <!-- Role row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('roles') }}</label>
+            <div class="col-md-7">
+              <!-- Select role -->
+              <el-form-item prop="role_select" class="m-1 p-0">
+                <el-select
+                  v-model="form.selected_roles"
+                  multiple
+                  :loading="loading"
+                  size="large"
+                  :placeholder="$t('select_roles')"
+                  @focus="getRoles"
+                >
+                  <el-option
+                    v-for="role in roles"
+                    :key="role.name"
+                    :label="role.name"
+                    :value="role.name"
+                  />
+                </el-select>
+              </el-form-item>
+            </div>
+          </div>
+
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
@@ -145,6 +171,7 @@
 <script>
 import Form from 'vform'
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   middleware: 'auth',
@@ -178,7 +205,8 @@ export default {
         last_name: '',
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        selected_roles: []
       }),
       rules: {
         first_name: [{ required: true, message: 'First name is required please enter first name', trigger: 'blur' }],
@@ -187,13 +215,21 @@ export default {
         email: [{ required: true, message: 'Email is required please enter email', trigger: 'blur' }],
         password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
         password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }]
+        // role_select: [{ required: true, message: 'Role is required please select a role', trigger: 'change' }]
       }
     }
   },
   head () {
     return { title: this.$t('create') }
   },
+  computed: mapGetters({
+    roles: 'roles/roles',
+    loading: 'roles/loading'
+  }),
   methods: {
+    getRoles () {
+      this.$store.dispatch('roles/fetchRoles', { limit: 100 })
+    },
     createUser (formRule) {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {

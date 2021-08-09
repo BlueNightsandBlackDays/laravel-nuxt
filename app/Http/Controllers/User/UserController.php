@@ -4,11 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
-//use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -25,10 +23,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
         $users = User::query()->orderBy('id')->simplePaginate(10);
         return response()->json($users);
@@ -42,16 +39,17 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): JsonResponse
     {
+        $data = $request->get('selected_roles');
         $users = User::query()->create([
-            'first_name' => $request['first_name'],
-            'middle_name' => $request['middle_name'],
-            'last_name' => $request['last_name'],
+            'first_name' => ucfirst($request['first_name']),
+            'middle_name' => ucfirst($request['middle_name']),
+            'last_name' => ucfirst($request['last_name']),
             'email' => $request['email'],
             'password' => bcrypt($request['password']),
         ]);
 
-        $user = \Spatie\Permission\Models\Role::findByName('user');
-        $users->assignRole($user);
+        $roles = Role::query()->whereIn('name', $data)->get();
+        $users->syncRoles($roles);
 
         return response()->json($users);
     }
@@ -59,38 +57,27 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
      */
-    public function show(int $id)
+    public function show()
     {
-        //return new UserResource($user);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateUserRequest $request
-     * @param User $user
-     * @return bool
      */
-    public function update(UpdateUserRequest $request, User $user): bool
+    public function update()
     {
-        return $user->update($request->validated());
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User $user
-     * @return JsonResponse
      */
-    public function destroy(User $user): JsonResponse
+    public function destroy()
     {
-        if(auth()->user()->getAuthIdentifier() == $user->id) {
-            return response()->json('Can\'t delete');
-        }
-
-        $user->delete();
-        return response()->json('deleted');
+        //
     }
 }

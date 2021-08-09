@@ -90,6 +90,7 @@
               <span class="text-muted"> {{ formatAttendanceDate (scope.row.time_end) }}</span>
             </template>
           </el-table-column>
+
           <!-- Action buttons -->
           <el-table-column
             :label="$t('action')"
@@ -148,7 +149,9 @@ export default {
     attendances: 'attendance/attendances',
     meta: 'attendance/meta',
     links: 'attendance/links',
-    loading: 'attendance/loading'
+    loading: 'attendance/loading',
+    user: 'users/user',
+    user_loading: 'users/user_loading'
   }),
   methods: {
     getAttendances (query) {
@@ -162,7 +165,7 @@ export default {
     handleDelete (index, row) {
       this.$confirm('Are you sure you want to delete this attendance entry?').then(async (_) => {
         try {
-          await axios.delete(`/attendances/${row.id}`)
+          await axios.delete(`/attendances/delete/${row.id}`)
           this.$notify.success({
             title: 'Success',
             message: 'Attendance successfully deleted.'

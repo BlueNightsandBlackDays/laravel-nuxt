@@ -45,7 +45,19 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('permissions') }}</label>
             <div class="col-md-7">
-              <!-- Role name -->
+              <!-- Permissions -->
+              <el-tag
+                v-for="selected_permission in permissions"
+                :key="selected_permission.name"
+                closable
+                :disable-transitions="false"
+                class="m-2"
+                @close="removePermission(selected_permission)"
+              >
+                {{ selected_permission }}
+              </el-tag>
+
+              <!-- Select permissions -->
               <el-form-item prop="permission" class="m-1 p-0">
                 <el-select
                   v-model="form.selected_permissions"
@@ -54,13 +66,12 @@
                   @focus="getPermission"
                 >
                   <el-option
-                    v-for="permission in permissions.data"
+                    v-for="permission in all_permissions.data"
                     :key="permission.id"
                     :label="permission.name"
                     :value="permission.id"
                   />
                 </el-select>
-                <div> {{ form.selected_permissions }} </div>
               </el-form-item>
             </div>
           </div>
@@ -74,7 +85,7 @@
               </el-button>
               <!-- Submit Button -->
               <el-button :loading="form.busy" class="el-button el-button--primary" @click="updateRole('form')">
-                {{ $t('Update') }}
+                {{ $t('update') }}
               </el-button>
             </div>
           </div>
@@ -87,6 +98,7 @@
 <script>
 import Form from 'vform'
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   middleware: 'auth',
@@ -95,6 +107,9 @@ export default {
       form: new Form({
         name: '',
         selected_permissions: []
+      }),
+      ruleForm: new Form({
+        permission: ''
       }),
       loader: false,
       rules: {
@@ -108,11 +123,14 @@ export default {
   computed: mapGetters({
     role: 'roles/role',
     loading: 'roles/role_loading',
-    permissions: 'permissions/permissions',
-    permission_loading: 'permissions/loading'
+    all_permissions: 'permissions/permissions',
+    permissions_loading: 'permissions/loading',
+    permissions: 'permissions/permission',
+    permission_loading: 'permissions/permission_loading'
   }),
   async mounted () {
     await this.getRole()
+    await this.getAssignedPermission()
   },
   methods: {
     async getRole () {
@@ -120,20 +138,56 @@ export default {
       this.form.id = this.role.data.id
       this.form.name = this.role.data.name
     },
+    async getAssignedPermission () {
+      await this.$store.dispatch('permissions/fetchPermission', { id: this.$route.params.id })
+    },
     getPermission () {
       this.$store.dispatch('permissions/fetchPermissions', { limit: 100 })
+    },
+    removePermission (indexPermission) {
+      this.$confirm('Are you sure you want to revoke this permission?').then(async (_) => {
+        try {
+          const response = await axios.post(`/roles/revoke-permission/${this.form.id}/${indexPermission}`)
+          const data = response.data
+          if (data === 'revoked') {
+            this.$notify.success({
+              title: 'Success',
+              message: 'Permission successfully revoked.'
+            })
+          } else {
+            this.$notify.warning({
+              title: 'Warning',
+              message: 'You can\'t revoke permission.'
+            })
+          }
+        } catch (e) {
+          this.$notify.error({
+            title: 'Error',
+            message: e.message
+          })
+        }
+      }).catch((_) => {})
     },
     updateRole (formRule) {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            await this.$store.dispatch('roles/updateRole', this.form)
-            this.$notify.success({
-              title: 'Success',
-              message: 'Role successfully created.'
-            })
-            // Redirect users.
-            await this.$router.push({ name: 'roles-list' })
+            // await this.$store.dispatch('roles/updateRole', this.form)
+            const response = await axios.patch(`/roles/update/${this.form.id}`, this.form)
+            const data = response.data
+            if (data === 'Permission Exist') {
+              this.$notify.warning({
+                title: 'Warning',
+                message: 'Permission already exists.'
+              })
+            } else {
+              this.$notify.success({
+                title: 'Success',
+                message: 'Role successfully updated.'
+              })
+              // Redirect users.
+              await this.$router.push({ name: 'roles-list' })
+            }
           } catch (e) {
             this.$notify.error({
               title: 'Error',

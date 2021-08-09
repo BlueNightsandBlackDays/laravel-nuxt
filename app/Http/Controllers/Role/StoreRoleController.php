@@ -32,6 +32,6 @@ class StoreRoleController extends Controller
         }
 
 
-        return response()->json($permissions);
+        return response()->json($role);
     }
 }

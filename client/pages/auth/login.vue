@@ -107,7 +107,8 @@ export default {
       await this.$store.dispatch('auth/fetchUser')
 
       // Redirect home.
-      await this.$router.push({ name: 'home' })
+      // await this.$router.push({ name: 'home' })
+      await this.$router.push({ name: 'attendances-view' })
     }
   }
 }

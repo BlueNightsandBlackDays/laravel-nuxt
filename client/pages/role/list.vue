@@ -137,6 +137,9 @@ export default {
       pageSize: 10
     }
   },
+  head () {
+    return { title: this.$t('users') }
+  },
   computed: mapGetters({
     roles: 'roles/roles',
     meta: 'roles/meta',

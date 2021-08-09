@@ -152,11 +152,19 @@ export default {
     handleDelete (index, row) {
       this.$confirm(`Are you sure you want to delete user ${row.first_name} ${row.middle_name}?`).then(async (_) => {
         try {
-          await axios.delete(`/users/${row.id}`)
-          this.$notify.success({
-            title: 'Success',
-            message: 'User successfully deleted.'
-          })
+          const response = await axios.delete(`/users/delete/${row.id}`)
+          const data = response.data
+          if (data === 'deleted') {
+            this.$notify.success({
+              title: 'Success',
+              message: 'User successfully deleted.'
+            })
+          } else {
+            this.$notify.warning({
+              title: 'Warning',
+              message: 'You can\'t delete your self.'
+            })
+          }
         } catch (e) {
           this.$notify.error({
             title: 'Error',

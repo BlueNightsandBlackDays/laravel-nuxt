@@ -24,6 +24,17 @@
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <div class="col-sm-8 col-md-7 col-lg mg-t-20 mg-sm-t-0 mg-lg-t-25">
+          <span
+            v-for="role in roles"
+            :key="role"
+            class="mg-b-25"
+          >
+            <PuSkeleton>
+              <el-tag size="small" class="m-2">
+                {{ toUpperCaseChanger (role) }}
+              </el-tag>
+            </PuSkeleton>
+          </span>
           <h5 class="mg-b-2 tx-spacing--1">
             <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
           </h5>
@@ -41,6 +52,7 @@
             </el-button>
           </div>
         </div>
+
         <!-- Attendance list -->
         <data-tables-server
           :data="attendance.data"
@@ -184,15 +196,21 @@ export default {
   computed: mapGetters({
     user: 'users/user',
     loading: 'users/user_loading',
+    roles: 'roles/role',
+    role_loading: 'roles/role_loading',
     attendance: 'attendance/attendance',
     attendance_loading: 'attendance/attendance_loading'
   }),
   async mounted () {
     await this.getUser()
+    await this.getRole()
   },
   methods: {
     async getUser () {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
+    },
+    async getRole () {
+      await this.$store.dispatch('roles/showRole', { id: this.$route.params.id })
     },
     handleEdit () {
       this.$router.push({ name: 'users-update', params: { id: this.user.id } })
@@ -230,6 +248,9 @@ export default {
       const starT = moment(startTime)
       const endT = moment(endTime)
       return endT.diff(starT, 'seconds')
+    },
+    toUpperCaseChanger (roleString) {
+      return roleString.toUpperCase()
     }
   }
 }

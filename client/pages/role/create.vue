@@ -45,14 +45,14 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('permissions') }}</label>
             <div class="col-md-7">
-              <!-- Role name -->
+              <!-- Select permissions -->
               <el-form-item prop="permission" class="m-1 p-0">
                 <el-select
                   v-model="form.selected_permissions"
                   multiple
                   :loading="loading"
                   size="large"
-                  placeholder="Select Permissions"
+                  :placeholder="$t('select_permissions')"
                   @focus="getData"
                 >
                   <el-option
@@ -99,7 +99,7 @@ export default {
       }),
       loader: false,
       rules: {
-        name: [{ required: true, message: 'Please enter a new role', trigger: 'change' }]
+        name: [{ required: true, message: 'Please enter a new role', trigger: 'blur' }]
       }
     }
   },

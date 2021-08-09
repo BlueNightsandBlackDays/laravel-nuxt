@@ -22,6 +22,7 @@
           </el-tooltip>
         </div>
       </div>
+
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <el-form ref="form" :model="form" :rules="rules" class="demo-form">
@@ -39,6 +40,7 @@
               </el-form-item>
             </div>
           </div>
+
           <!-- Middle name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
@@ -53,6 +55,7 @@
               </el-form-item>
             </div>
           </div>
+
           <!-- Last name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
@@ -67,6 +70,7 @@
               </el-form-item>
             </div>
           </div>
+
           <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
@@ -82,6 +86,44 @@
               </el-form-item>
             </div>
           </div>
+
+          <!-- Roles row -->
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-md-right">{{ $t('roles') }}</label>
+            <div class="col-md-7">
+              <!-- Roles -->
+              <el-tag
+                v-for="role in roles"
+                :key="role.name"
+                closable
+                :disable-transitions="false"
+                class="m-2"
+                @close="removeRole(role)"
+              >
+                {{ role }}
+              </el-tag>
+
+              <!-- Select role -->
+              <el-form-item prop="role_select" class="m-1 p-0">
+                <el-select
+                  v-model="form.selected_roles"
+                  multiple
+                  :loading="loading"
+                  size="large"
+                  :placeholder="$t('select_roles')"
+                  @focus="getRoles"
+                >
+                  <el-option
+                    v-for="role in all_roles"
+                    :key="role.name"
+                    :label="role.name"
+                    :value="role.name"
+                  />
+                </el-select>
+              </el-form-item>
+            </div>
+          </div>
+
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
@@ -98,6 +140,7 @@
         </el-form>
       </div>
     </div>
+
     <!-- Update password -->
     <div class="card">
       <!-- Password card-header -->
@@ -108,6 +151,7 @@
           </h5>
         </div>
       </div>
+
       <!-- Password card-body -->
       <div class="card-body col-lg-12">
         <el-form ref="passwordForm" :model="passwordForm" :rules="rules" class="demo-form">
@@ -126,6 +170,7 @@
               </el-form-item>
             </div>
           </div>
+
           <!-- Confirm password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
@@ -141,6 +186,7 @@
               </el-form-item>
             </div>
           </div>
+
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
@@ -196,7 +242,8 @@ export default {
         first_name: '',
         middle_name: '',
         last_name: '',
-        email: ''
+        email: '',
+        selected_roles: []
       }),
       passwordForm: new Form({
         password: '',
@@ -217,13 +264,18 @@ export default {
   },
   computed: mapGetters({
     user: 'users/user',
-    loading: 'users/user_loading'
+    loading: 'users/user_loading',
+    roles: 'roles/role',
+    role_loading: 'roles/role_loading',
+    all_roles: 'roles/roles',
+    roles_loading: 'roles/loading'
   }),
   async mounted () {
-    await this.getData()
+    await this.getUser()
+    await this.getRole()
   },
   methods: {
-    async getData () {
+    async getUser () {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
       this.form.id = this.user.id
       this.form.first_name = this.user.first_name
@@ -231,17 +283,32 @@ export default {
       this.form.last_name = this.user.last_name
       this.form.email = this.user.email
     },
+    async getRole () {
+      await this.$store.dispatch('roles/showRole', { id: this.$route.params.id })
+    },
+    getRoles () {
+      this.$store.dispatch('roles/fetchRoles', { limit: 100 })
+    },
     updateUser (formRule) {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            await axios.patch(`/users/${this.form.id}`, this.form)
-            this.$notify.success({
-              title: 'Success',
-              message: 'User ' + this.form.first_name + ' ' + this.form.middle_name + ' successfully updated.'
-            })
-            // Redirect users.
-            await this.$router.push({ name: 'users-list' })
+            const response = await axios.patch(`/users/update/${this.form.id}`, this.form)
+            const data = response.data
+            if (data === 'Role exist') {
+              this.$notify.warning({
+                title: 'Warning',
+                message: 'Role already assigned to the user .'
+              })
+            } else {
+              this.$notify.success({
+                title: 'Success',
+                message: 'User ' + this.form.first_name + ' ' + this.form.middle_name + ' successfully updated.'
+              })
+
+              // Redirect users.
+              await this.$router.push({ name: 'users-list' })
+            }
           } catch (e) {
             this.$notify.error({
               title: 'Error',
@@ -252,6 +319,30 @@ export default {
           return false
         }
       })
+    },
+    removeRole (indexRole) {
+      this.$confirm('Are you sure you want to revoke this role?').then(async (_) => {
+        try {
+          const response = await axios.post(`/roles/revoke-role/${this.form.id}/${indexRole}`)
+          const data = response.data
+          if (data === 'revoked') {
+            this.$notify.success({
+              title: 'Success',
+              message: 'Role successfully revoked.'
+            })
+          } else {
+            this.$notify.warning({
+              title: 'Warning',
+              message: 'You can\'t revoke role.'
+            })
+          }
+        } catch (e) {
+          this.$notify.error({
+            title: 'Error',
+            message: e.message
+          })
+        }
+      }).catch((_) => {})
     },
     updatePassword (formRule) {
       this.$refs[formRule].validate(async (valid) => {
