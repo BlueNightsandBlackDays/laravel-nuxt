@@ -40,7 +40,7 @@ const routes = [
   { path: '/roles/:id?/update', name: 'roles-update', component: page('role/edit.vue') },
 
   // Attendances route.
-  { path: '/attendances', name: 'attendances-list', component: page('attendance/list.vue') },
+  { path: '/attendance-list', name: 'attendances-list', component: page('attendance/list.vue') },
   { path: '/attendances/create', name: 'attendances-create', component: page('attendance/create.vue') },
   { path: '/attendances/:id?', name: 'attendances-view', component: page('attendance/_view.vue') },
   { path: '/attendances/:id?/update', name: 'attendances-update', component: page('attendance/edit.vue') }

@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\Attendance\StoreAttendanceRequest;
-use App\Http\Requests\Attendance\UpdateAttendanceRequest;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -28,24 +26,23 @@ class AttendanceController extends Controller
      */
     public function index(): JsonResponse
     {
-        $attendance = Attendance::query()->orderByDesc('id')->simplePaginate(10);
-/*        $attendance = Attendance::query()->addSelect(['name' => User::query()->select('name')
-            ->whereColumn('id', 'user.id')
-        ])->orderByDesc('id')->simplePaginate(10)->get();*/
+        //$attendance = Attendance::query()->orderByDesc('id')->simplePaginate(10);
+        $attendance = DB::table('attendances')
+            ->join('users', 'users.id', '=', 'attendances.user_id')
+            ->select('attendances.*', 'users.first_name', 'users.middle_name')
+            ->orderByDesc('id')
+            ->simplePaginate(10);
+
         return response()->json($attendance);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreAttendanceRequest  $request
-     * @return JsonResponse
      */
-    public function store(StoreAttendanceRequest $request): JsonResponse
+    public function store()
     {
-        $attendance = Attendance::query()->create($request->all());
-
-        return response()->json($attendance);
+        //
     }
 
     /**
@@ -61,13 +58,10 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateAttendanceRequest  $request
-     * @param  Attendance $attendance
-     * @return bool
      */
-    public function update(UpdateAttendanceRequest $request, Attendance $attendance): bool
+    public function update()
     {
-        return $attendance->update($request->all());
+        //
     }
 
     /**
@@ -75,7 +69,7 @@ class AttendanceController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateCurrent(): JsonResponse
+    public function updateAttendance(): JsonResponse
     {
         $attendance = Attendance::query()->whereNull('time_end')
             ->whereHas('user', function ($query) {
@@ -83,8 +77,7 @@ class AttendanceController extends Controller
             })
             ->first();
 
-        if ($attendance)
-        {
+        if ($attendance) {
             $attendance->update([
                 'time_end' => now()
             ]);
@@ -97,9 +90,7 @@ class AttendanceController extends Controller
                 'time_start' => now()
             ]);
 
-            return response()->json(
-                'Work time has started'
-            );
+            return response()->json('Work time has started');
         }
     }
 

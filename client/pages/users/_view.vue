@@ -53,6 +53,15 @@
           </div>
         </div>
 
+        <!-- Chart report -->
+        <GChart
+          :settings="{packages: ['calendar']}"
+          type="Calendar"
+          :data="chartData"
+          :options="chartOptions"
+        />
+
+        <el-divider />
         <!-- Attendance list -->
         <data-tables-server
           :data="attendance.data"
@@ -60,27 +69,9 @@
           :loading="attendance_loading"
           :page-size="10"
           :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
-          :filters="filters"
           layout="tool, table, pagination"
           @query-change="getAttendance"
         >
-          <!-- Search -->
-          <div slot="tool" class="row my-2">
-            <div class="col-12 col-xl-10" />
-            <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-input
-                v-model.lazy="filters.search"
-                type="search"
-                name="search"
-                class="float-right" clearable size="mini"
-                hotelholder="Search"
-                autosize
-              >
-                <i slot="prefix" class="el-input__icon el-icon-search" />
-              </el-input>
-            </div>
-          </div>
-
           <!-- id -->
           <el-table-column
             prop="id"
@@ -178,16 +169,36 @@
 import { mapGetters } from 'vuex'
 import moment from 'moment'
 import axios from 'axios'
+import { GChart } from 'vue-google-charts'
 
 export default {
+  components: {
+    GChart
+  },
+
   middleware: 'auth',
+
   data () {
     return {
       filters: ({
         search: ''
       }),
       limit: 10,
-      pageSize: 10
+      pageSize: 10,
+      chartData: [
+        ['a', 'b'],
+        [new Date(2012, 3, 13), 5],
+        [new Date(2012, 3, 14), 6],
+        [new Date(2012, 3, 15), 7],
+        [new Date(2012, 3, 16), 8],
+        [new Date(2012, 3, 17), 9]
+      ],
+      chartOptions: {
+        chart: {
+          title: 'User Attendance',
+          height: 350
+        }
+      }
     }
   },
   head () {

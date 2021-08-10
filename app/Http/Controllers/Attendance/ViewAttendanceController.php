@@ -24,7 +24,6 @@ class ViewAttendanceController extends Controller
         return response()->json('Unauthorized');
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
@@ -33,7 +32,10 @@ class ViewAttendanceController extends Controller
      */
     public function destroy(Attendance $attendance): JsonResponse
     {
-        $attendance->delete();
-        return response()->json('deleted');
+        if(auth()->user()->isAdmin()) {
+            $attendance->delete();
+            return response()->json('deleted');
+        }
+        return response()->json('Unauthorized');
     }
 }

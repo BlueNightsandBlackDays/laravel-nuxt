@@ -12,7 +12,6 @@
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="start or end work" placement="top">
             <button
-              id="hide-seen"
               ref="btnToggle"
               class="el-button el-button--medium el-button--default"
               @click="switchWorkStatus()"
@@ -32,27 +31,9 @@
           :loading="attendance_loading"
           :page-size="10"
           :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
-          :filters="filters"
           layout="tool, table, pagination"
           @query-change="getCurrentAttendance"
         >
-          <!-- Search -->
-          <div slot="tool" class="row my-2">
-            <div class="col-12 col-xl-10" />
-            <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
-              <el-input
-                v-model="filters.search"
-                type="search"
-                name="search"
-                class="float-right" clearable size="mini"
-                hotelholder="Search"
-                autosize
-              >
-                <i slot="prefix" class="el-input__icon el-icon-search" />
-              </el-input>
-            </div>
-          </div>
-
           <!-- id -->
           <el-table-column
             prop="id"
@@ -132,9 +113,6 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      filters: ({
-        search: ''
-      })
     }
   },
   head () {
@@ -149,7 +127,7 @@ export default {
     async switchWorkStatus () {
       let data
       try {
-        const response = await axios.post('/attendances/update-current/')
+        const response = await axios.post('/attendances/update-attendance/')
         data = response.data
         if (data === 'Work time has started') {
           this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> End Work'

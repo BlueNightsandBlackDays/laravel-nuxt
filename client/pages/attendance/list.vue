@@ -52,16 +52,15 @@
             </template>
           </el-table-column>
 
-          <!-- User id -->
+          <!-- User name -->
           <el-table-column
-            prop="user_id"
-            :label="$t('user_id')"
+            prop="name"
+            :label="$t('name')"
             sortable
             filter-hotelment="bottom-end"
-            width="150"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> #{{ scope.row.user_id }}</span>
+              <span class="text-muted"> {{ scope.row.first_name + ' ' + scope.row.middle_name }}</span>
             </template>
           </el-table-column>
 
