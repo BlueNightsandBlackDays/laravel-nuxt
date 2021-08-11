@@ -8,3 +8,4 @@ Route::resource('attendances', AttendanceController::class);
 Route::post('attendances/update-attendance', [AttendanceController::class, 'updateAttendance'])->name('attendances.updateAttendance');
 Route::get('attendances/show/{user}', [ViewAttendanceController::class, 'show']);
 Route::delete('attendances/delete/{user}', [ViewAttendanceController::class, 'destroy']);
+Route::get('attendances/show-chart/{user}', [ViewAttendanceController::class, 'showChart']);

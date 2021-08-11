@@ -53,13 +53,17 @@
           </div>
         </div>
 
-        <!-- Chart report -->
+        <el-divider />
+        <!-- Attendance chart -->
         <GChart
           :settings="{packages: ['calendar']}"
           type="Calendar"
-          :data="chartData"
-          :options="chartOptions"
+          @ready="onChartReady"
         />
+
+        <div>
+          {{ chart_attendance }}
+        </div>
 
         <el-divider />
         <!-- Attendance list -->
@@ -184,21 +188,7 @@ export default {
         search: ''
       }),
       limit: 10,
-      pageSize: 10,
-      chartData: [
-        ['a', 'b'],
-        [new Date(2012, 3, 13), 5],
-        [new Date(2012, 3, 14), 6],
-        [new Date(2012, 3, 15), 7],
-        [new Date(2012, 3, 16), 8],
-        [new Date(2012, 3, 17), 9]
-      ],
-      chartOptions: {
-        chart: {
-          title: 'User Attendance',
-          height: 350
-        }
-      }
+      pageSize: 10
     }
   },
   head () {
@@ -210,11 +200,14 @@ export default {
     roles: 'roles/role',
     role_loading: 'roles/role_loading',
     attendance: 'attendance/attendance',
-    attendance_loading: 'attendance/attendance_loading'
+    attendance_loading: 'attendance/attendance_loading',
+    chart_attendance: 'attendance/chart_attendance',
+    chart_attendance_loading: 'attendance/chart_attendance_loading'
   }),
   async mounted () {
     await this.getUser()
     await this.getRole()
+    await this.getChartAttendance()
   },
   methods: {
     async getUser () {
@@ -228,6 +221,37 @@ export default {
     },
     getAttendance () {
       this.$store.dispatch('attendance/fetchAttendance', { id: this.$route.params.id })
+    },
+    async getChartAttendance () {
+      await this.$store.dispatch('attendance/fetchChartAttendance', { id: this.$route.params.id })
+    },
+    onChartReady (chart, google) {
+      // const response = axios.get(`/attendances/show-chart/${this.$route.params.id}`)
+      // const data = response.data
+      this.$notify.success({
+        title: 'Title',
+        message: this.chart_attendance
+      })
+      const dataTable = new google.visualization.DataTable()
+      dataTable.addColumn({ type: 'date', id: 'Date' })
+      dataTable.addColumn({ type: 'number', id: 'Attendance' })
+      dataTable.addRows([
+        [new Date(this.chart_attendance), 1]
+        /*        [new Date(2012, 3, 14), 38024]
+        [new Date(2012, 3, 15), 38024],
+        [new Date(2012, 3, 16), 38108],
+        [new Date(2012, 3, 17), 38229] */
+      ])
+      const options = {
+        title: 'Attendance Chart',
+        height: 350,
+        noDataPattern: {
+          backgroundColor: '#76a7fa',
+          color: '#a0c3ff'
+        }
+      }
+      // const data = response.data
+      chart.draw(dataTable, options)
     },
     deleteAttendance (index, row) {
       this.$confirm('Are you sure you want to delete this attendance entry?').then(async (_) => {

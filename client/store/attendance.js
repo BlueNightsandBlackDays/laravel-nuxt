@@ -6,7 +6,9 @@ export const state = () => ({
   meta: {},
   loading: false,
   attendance: [],
-  attendance_loading: false
+  attendance_loading: false,
+  chart_attendance: [],
+  chart_attendance_loading: false
 })
 
 // getters
@@ -16,7 +18,9 @@ export const getters = {
   meta: state => state.meta,
   loading: state => state.loading,
   attendance: state => state.attendance,
-  attendance_loading: state => state.attendance_loading
+  attendance_loading: state => state.attendance_loading,
+  chart_attendance: state => state.chart_attendance,
+  chart_attendance_loading: state => state.chart_attendance_loading
 }
 
 // mutations
@@ -31,6 +35,10 @@ export const mutations = {
     state.attendance = payload.data
     state.attendance_loading = false
   },
+  FETCH_CHART_ATTENDANCE_SUCCESS (state, payload) {
+    state.chart_attendance = payload.data
+    state.chart_attendance_loading = false
+  },
   FETCH_ATTENDANCES_FAILURE (state) {
     state.loading = false
     state.attendances = []
@@ -38,14 +46,21 @@ export const mutations = {
     state.meta = {}
   },
   FETCH_ATTENDANCE_FAILURE (state) {
-    state.loading = false
+    state.attendance_loading = false
     state.attendance = []
+  },
+  FETCH_CHART_ATTENDANCE_FAILURE (state) {
+    state.chart_attendance_loading = false
+    state.chart_attendance = []
   },
   SET_ATTENDANCES_LOADING (state, loading) {
     state.loading = loading
   },
   SET_ATTENDANCE_LOADING (state, payload) {
     state.attendance_loading = payload
+  },
+  SET_CHART_ATTENDANCE_LOADING (state, payload) {
+    state.chart_attendance_loading = payload
   },
   SET_ID (state, payload) {
     state.id = payload
@@ -70,6 +85,15 @@ export const actions = {
       commit('FETCH_ATTENDANCE_SUCCESS', data)
     } catch (e) {
       commit('FETCH_ATTENDANCE_FAILURE')
+    }
+  },
+  async fetchChartAttendance ({ commit, dispatch }, payload) {
+    try {
+      commit('SET_CHART_ATTENDANCE_LOADING', true)
+      const data = await axios.get(`/attendances/show-chart/${payload.id}`)
+      commit('FETCH_CHART_ATTENDANCE_SUCCESS', data)
+    } catch (e) {
+      commit('FETCH_CHART_ATTENDANCE_FAILURE')
     }
   }
 }
