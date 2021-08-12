@@ -9,6 +9,8 @@
             {{ $t('create_users') }}
           </h5>
         </div>
+
+        <!-- Back button -->
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="back to users" placement="top">
             <nuxt-link
@@ -21,6 +23,7 @@
           </el-tooltip>
         </div>
       </div>
+
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <el-form ref="form" :model="form" :rules="rules" class="demo-form">
@@ -32,14 +35,13 @@
               <el-form-item prop="first_name" class="m-1 p-0">
                 <el-input
                   v-model="form.first_name"
-                  :class="{ 'is-invalid': form.errors.has('first_name') }"
                   type="text"
                   name="name"
                 />
-                <has-error :form="form" field="first_name" />
               </el-form-item>
             </div>
           </div>
+
           <!-- Middle name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
@@ -48,14 +50,13 @@
               <el-form-item prop="middle_name" class="m-1 p-0">
                 <el-input
                   v-model="form.middle_name"
-                  :class="{ 'is-invalid': form.errors.has('middle_name') }"
                   type="text"
                   name="name"
                 />
-                <has-error :form="form" field="middle_name" />
               </el-form-item>
             </div>
           </div>
+
           <!-- Last name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
@@ -64,14 +65,13 @@
               <el-form-item prop="last_name" class="m-1 p-0">
                 <el-input
                   v-model="form.last_name"
-                  :class="{ 'is-invalid': form.errors.has('last_name') }"
                   type="text"
                   name="name"
                 />
-                <has-error :form="form" field="last_name" />
               </el-form-item>
             </div>
           </div>
+
           <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
@@ -80,15 +80,14 @@
               <el-form-item prop="email" class="m-1 p-0">
                 <el-input
                   v-model="form.email"
-                  :class="{ 'is-invalid': form.errors.has('email') }"
                   type="email"
                   name="email"
                   autocomplete="off"
                 />
-                <has-error :form="form" field="email" />
               </el-form-item>
             </div>
           </div>
+
           <!-- Password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
@@ -97,15 +96,14 @@
               <el-form-item prop="password" class="m-1 p-0">
                 <el-input
                   v-model="form.password"
-                  :class="{ 'is-invalid': form.errors.has('password') }"
                   type="password"
                   name="password"
                   autocomplete="off"
                 />
-                <has-error :form="form" field="password" />
               </el-form-item>
             </div>
           </div>
+
           <!-- Confirm password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
@@ -114,12 +112,10 @@
               <el-form-item prop="password_confirmation" class="m-1 p-0">
                 <el-input
                   v-model="form.password_confirmation"
-                  :class="{ 'is-invalid': form.errors.has('password_confirmation') }"
                   type="password"
                   name="password_confirmation"
                   autocomplete="off"
                 />
-                <has-error :form="form" field="password_confirmation" />
               </el-form-item>
             </div>
           </div>

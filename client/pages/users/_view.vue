@@ -9,40 +9,48 @@
             {{ $t('user_detail') }}
           </h5>
         </div>
+
+        <!-- Back button -->
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="back to users" placement="top">
             <nuxt-link
               :to="{ name: 'users-list'}"
               class="el-button el-button--text"
             >
-              <span class="el-icon-back" />
+              <i class="el-icon-back" />
               {{ $t('back') }}
             </nuxt-link>
           </el-tooltip>
         </div>
       </div>
+
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <div class="col-sm-8 col-md-7 col-lg mg-t-20 mg-sm-t-0 mg-lg-t-25">
-          <span
-            v-for="role in roles"
-            :key="role"
-            class="mg-b-25"
-          >
-            <PuSkeleton>
-              <el-tag size="small" class="m-2">
-                {{ toUpperCaseChanger (role) }}
-              </el-tag>
-            </PuSkeleton>
-          </span>
+          <!-- Users full name and role -->
           <h5 class="mg-b-2 tx-spacing--1">
             <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
+            <span
+              v-for="role in roles"
+              :key="role"
+              class="mg-b-25"
+            >
+              <PuSkeleton>
+                <el-tag size="small" class="ml-2">
+                  {{ toUpperCaseChanger (role) }}
+                </el-tag>
+              </PuSkeleton>
+            </span>
           </h5>
+
+          <!-- Users email -->
           <p class="tx-color-03 mg-b-25">
             <span class="text-muted">
               <PuSkeleton>{{ user.email }}</PuSkeleton>
             </span>
           </p>
+
+          <!-- Edit button -->
           <div class="d-flex mg-b-25">
             <el-button
               class="el-button el-icon-edit el-button--small el-button--primary"
@@ -53,19 +61,15 @@
           </div>
         </div>
 
-        <el-divider />
         <!-- Attendance chart -->
+        <el-divider />
         <GChart
           :settings="{packages: ['calendar']}"
           type="Calendar"
           @ready="onChartReady"
         />
-
-        <div>
-          {{ chart_attendance }}
-        </div>
-
         <el-divider />
+
         <!-- Attendance list -->
         <data-tables-server
           :data="attendance.data"
@@ -152,9 +156,8 @@
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
-                      <a
-                        href="#"
-                        class="el-button el-icon-delete el-button--small el-button--danger"
+                      <el-link
+                        class="el-link el-icon-delete el-link--danger"
                         @click="deleteAttendance(scope.$index, scope.row)"
                       />
                     </el-tooltip>
@@ -184,9 +187,6 @@ export default {
 
   data () {
     return {
-      filters: ({
-        search: ''
-      }),
       limit: 10,
       pageSize: 10
     }
@@ -226,41 +226,41 @@ export default {
       await this.$store.dispatch('attendance/fetchChartAttendance', { id: this.$route.params.id })
     },
     onChartReady (chart, google) {
-      // const response = axios.get(`/attendances/show-chart/${this.$route.params.id}`)
-      // const data = response.data
-      this.$notify.success({
-        title: 'Title',
-        message: this.chart_attendance
-      })
       const dataTable = new google.visualization.DataTable()
       dataTable.addColumn({ type: 'date', id: 'Date' })
       dataTable.addColumn({ type: 'number', id: 'Attendance' })
-      dataTable.addRows([
-        [new Date(this.chart_attendance), 1]
-        /*        [new Date(2012, 3, 14), 38024]
-        [new Date(2012, 3, 15), 38024],
-        [new Date(2012, 3, 16), 38108],
-        [new Date(2012, 3, 17), 38229] */
-      ])
+      let attendanceChart
+      for (attendanceChart of this.chart_attendance) {
+        dataTable.addRows([
+          [new Date(attendanceChart), 1]
+        ])
+      }
       const options = {
         title: 'Attendance Chart',
-        height: 350,
+        height: 175,
         noDataPattern: {
           backgroundColor: '#76a7fa',
           color: '#a0c3ff'
         }
       }
-      // const data = response.data
       chart.draw(dataTable, options)
     },
     deleteAttendance (index, row) {
       this.$confirm('Are you sure you want to delete this attendance entry?').then(async (_) => {
         try {
-          await axios.delete(`/attendances/${row.id}`)
-          this.$notify.success({
-            title: 'Success',
-            message: 'Attendance successfully deleted.'
-          })
+          const response = await axios.delete(`/attendances/delete/${row.id}`)
+          const data = response.data
+          if (data === 'deleted') {
+            this.$notify.success({
+              title: 'Success',
+              message: 'Attendance successfully deleted.'
+            })
+          } else {
+            this.$notify.warning({
+              title: 'Warning',
+              message: 'Unauthorized.'
+            })
+          }
         } catch (e) {
           this.$notify.error({
             title: 'Error',

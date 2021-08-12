@@ -9,18 +9,21 @@
             {{ $t('update_roles') }}
           </h5>
         </div>
+
+        <!-- Back button -->
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="back to users" placement="top">
             <nuxt-link
               :to="{ name: 'roles-list'}"
               class="el-button el-button--text"
             >
-              <span class="el-icon-back" />
+              <i class="el-icon-back" />
               {{ $t('back') }}
             </nuxt-link>
           </el-tooltip>
         </div>
       </div>
+
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <el-form ref="form" :model="form" :rules="rules" class="demo-form">
@@ -32,11 +35,9 @@
               <el-form-item prop="name" class="m-1 p-0">
                 <el-input
                   v-model="form.name"
-                  :class="{ 'is-invalid': form.errors.has('name') }"
                   type="text"
                   name="name"
                 />
-                <has-error :form="form" field="name" />
               </el-form-item>
             </div>
           </div>

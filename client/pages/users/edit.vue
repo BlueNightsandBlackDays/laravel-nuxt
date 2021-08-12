@@ -10,6 +10,8 @@
             {{ $t('update_user') }}
           </h5>
         </div>
+
+        <!-- Back button -->
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="back to users" placement="top">
             <nuxt-link

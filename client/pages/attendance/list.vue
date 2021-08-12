@@ -10,6 +10,7 @@
           </h5>
         </div>
       </div>
+
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
@@ -94,7 +95,7 @@
           <el-table-column
             :label="$t('action')"
             fixed="right"
-            width="200"
+            width="120"
           >
             <template slot-scope="scope">
               <div class="d-flex">
@@ -102,14 +103,13 @@
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="light" content="view attendance" placement="top">
                       <nuxt-link
-                        class="el-button el-icon-view el-button--small el-button--default"
+                        class="el-link el-icon-view el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.user_id } }"
                       />
                     </el-tooltip>
                     <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
-                      <a
-                        href="#"
-                        class="el-button el-icon-delete el-button--small el-button--danger"
+                      <el-link
+                        class="el-link el-icon-delete el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"
                       />
                     </el-tooltip>
@@ -164,11 +164,19 @@ export default {
     handleDelete (index, row) {
       this.$confirm('Are you sure you want to delete this attendance entry?').then(async (_) => {
         try {
-          await axios.delete(`/attendances/delete/${row.id}`)
-          this.$notify.success({
-            title: 'Success',
-            message: 'Attendance successfully deleted.'
-          })
+          const response = await axios.delete(`/attendances/delete/${row.id}`)
+          const data = response.data
+          if (data === 'deleted') {
+            this.$notify.success({
+              title: 'Success',
+              message: 'Attendance successfully deleted.'
+            })
+          } else {
+            this.$notify.warning({
+              title: 'Warning',
+              message: 'Unauthorized.'
+            })
+          }
         } catch (e) {
           this.$notify.error({
             title: 'Error',

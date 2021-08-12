@@ -16,12 +16,9 @@ class ViewAttendanceController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        if(auth()->user()->getAuthIdentifier() == $id){
-            $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
+        $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
 
-            return response()->json($attendance);
-        }
-        return response()->json('Unauthorized');
+        return response()->json($attendance);
     }
 
     /**
@@ -37,7 +34,7 @@ class ViewAttendanceController extends Controller
                 ->select('time_start')
                 ->where('user_id', $id)
                 ->orderByDesc('id')
-                ->limit(1)->get();
+                ->limit(31)->get();
 
             $data = [];
 
@@ -53,13 +50,13 @@ class ViewAttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Attendance $attendance
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy(Attendance $attendance): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         if(auth()->user()->isAdmin()) {
-            $attendance->delete();
+            Attendance::query()->where('id', $id)->delete();
             return response()->json('deleted');
         }
         return response()->json('Unauthorized');

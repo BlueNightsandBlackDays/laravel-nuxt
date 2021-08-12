@@ -9,6 +9,8 @@
             {{ $t('your_resent_attendances') }}
           </h5>
         </div>
+
+        <!-- Attendance start-end button -->
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="light" content="start or end work" placement="top">
             <button
@@ -16,12 +18,13 @@
               class="el-button el-button--medium el-button--default"
               @click="switchWorkStatus()"
             >
-              <span class="el-icon-stopwatch" />
+              <i class="el-icon-stopwatch" />
               Start Work
             </button>
           </el-tooltip>
         </div>
       </div>
+
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <!-- Attendance list -->
@@ -130,9 +133,9 @@ export default {
         const response = await axios.post('/attendances/update-attendance/')
         data = response.data
         if (data === 'Work time has started') {
-          this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> End Work'
+          this.$refs.btnToggle.innerHTML = '<i class="el-icon-stopwatch" /> End Work'
         } else {
-          this.$refs.btnToggle.innerHTML = '<span class="el-icon-stopwatch" /> Start Work'
+          this.$refs.btnToggle.innerHTML = '<i class="el-icon-stopwatch" /> Start Work'
         }
         this.$notify.info({
           title: 'Info',
