@@ -78,6 +78,7 @@
             </div>
           </div>
         </el-form>
+        <el-divider />
       </div>
     </div>
   </div>
@@ -95,9 +96,6 @@ export default {
       form: new Form({
         name: '',
         selected_permissions: []
-      }),
-      ruleForm: new Form({
-        permission: ''
       }),
       loader: false,
       rules: {

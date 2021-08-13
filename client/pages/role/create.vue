@@ -68,6 +68,7 @@
             </div>
           </div>
         </el-form>
+        <el-divider />
       </div>
     </div>
   </div>

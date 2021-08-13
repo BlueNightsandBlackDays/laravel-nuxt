@@ -2,6 +2,7 @@
   <card :title="$t('your_info')">
     <el-form class="demo-ruleForm">
       <alert-success :form="form" :message="$t('info_updated')" />
+
       <!-- First name row -->
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-md-right">{{ $t('first_name') }}</label>
@@ -16,6 +17,7 @@
           <has-error :form="form" field="first_name" />
         </div>
       </div>
+
       <!-- Middle name row -->
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
@@ -30,6 +32,7 @@
           <has-error :form="form" field="middle_name" />
         </div>
       </div>
+
       <!-- Last name row -->
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
@@ -44,6 +47,7 @@
           <has-error :form="form" field="last_name" />
         </div>
       </div>
+
       <!-- Email row -->
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
@@ -59,11 +63,12 @@
           <has-error :form="form" field="email" />
         </div>
       </div>
+
       <!-- Buttons row -->
       <div class="form-group row">
         <div class="col-md-7 offset-md-3 d-flex justify-content-end">
           <!-- Update Button -->
-          <el-button :loading="form.busy" class="el-button el-button--primary" @click="update()">
+          <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="update()">
             {{ $t('update') }}
           </el-button>
         </div>

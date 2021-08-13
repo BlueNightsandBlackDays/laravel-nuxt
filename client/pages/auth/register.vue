@@ -1,11 +1,14 @@
 <template>
   <div class="row">
     <div class="col-lg-8 m-auto">
+      <!-- Verify email address -->
       <card v-if="mustVerifyEmail" :title="$t('register')">
         <div class="alert alert-success" role="alert">
           {{ $t('verify_email_address') }}
         </div>
       </card>
+
+      <!-- Register -->
       <card v-else :title="$t('register')">
         <el-form class="demo-form">
           <!-- First name row -->
@@ -22,6 +25,7 @@
               <has-error :form="form" field="first_name" />
             </div>
           </div>
+
           <!-- Middle name row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
@@ -36,6 +40,7 @@
               <has-error :form="form" field="middle_name" />
             </div>
           </div>
+
           <!-- Email row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
@@ -51,6 +56,7 @@
               <has-error :form="form" field="email" />
             </div>
           </div>
+
           <!-- Password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
@@ -66,6 +72,7 @@
               <has-error :form="form" field="password" />
             </div>
           </div>
+
           <!-- Confirm password row -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
@@ -81,11 +88,12 @@
               <has-error :form="form" field="password_confirmation" />
             </div>
           </div>
+
           <!-- Buttons row -->
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Register Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary" @click="register()">
+              <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="register()">
                 {{ $t('register') }}
               </el-button>
             </div>

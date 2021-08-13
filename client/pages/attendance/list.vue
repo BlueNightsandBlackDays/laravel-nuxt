@@ -18,7 +18,7 @@
           :total="100"
           :loading="loading"
           :page-size="10"
-          :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
+          :pagination-props="{ background: false, pageSizes: [10, 20, 30, 40, 50, 100] }"
           :filters="filters"
           layout="tool, table, pagination"
           @query-change="getAttendances"
@@ -119,6 +119,7 @@
             </template>
           </el-table-column>
         </data-tables-server>
+        <el-divider />
       </div>
     </div>
   </div>

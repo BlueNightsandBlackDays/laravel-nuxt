@@ -13,147 +13,161 @@
 
       <!-- Card-body -->
       <div class="card-body col-lg-12">
-        <div class="col-sm-8 col-md-7 col-lg mg-t-20 mg-sm-t-0 mg-lg-t-25">
-          <!-- Users full name and role -->
-          <h5 class="mg-b-2 tx-spacing--1">
-            <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
-            <span
-              v-for="role in roles"
-              :key="role"
-              class="mg-b-25"
-            >
-              <PuSkeleton>
-                <el-tag size="small" class="ml-2">
-                  {{ toUpperCaseChanger (role) }}
-                </el-tag>
-              </PuSkeleton>
-            </span>
-          </h5>
-
-          <!-- Users email -->
-          <p class="tx-color-03 mg-b-25">
-            <span class="text-muted">
-              <PuSkeleton>{{ user.email }}</PuSkeleton>
-            </span>
-          </p>
-
-          <!-- Edit button -->
-          <div class="d-flex mg-b-25">
-            <el-button
-              class="el-button el-icon-edit el-button--small el-button--primary"
-              @click="handleEdit()"
-            >
-              {{ $t('edit') }}
-            </el-button>
-          </div>
-        </div>
-
-        <!-- Attendance chart -->
-        <el-divider />
-        <GChart
-          :settings="{packages: ['calendar']}"
-          type="Calendar"
-          @ready="onChartReady"
-        />
-        <el-divider />
-
-        <!-- Attendance list -->
-        <data-tables-server
-          :data="attendance.data"
-          :total="100"
-          :loading="attendance_loading"
-          :page-size="10"
-          :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
-          layout="tool, table, pagination"
-          @query-change="getAttendance"
-        >
-          <!-- id -->
-          <el-table-column
-            prop="id"
-            :label="$t('id')"
-            sortable
-            filter-hotelment="bottom-end"
-            width="100"
+        <el-tabs v-model="activeName" type="card">
+          <!-- User detail -->
+          <el-tab-pane
+            :label="$t('user_profile')"
+            name="user"
           >
-            <template slot-scope="scope">
-              <span class="text-muted"> #{{ scope.row.id }}</span>
-            </template>
-          </el-table-column>
+            <div class="col-sm-8 col-md-7 col-lg mg-t-20 mg-sm-t-0 mg-lg-t-25">
+              <!-- Users full name and role -->
+              <h5 class="mg-b-2 tx-spacing--1">
+                <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
+                <span
+                  v-for="role in roles"
+                  :key="role"
+                  class="mg-b-25"
+                >
+                  <PuSkeleton>
+                    <el-tag size="small" class="ml-2">
+                      {{ toUpperCaseChanger (role) }}
+                    </el-tag>
+                  </PuSkeleton>
+                </span>
+              </h5>
 
-          <!-- Date -->
-          <el-table-column
-            prop="created_at"
-            :label="$t('date')"
-            sortable
-            filter-hotelment="bottom-end"
-          >
-            <template slot-scope="scope">
-              <i class="el-icon-time" />
-              <span class="text-muted"> {{ formatAttendanceDate (scope.row.created_at) }}</span>
-            </template>
-          </el-table-column>
+              <!-- Users email -->
+              <p class="tx-color-03 mg-b-25">
+                <span class="text-muted">
+                  <PuSkeleton>{{ user.email }}</PuSkeleton>
+                </span>
+              </p>
 
-          <!-- Start time -->
-          <el-table-column
-            prop="time_start"
-            :label="$t('time_start')"
-            sortable
-            filter-hotelment="bottom-end"
-          >
-            <template slot-scope="scope">
-              <i class="el-icon-time" />
-              <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_start) }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- End time -->
-          <el-table-column
-            prop="time_end"
-            :label="$t('time_end')"
-            sortable
-            filter-hotelment="bottom-end"
-          >
-            <template slot-scope="scope">
-              <i class="el-icon-time" />
-              <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_end) }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Total hours -->
-          <el-table-column
-            prop="total_hours"
-            :label="$t('total_hours')"
-            sortable
-            filter-hotelment="bottom-end"
-          >
-            <template slot-scope="scope">
-              <i class="el-icon-time" />
-              <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) + ' ' + $t('hours') }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Action buttons -->
-          <el-table-column
-            :label="$t('action')"
-            fixed="right"
-            width="200"
-          >
-            <template slot-scope="scope">
-              <div class="d-flex">
-                <div class="d-flex align-self-center ">
-                  <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                    <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
-                      <el-link
-                        class="el-link el-icon-delete el-link--danger"
-                        @click="deleteAttendance(scope.$index, scope.row)"
-                      />
-                    </el-tooltip>
-                  </nav>
-                </div>
+              <!-- Edit button -->
+              <div class="d-flex mg-b-25">
+                <el-button
+                  class="el-button el-icon-edit el-button--small el-button--primary"
+                  @click="handleEdit()"
+                >
+                  {{ $t('edit') }}
+                </el-button>
               </div>
-            </template>
-          </el-table-column>
-        </data-tables-server>
+            </div>
+
+            <!-- Attendance chart -->
+            <el-divider />
+            <GChart
+              :settings="{packages: ['calendar']}"
+              type="Calendar"
+              @ready="onChartReady"
+            />
+            <el-divider />
+          </el-tab-pane>
+
+          <!-- Attendance list -->
+          <el-tab-pane
+            :label="$t('attendance')"
+            name="list"
+          >
+            <data-tables-server
+              :data="attendance.data"
+              :total="100"
+              :loading="attendance_loading"
+              :page-size="10"
+              :pagination-props="{ background: false, pageSizes: [10, 20, 30, 40, 50, 100] }"
+              layout="tool, table, pagination"
+              @query-change="getAttendance"
+            >
+              <!-- id -->
+              <el-table-column
+                prop="id"
+                :label="$t('id')"
+                sortable
+                filter-hotelment="bottom-end"
+                width="100"
+              >
+                <template slot-scope="scope">
+                  <span class="text-muted"> #{{ scope.row.id }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Date -->
+              <el-table-column
+                prop="created_at"
+                :label="$t('date')"
+                sortable
+                filter-hotelment="bottom-end"
+              >
+                <template slot-scope="scope">
+                  <i class="el-icon-time" />
+                  <span class="text-muted"> {{ formatAttendanceDate (scope.row.created_at) }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Start time -->
+              <el-table-column
+                prop="time_start"
+                :label="$t('time_start')"
+                sortable
+                filter-hotelment="bottom-end"
+              >
+                <template slot-scope="scope">
+                  <i class="el-icon-time" />
+                  <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_start) }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- End time -->
+              <el-table-column
+                prop="time_end"
+                :label="$t('time_end')"
+                sortable
+                filter-hotelment="bottom-end"
+              >
+                <template slot-scope="scope">
+                  <i class="el-icon-time" />
+                  <span class="text-muted"> {{ formatAttendanceTime (scope.row.time_end) }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Total hours -->
+              <el-table-column
+                prop="total_hours"
+                :label="$t('total_hours')"
+                sortable
+                filter-hotelment="bottom-end"
+              >
+                <template slot-scope="scope">
+                  <i class="el-icon-time" />
+                  <span class="text-muted"> {{ timeDifference (scope.row.time_start, scope.row.time_end) + ' ' + $t('hours') }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Action buttons -->
+              <el-table-column
+                :label="$t('action')"
+                fixed="right"
+                width="120"
+              >
+                <template slot-scope="scope">
+                  <div class="d-flex">
+                    <div class="d-flex align-self-center ">
+                      <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
+                        <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
+                          <el-link
+                            class="el-link el-icon-delete el-link--danger"
+                            @click="deleteAttendance(scope.$index, scope.row)"
+                          />
+                        </el-tooltip>
+                      </nav>
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+            </data-tables-server>
+            <el-divider />
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
@@ -174,6 +188,7 @@ export default {
 
   data () {
     return {
+      activeName: 'user',
       limit: 10,
       pageSize: 10
     }

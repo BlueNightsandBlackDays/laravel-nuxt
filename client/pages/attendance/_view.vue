@@ -33,7 +33,7 @@
           :total="100"
           :loading="attendance_loading"
           :page-size="10"
-          :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
+          :pagination-props="{ background: false, pageSizes: [10, 20, 30, 40, 50, 100] }"
           layout="tool, table, pagination"
           @query-change="getCurrentAttendance"
         >
@@ -102,6 +102,7 @@
             </template>
           </el-table-column>
         </data-tables-server>
+        <el-divider />
       </div>
     </div>
   </div>
@@ -132,15 +133,39 @@ export default {
       try {
         const response = await axios.post('/attendances/update-attendance/')
         data = response.data
-        if (data === 'Work time has started') {
+        if (data === 'already_ended') {
+          this.$notify.warning({
+            title: 'Warning',
+            message: 'Work already ended for the day.'
+          })
+        } else if (data === 'early') {
+          this.$notify.warning({
+            title: 'Warning',
+            message: 'Too early to start'
+          })
+        } else if (data === 'late') {
+          this.$notify.warning({
+            title: 'Warning',
+            message: 'Too late to start'
+          })
+        } else if (data === 'Work time has started') {
           this.$refs.btnToggle.innerHTML = '<i class="el-icon-stopwatch" /> End Work'
+          this.$notify.success({
+            title: 'Success',
+            message: data
+          })
+        } else if (data === 'early_end') {
+          this.$notify.warning({
+            title: 'Warning',
+            message: 'To early to end work'
+          })
         } else {
           this.$refs.btnToggle.innerHTML = '<i class="el-icon-stopwatch" /> Start Work'
+          this.$notify.info({
+            title: 'Info',
+            message: data
+          })
         }
-        this.$notify.info({
-          title: 'Info',
-          message: data
-        })
       } catch (e) {
         this.$notify.error({
           title: 'Error',

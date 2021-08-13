@@ -1,6 +1,7 @@
 <template>
   <div class="row">
     <div class="col-lg-8 m-auto">
+      <!-- Login -->
       <card :title="$t('login')">
         <el-form class="demo-ruleForm">
           <!-- Email row -->
@@ -53,7 +54,7 @@
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Login Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary" @click="login()">
+              <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="login()">
                 {{ $t('login') }}
               </el-button>
             </div>

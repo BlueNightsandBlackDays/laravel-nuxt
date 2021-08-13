@@ -31,7 +31,7 @@
           :total="100"
           :loading="loading"
           :page-size="10"
-          :pagination-props="{ background: true, pageSizes: [10, 20, 30, 40, 50, 100] }"
+          :pagination-props="{ background: false, pageSizes: [10, 20, 30, 40, 50, 100] }"
           :filters="filters"
           layout="tool, table, pagination"
           @query-change="getUsers"
@@ -41,7 +41,7 @@
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
               <el-input
-                v-model.lazy="filters[0].search"
+                v-model.lazy="filters.search"
                 type="search"
                 name="search"
                 class="float-right" clearable size="mini"
@@ -120,6 +120,7 @@
             </template>
           </el-table-column>
         </data-tables-server>
+        <el-divider />
       </div>
     </div>
   </div>

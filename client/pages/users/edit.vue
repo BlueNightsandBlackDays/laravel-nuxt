@@ -14,182 +14,182 @@
 
       <!-- Card-body -->
       <div class="card-body col-lg-12">
-        <el-form ref="form" :model="form" :rules="rules" class="demo-form">
-          <!-- First name row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('name') }}</label>
-            <div class="col-md-7">
-              <!-- First name -->
-              <el-form-item prop="first_name" class="m-1 p-0">
-                <el-input
-                  v-model="form.first_name"
-                  type="text"
-                  name="name"
-                />
-              </el-form-item>
-            </div>
-          </div>
+        <el-tabs v-model="activeName" type="card">
+          <!-- Update user profile -->
+          <el-tab-pane
+            :label="$t('user_profile')"
+            name="user"
+          >
+            <el-form ref="form" :model="form" :rules="rules" class="demo-form">
+              <!-- First name row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('name') }}</label>
+                <div class="col-md-7">
+                  <!-- First name -->
+                  <el-form-item prop="first_name" class="m-1 p-0">
+                    <el-input
+                      v-model="form.first_name"
+                      type="text"
+                      name="name"
+                    />
+                  </el-form-item>
+                </div>
+              </div>
 
-          <!-- Middle name row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
-            <div class="col-md-7">
-              <!-- Middle name -->
-              <el-form-item prop="middle_name" class="m-1 p-0">
-                <el-input
-                  v-model="form.middle_name"
-                  type="text"
-                  name="name"
-                />
-              </el-form-item>
-            </div>
-          </div>
+              <!-- Middle name row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('middle_name') }}</label>
+                <div class="col-md-7">
+                  <!-- Middle name -->
+                  <el-form-item prop="middle_name" class="m-1 p-0">
+                    <el-input
+                      v-model="form.middle_name"
+                      type="text"
+                      name="name"
+                    />
+                  </el-form-item>
+                </div>
+              </div>
 
-          <!-- Last name row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
-            <div class="col-md-7">
-              <!-- Last name -->
-              <el-form-item prop="last_name" class="m-1 p-0">
-                <el-input
-                  v-model="form.last_name"
-                  type="text"
-                  name="name"
-                />
-              </el-form-item>
-            </div>
-          </div>
+              <!-- Last name row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('last_name') }}</label>
+                <div class="col-md-7">
+                  <!-- Last name -->
+                  <el-form-item prop="last_name" class="m-1 p-0">
+                    <el-input
+                      v-model="form.last_name"
+                      type="text"
+                      name="name"
+                    />
+                  </el-form-item>
+                </div>
+              </div>
 
-          <!-- Email row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
-            <div class="col-md-7">
-              <!-- Email -->
-              <el-form-item prop="email" class="m-1 p-0">
-                <el-input
-                  v-model="form.email"
-                  type="email"
-                  name="email"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </div>
-          </div>
+              <!-- Email row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
+                <div class="col-md-7">
+                  <!-- Email -->
+                  <el-form-item prop="email" class="m-1 p-0">
+                    <el-input
+                      v-model="form.email"
+                      type="email"
+                      name="email"
+                      autocomplete="off"
+                    />
+                  </el-form-item>
+                </div>
+              </div>
 
-          <!-- Roles row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('roles') }}</label>
-            <div class="col-md-7">
-              <!-- Roles -->
-              <el-tag
-                v-for="role in roles"
-                :key="role.name"
-                closable
-                :disable-transitions="false"
-                class="m-2"
-                @close="removeRole(role)"
-              >
-                {{ role }}
-              </el-tag>
-
-              <!-- Select role -->
-              <el-form-item prop="role_select" class="m-1 p-0">
-                <el-select
-                  v-model="form.selected_roles"
-                  multiple
-                  :loading="loading"
-                  size="large"
-                  :placeholder="$t('select_roles')"
-                  @focus="getRoles"
-                >
-                  <el-option
-                    v-for="role in all_roles"
+              <!-- Roles row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('roles') }}</label>
+                <div class="col-md-7">
+                  <!-- Roles -->
+                  <el-tag
+                    v-for="role in roles"
                     :key="role.name"
-                    :label="role.name"
-                    :value="role.name"
-                  />
-                </el-select>
-              </el-form-item>
-            </div>
-          </div>
+                    closable
+                    :disable-transitions="false"
+                    class="m-2"
+                    @close="removeRole(role)"
+                  >
+                    {{ role }}
+                  </el-tag>
 
-          <!-- Buttons row -->
-          <div class="form-group row">
-            <div class="col-md-7 offset-md-3 d-flex justify-content-end">
-              <!-- Reset Button -->
-              <el-button class="el-button el-button--medium el-button--default" @click="resetForm('form')">
-                {{ $t('reset') }}
-              </el-button>
-              <!-- Submit Button -->
-              <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="updateUser('form')">
-                {{ $t('update') }}
-              </el-button>
-            </div>
-          </div>
-        </el-form>
-      </div>
-    </div>
+                  <!-- Select role -->
+                  <el-form-item prop="role_select" class="m-1 p-0">
+                    <el-select
+                      v-model="form.selected_roles"
+                      multiple
+                      :loading="loading"
+                      size="large"
+                      :placeholder="$t('select_roles')"
+                      @focus="getRoles"
+                    >
+                      <el-option
+                        v-for="role in all_roles"
+                        :key="role.name"
+                        :label="role.name"
+                        :value="role.name"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </div>
 
-    <!-- Update password -->
-    <div class="card">
-      <!-- Password card-header -->
-      <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
-        <div>
-          <h5 class="mg-b-5 mt-2">
-            {{ $t('change_password') }}
-          </h5>
-        </div>
-      </div>
+              <!-- Buttons row -->
+              <div class="form-group row">
+                <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+                  <!-- Reset Button -->
+                  <el-button class="el-button el-button--medium el-button--default" @click="resetForm('form')">
+                    {{ $t('reset') }}
+                  </el-button>
+                  <!-- Submit Button -->
+                  <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="updateUser('form')">
+                    {{ $t('update') }}
+                  </el-button>
+                </div>
+              </div>
+            </el-form>
+          </el-tab-pane>
 
-      <!-- Password card-body -->
-      <div class="card-body col-lg-12">
-        <el-form ref="passwordForm" :model="passwordForm" :rules="rules" class="demo-form">
-          <!-- Password row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
-            <div class="col-md-7">
-              <!-- Password -->
-              <el-form-item prop="password" class="m-1 p-0">
-                <el-input
-                  v-model="passwordForm.password"
-                  type="password"
-                  name="password"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </div>
-          </div>
+          <!-- Update password -->
+          <el-tab-pane
+            :label="$t('password')"
+            name="password"
+          >
+            <el-form ref="passwordForm" :model="passwordForm" :rules="rules" class="demo-form">
+              <!-- Password row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
+                <div class="col-md-7">
+                  <!-- Password -->
+                  <el-form-item prop="password" class="m-1 p-0">
+                    <el-input
+                      v-model="passwordForm.password"
+                      type="password"
+                      name="password"
+                      autocomplete="off"
+                    />
+                  </el-form-item>
+                </div>
+              </div>
 
-          <!-- Confirm password row -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
-            <div class="col-md-7">
-              <!-- Confirm password -->
-              <el-form-item prop="password_confirmation" class="m-1 p-0">
-                <el-input
-                  v-model="passwordForm.password_confirmation"
-                  type="password"
-                  name="password_confirmation"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </div>
-          </div>
+              <!-- Confirm password row -->
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
+                <div class="col-md-7">
+                  <!-- Confirm password -->
+                  <el-form-item prop="password_confirmation" class="m-1 p-0">
+                    <el-input
+                      v-model="passwordForm.password_confirmation"
+                      type="password"
+                      name="password_confirmation"
+                      autocomplete="off"
+                    />
+                  </el-form-item>
+                </div>
+              </div>
 
-          <!-- Buttons row -->
-          <div class="form-group row">
-            <div class="col-md-7 offset-md-3 d-flex justify-content-end">
-              <!-- Reset Button -->
-              <el-button class="el-button el-button--medium el-button--default" @click="resetForm('passwordForm')">
-                {{ $t('reset') }}
-              </el-button>
-              <!-- Submit Button -->
-              <el-button :loading="passwordForm.busy" class="el-button el-button--medium el-button--primary" @click="updatePassword('passwordForm')">
-                {{ $t('change_password') }}
-              </el-button>
-            </div>
-          </div>
-        </el-form>
+              <!-- Buttons row -->
+              <div class="form-group row">
+                <div class="col-md-7 offset-md-3 d-flex justify-content-end">
+                  <!-- Reset Button -->
+                  <el-button class="el-button el-button--medium el-button--default" @click="resetForm('passwordForm')">
+                    {{ $t('reset') }}
+                  </el-button>
+                  <!-- Submit Button -->
+                  <el-button :loading="passwordForm.busy" class="el-button el-button--medium el-button--primary" @click="updatePassword('passwordForm')">
+                    {{ $t('change_password') }}
+                  </el-button>
+                </div>
+              </div>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+        <el-divider />
       </div>
     </div>
   </div>
@@ -226,6 +226,7 @@ export default {
       }
     }
     return {
+      activeName: 'user',
       form: new Form({
         id: '',
         first_name: '',

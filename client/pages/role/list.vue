@@ -30,7 +30,7 @@
           :total="100"
           :loading="loading"
           :page-size="10"
-          :pagination-props="{ background: true, pageSizes: [10] }"
+          :pagination-props="{ background: false, pageSizes: [10] }"
           :filters="filters"
           layout="tool, table, pagination"
           @query-change="getRoles"
@@ -54,7 +54,7 @@
 
           <!-- #id -->
           <el-table-column
-            prop="name"
+            prop="id"
             label="#ID"
             sortable
             filter-hotelment="bottom-end"
@@ -126,6 +126,7 @@
             </template>
           </el-table-column>
         </data-tables-server>
+        <el-divider />
       </div>
     </div>
   </div>

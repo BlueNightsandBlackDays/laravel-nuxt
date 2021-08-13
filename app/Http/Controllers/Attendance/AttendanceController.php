@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -78,13 +79,28 @@ class AttendanceController extends Controller
             ->first();
 
         if ($attendance) {
-            $attendance->update([
-                'time_end' => now()
-            ]);
+            $time_start = Attendance::query()->whereNull('time_end')
+                ->select('time_start')
+                ->where('user_id', auth()->id())
+                ->first();
 
-            return response()->json(
-                'Work time has stopped at ' . gmdate("H:i:s", $attendance->total_time) . ' hours'
-            );
+            $current_time = now();
+            $time_diff = $current_time->diffInSeconds($time_start->time_start);
+
+            // Check to see if it's been an hour since time has been started
+            if ($time_diff < 60) {
+
+                return response()->json('early_end');
+
+            } else {
+                $attendance->update([
+                    'time_end' => now()
+                ]);
+
+                return response()->json(
+                    'Work time has stopped at ' . gmdate("H:i:s", $attendance->total_time) . ' hours'
+                );
+            }
         } else {
             $attendances = Attendance::query()
                 ->select('time_start')
@@ -92,11 +108,35 @@ class AttendanceController extends Controller
                 ->orderBy('time_start', 'desc')
                 ->first();
 
+            // Current date
             $date = now()->format('d-m-Y');
-
             $timeStart = $attendances->time_start->format('d-m-Y');
+
+            // Current time
+            $time = now();
+            //$new_time = Carbon::parse($time);
+
+            // Start time
+            $start_time = "05:30:00 am";
+            $new_start_time = Carbon::parse($start_time);
+
+            // End time
+            $end_time = "02:30:00 pm";
+            $new_end_time = Carbon::parse($end_time);
+
+            // Check to see if time has already been started for the day
             if ($date === $timeStart) {
-                return response()->json('Work already started');
+
+                return response()->json('already_ended');
+
+            } else if ($time->lt($new_start_time)) {
+
+                return response()->json('early');
+
+            } else if ($time->gt($new_end_time)) {
+
+                return response()->json('late');
+
             } else {
                 auth()->user()->attendanceEntries()->create([
                     'time_start' => now()
