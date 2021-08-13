@@ -4,24 +4,11 @@
     <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
-        <div>
-          <h5 class="mg-b-5 mt-2">
-            {{ $t('user_detail') }}
-          </h5>
-        </div>
-
-        <!-- Back button -->
-        <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="back to users" placement="top">
-            <nuxt-link
-              :to="{ name: 'users-list'}"
-              class="el-button el-button--text"
-            >
-              <i class="el-icon-back" />
-              {{ $t('back') }}
-            </nuxt-link>
-          </el-tooltip>
-        </div>
+        <el-page-header
+          title=""
+          :content="$t('user_detail')"
+          @back="goBack"
+        />
       </div>
 
       <!-- Card-body -->
@@ -210,6 +197,9 @@ export default {
     await this.getChartAttendance()
   },
   methods: {
+    goBack () {
+      this.$router.push({ name: 'users-list' })
+    },
     async getUser () {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
     },

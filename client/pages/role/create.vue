@@ -4,24 +4,11 @@
     <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
-        <div>
-          <h5 class="mg-b-5 mt-2">
-            {{ $t('create_roles') }}
-          </h5>
-        </div>
-
-        <!-- Back button -->
-        <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="back to users" placement="top">
-            <nuxt-link
-              :to="{ name: 'roles-list'}"
-              class="el-button el-button--text"
-            >
-              <i class="el-icon-back" />
-              {{ $t('back') }}
-            </nuxt-link>
-          </el-tooltip>
-        </div>
+        <el-page-header
+          title=""
+          :content="$t('create_roles')"
+          @back="goBack"
+        />
       </div>
 
       <!-- Card-body -->
@@ -71,11 +58,11 @@
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
-              <el-button class="el-button el-button--default" @click="resetForm('form')">
+              <el-button class="el-button el-button--medium el-button--default" @click="resetForm('form')">
                 {{ $t('reset') }}
               </el-button>
               <!-- Submit Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary" @click="createRole('form')">
+              <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="createRole('form')">
                 {{ $t('create') }}
               </el-button>
             </div>
@@ -111,6 +98,9 @@ export default {
     create_loading: 'roles/create_loading'
   }),
   methods: {
+    goBack () {
+      this.$router.push({ name: 'roles-list' })
+    },
     getData () {
       this.$store.dispatch('permissions/fetchPermissions', { limit: 100 })
     },

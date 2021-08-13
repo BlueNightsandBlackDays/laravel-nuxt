@@ -5,7 +5,7 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
-          <h5 class="mg-b-5 mt-2">
+          <h5 class="mg-b-5 m-0">
             {{ $t('your_resent_attendances') }}
           </h5>
         </div>
@@ -15,7 +15,7 @@
           <el-tooltip class="item" effect="light" content="start or end work" placement="top">
             <button
               ref="btnToggle"
-              class="el-button el-button--medium el-button--default"
+              class="el-button el-button--mini el-button--default m-0"
               @click="switchWorkStatus()"
             >
               <i class="el-icon-stopwatch" />

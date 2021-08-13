@@ -5,24 +5,11 @@
     <div class="card">
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
-        <div>
-          <h5 class="mg-b-5 mt-2">
-            {{ $t('update_user') }}
-          </h5>
-        </div>
-
-        <!-- Back button -->
-        <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="back to users" placement="top">
-            <nuxt-link
-              :to="{ name: 'users-list'}"
-              class="el-button el-button--text"
-            >
-              <span class="el-icon-back" />
-              {{ $t('back') }}
-            </nuxt-link>
-          </el-tooltip>
-        </div>
+        <el-page-header
+          title=""
+          :content="$t('update_user')"
+          @back="goBack"
+        />
       </div>
 
       <!-- Card-body -->
@@ -130,11 +117,11 @@
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
-              <el-button class="el-button el-button--default" @click="resetForm('form')">
+              <el-button class="el-button el-button--medium el-button--default" @click="resetForm('form')">
                 {{ $t('reset') }}
               </el-button>
               <!-- Submit Button -->
-              <el-button :loading="form.busy" class="el-button el-button--primary" @click="updateUser('form')">
+              <el-button :loading="form.busy" class="el-button el-button--medium el-button--primary" @click="updateUser('form')">
                 {{ $t('update') }}
               </el-button>
             </div>
@@ -193,11 +180,11 @@
           <div class="form-group row">
             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
               <!-- Reset Button -->
-              <el-button class="el-button el-button--default" @click="resetForm('passwordForm')">
+              <el-button class="el-button el-button--medium el-button--default" @click="resetForm('passwordForm')">
                 {{ $t('reset') }}
               </el-button>
               <!-- Submit Button -->
-              <el-button :loading="passwordForm.busy" class="el-button el-button--primary" @click="updatePassword('passwordForm')">
+              <el-button :loading="passwordForm.busy" class="el-button el-button--medium el-button--primary" @click="updatePassword('passwordForm')">
                 {{ $t('change_password') }}
               </el-button>
             </div>
@@ -277,6 +264,9 @@ export default {
     await this.getRole()
   },
   methods: {
+    goBack () {
+      this.$router.push({ name: 'users-list' })
+    },
     async getUser () {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
       this.form.id = this.user.id

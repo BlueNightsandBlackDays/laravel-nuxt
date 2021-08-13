@@ -86,11 +86,24 @@ class AttendanceController extends Controller
                 'Work time has stopped at ' . gmdate("H:i:s", $attendance->total_time) . ' hours'
             );
         } else {
-            auth()->user()->attendanceEntries()->create([
-                'time_start' => now()
-            ]);
+            $attendances = Attendance::query()
+                ->select('time_start')
+                ->where('user_id', auth()->id())
+                ->orderBy('time_start', 'desc')
+                ->first();
 
-            return response()->json('Work time has started');
+            $date = now()->format('d-m-Y');
+
+            $timeStart = $attendances->time_start->format('d-m-Y');
+            if ($date === $timeStart) {
+                return response()->json('Work already started');
+            } else {
+                auth()->user()->attendanceEntries()->create([
+                    'time_start' => now()
+                ]);
+
+                return response()->json('Work time has started');
+            }
         }
     }
 
