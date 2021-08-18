@@ -341,13 +341,16 @@ export default {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            await axios.patch(`/users/password/${this.form.id}`, this.passwordForm)
-            this.$notify.success({
-              title: 'Success',
-              message: 'User password successfully changed.'
-            })
-            // Redirect users.
-            await this.$router.push({ name: 'users-list' })
+            const response = await axios.patch(`/users/password/${this.form.id}`, this.passwordForm)
+            const data = response.data
+            if (data === 'Password updated') {
+              this.$notify.success({
+                title: 'Success',
+                message: 'User password successfully changed.'
+              })
+              // Redirect users.
+              await this.$router.push({ name: 'users-list' })
+            }
           } catch (e) {
             this.$notify.error({
               title: 'Error',

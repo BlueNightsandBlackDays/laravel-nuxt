@@ -134,8 +134,7 @@ export default {
   data () {
     return {
       filters: [{
-        prop: 'name',
-        search: []
+        search: ''
       }],
       limit: 10,
       pageSize: 10

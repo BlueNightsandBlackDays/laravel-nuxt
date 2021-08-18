@@ -29,7 +29,7 @@ class ViewAttendanceController extends Controller
      */
     public function showChart(int $id): JsonResponse
     {
-        if(auth()->user()->isAdmin()){
+        if (auth()->user()->isAdmin()) {
             $attendance = Attendance::query()
                 ->select('time_start')
                 ->where('user_id', $id)

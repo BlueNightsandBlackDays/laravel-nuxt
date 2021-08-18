@@ -152,7 +152,7 @@ export default {
         await this.$store.dispatch('auth/updateUser', { user: data })
 
         // Redirect home.
-        await this.$router.push({ name: 'home' })
+        await this.$router.push({ name: 'attendances-view' })
       }
     }
   }

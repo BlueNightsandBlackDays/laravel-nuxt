@@ -40,15 +40,17 @@ class UpdateUserController extends Controller
      *
      * @param User $user
      * @param UpdateUserPasswordRequest $request
-     * @return bool
+     * @return JsonResponse
      */
-    public function updatePass(UpdateUserPasswordRequest $request, User $user): bool
+    public function updatePass(UpdateUserPasswordRequest $request, User $user): JsonResponse
     {
         if(auth()->user()->isadmin()) {
-            return $user->update([
+            $user->update([
                 'password' => bcrypt($request['password']),
             ]);
+
+            return response()->json('Password updated');
         }
-        return false;
+        return response()->json('Unauthorized');
     }
 }

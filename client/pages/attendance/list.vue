@@ -5,9 +5,9 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
-          <h5 class="mg-b-5 m-0">
+          <span class="mg-b-5 font-weight-lighter m-0" style="font-size: 20px">
             {{ $t('attendance_list') }}
-          </h5>
+          </span>
         </div>
       </div>
 

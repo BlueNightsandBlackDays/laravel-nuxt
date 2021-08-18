@@ -5,9 +5,9 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <div>
-          <h5 class="mg-b-5 m-0">
+          <span class="mg-b-5 font-weight-lighter m-0" style="font-size: 20px">
             {{ $t('your_resent_attendances') }}
-          </h5>
+          </span>
         </div>
 
         <!-- Attendance start-end button -->
@@ -18,7 +18,7 @@
               class="el-button el-button--mini el-button--default m-0"
               @click="switchWorkStatus()"
             >
-              <i class="el-icon-stopwatch" />
+              <i class="el-icon-timer" />
               Start Work
             </button>
           </el-tooltip>
@@ -149,7 +149,7 @@ export default {
             message: 'Too late to start'
           })
         } else if (data === 'Work time has started') {
-          this.$refs.btnToggle.innerHTML = '<i class="el-icon-stopwatch" /> End Work'
+          this.$refs.btnToggle.innerHTML = '<i class="el-icon-timer" /> End Work'
           this.$notify.success({
             title: 'Success',
             message: data
@@ -160,7 +160,7 @@ export default {
             message: 'To early to end work'
           })
         } else {
-          this.$refs.btnToggle.innerHTML = '<i class="el-icon-stopwatch" /> Start Work'
+          this.$refs.btnToggle.innerHTML = '<i class="el-icon-timer" /> Start Work'
           this.$notify.info({
             title: 'Info',
             message: data

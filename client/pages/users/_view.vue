@@ -231,10 +231,10 @@ export default {
       await this.$store.dispatch('attendance/fetchChartAttendance', { id: this.$route.params.id })
     },
     onChartReady (chart, google) {
+      let attendanceChart
       const dataTable = new google.visualization.DataTable()
       dataTable.addColumn({ type: 'date', id: 'Date' })
       dataTable.addColumn({ type: 'number', id: 'Attendance' })
-      let attendanceChart
       for (attendanceChart of this.chart_attendance) {
         dataTable.addRows([
           [new Date(attendanceChart), 1]
@@ -243,6 +243,7 @@ export default {
       const options = {
         title: 'Attendance Chart',
         height: 175,
+        legend: 'none',
         noDataPattern: {
           backgroundColor: '#76a7fa',
           color: '#a0c3ff'

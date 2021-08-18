@@ -114,7 +114,6 @@ class AttendanceController extends Controller
 
             // Current time
             $time = now();
-            //$new_time = Carbon::parse($time);
 
             // Start time
             $start_time = "05:30:00 am";
