@@ -12,15 +12,15 @@
 
         <!-- Attendance start-end button -->
         <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="start or end work" placement="top">
-            <button
-              ref="btnToggle"
+          <el-tooltip class="item" effect="dark" :content="$t('start_or_end')" placement="top">
+            <el-button
               class="el-button el-button--mini el-button--default m-0"
+              :class="{active:isStarted}"
               @click="switchWorkStatus()"
             >
               <i class="el-icon-timer" />
-              Start Work
-            </button>
+              <span>{{ isStarted ? $t('start_work') : $t('end_work') }}</span>
+            </el-button>
           </el-tooltip>
         </div>
       </div>
@@ -117,6 +117,7 @@ export default {
   middleware: 'auth',
   data () {
     return {
+      isStarted: true
     }
   },
   head () {
@@ -149,7 +150,7 @@ export default {
             message: 'Too late to start'
           })
         } else if (data === 'Work time has started') {
-          this.$refs.btnToggle.innerHTML = '<i class="el-icon-timer" /> End Work'
+          this.isStarted = false
           this.$notify.success({
             title: 'Success',
             message: data
@@ -160,7 +161,7 @@ export default {
             message: 'To early to end work'
           })
         } else {
-          this.$refs.btnToggle.innerHTML = '<i class="el-icon-timer" /> Start Work'
+          this.isStarted = true
           this.$notify.info({
             title: 'Info',
             message: data

@@ -3,7 +3,32 @@
 @import '~sweetalert2/src/sweetalert2';
 @import '~@fortawesome/fontawesome-svg-core/styles';
 
+/* ############### ELEMENT STYLES ############### */
 @import 'elements/card';
 @import 'elements/navbar';
 @import 'elements/buttons';
 @import 'elements/transitions';
+
+/* ############### PANEL STYLES ############### */
+@import 'panels/backdrop';
+@import 'panels/header';
+@import 'panels/logo';
+@import 'panels/sidebar';
+@import 'panels/aside';
+@import 'panels/settings';
+@import 'panels/content';
+@import 'panels/footer';
+@import 'panels/widgets';
+
+/* ############### UTILITIES/HELPER CLASSES ############### */
+@import 'util/background';
+@import 'util/border';
+@import 'util/height';
+@import 'util/margin';
+@import 'util/misc';
+@import 'util/padding';
+@import 'util/position';
+@import 'util/transform';
+@import 'util/typography';
+@import 'util/width';
+

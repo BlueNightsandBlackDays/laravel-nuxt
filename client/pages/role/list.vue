@@ -11,7 +11,7 @@
 
         <!-- Create button -->
         <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="create new role" placement="top">
+          <el-tooltip class="item" effect="dark" :content="$t('create_roles')" placement="top">
             <nuxt-link
               :to="{ name: 'roles-create'}"
               class="el-button el-button--mini el-button--primary m-0"
@@ -55,7 +55,7 @@
           <!-- #id -->
           <el-table-column
             prop="id"
-            label="#ID"
+            :label="$t('id')"
             sortable
             filter-hotelment="bottom-end"
             width="100"
@@ -68,7 +68,7 @@
           <!-- Name -->
           <el-table-column
             prop="name"
-            label="Name"
+            :label="$t('name')"
             sortable
             filter-hotelment="bottom-end"
           />
@@ -76,7 +76,7 @@
           <!-- Created at -->
           <el-table-column
             prop="created_at"
-            label="Create At"
+            :label="$t('created_at')"
             sortable
             filter-hotelment="bottom-end"
           >
@@ -89,7 +89,7 @@
           <!-- Updated at -->
           <el-table-column
             prop="updated_at"
-            label="Last updated"
+            :label="$t('updated_at')"
             sortable filter-hotelment="bottom-end"
           >
             <template slot-scope="scope">
@@ -108,13 +108,13 @@
               <div class="d-flex">
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                    <el-tooltip class="item" effect="light" content="update role" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('update_roles')" placement="top">
                       <nuxt-link
                         class="el-link el-icon-edit el-link--primary"
                         :to="{ name: 'roles-update', params: { id: scope.row.id } }"
                       />
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="delete role" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('delete_roles')" placement="top">
                       <el-link
                         class="el-link el-icon-delete el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"

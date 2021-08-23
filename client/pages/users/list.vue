@@ -12,7 +12,7 @@
 
         <!-- Create button-->
         <div class="d-none d-md-block">
-          <el-tooltip class="item" effect="light" content="create new user" placement="top">
+          <el-tooltip class="item" effect="dark" :content="$t('create_users')" placement="top">
             <nuxt-link
               :to="{ name: 'users-create'}"
               class="el-button el-button--mini el-button--primary m-0"
@@ -96,19 +96,19 @@
               <div class="d-flex">
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                    <el-tooltip class="item" effect="light" content="view user" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('view_users')" placement="top">
                       <nuxt-link
                         class="el-link el-icon-view el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.id } }"
                       />
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="update user" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('update_users')" placement="top">
                       <nuxt-link
                         class="el-link el-icon-edit el-link--primary ml-3"
                         :to="{ name: 'users-update', params: { id: scope.row.id } }"
                       />
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="delete user" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('delete_users')" placement="top">
                       <el-link
                         class="el-link el-icon-delete el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"
@@ -133,9 +133,9 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      filters: [{
+      filters: {
         search: ''
-      }],
+      },
       limit: 10,
       pageSize: 10
     }

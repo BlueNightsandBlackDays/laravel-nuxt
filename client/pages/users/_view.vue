@@ -153,7 +153,7 @@
                   <div class="d-flex">
                     <div class="d-flex align-self-center ">
                       <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                        <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
+                        <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                           <el-link
                             class="el-link el-icon-delete el-link--danger"
                             @click="deleteAttendance(scope.$index, scope.row)"

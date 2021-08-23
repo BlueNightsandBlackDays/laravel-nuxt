@@ -101,13 +101,13 @@
               <div class="d-flex">
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                    <el-tooltip class="item" effect="light" content="view attendance" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('view_attendances')" placement="top">
                       <nuxt-link
                         class="el-link el-icon-view el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.user_id } }"
                       />
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="delete attendance" placement="top">
+                    <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                       <el-link
                         class="el-link el-icon-delete el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"
