@@ -6,8 +6,8 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <el-page-header
-          title=""
-          :content="$t('update_user')"
+          :title="$t('back')"
+          :content="$t('update_users')"
           @back="goBack"
         />
       </div>

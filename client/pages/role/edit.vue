@@ -5,7 +5,7 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <el-page-header
-          title=""
+          :title="$t('back')"
           :content="$t('update_roles')"
           @back="goBack"
         />
@@ -50,7 +50,7 @@
                 <el-select
                   v-model="form.selected_permissions"
                   multiple
-                  placeholder="Select Permissions"
+                  :placeholder="$t('select_permissions')"
                   @focus="getPermission"
                 >
                   <el-option

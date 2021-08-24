@@ -5,7 +5,7 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <el-page-header
-          title=""
+          :title="$t('back')"
           :content="$t('user_detail')"
           @back="goBack"
         />
@@ -155,9 +155,11 @@
                       <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                         <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                           <el-link
-                            class="el-link el-icon-delete el-link--danger"
+                            class="el-link el-link--danger"
                             @click="deleteAttendance(scope.$index, scope.row)"
-                          />
+                          >
+                            <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                          </el-link>
                         </el-tooltip>
                       </nav>
                     </div>

@@ -5,7 +5,7 @@
       <!-- Card-header -->
       <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
         <el-page-header
-          title=""
+          :title="$t('back')"
           :content="$t('create_users')"
           @back="goBack"
         />

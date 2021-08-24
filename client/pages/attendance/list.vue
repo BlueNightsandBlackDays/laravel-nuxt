@@ -103,15 +103,19 @@
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="dark" :content="$t('view_attendances')" placement="top">
                       <nuxt-link
-                        class="el-link el-icon-view el-link--default"
+                        class="el-link el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.user_id } }"
-                      />
+                      >
+                        <i class="el-icon-view tx-18 tx-bold" aria-hidden="true" />
+                      </nuxt-link>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                       <el-link
-                        class="el-link el-icon-delete el-link--danger ml-3"
+                        class="el-link el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"
-                      />
+                      >
+                        <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                      </el-link>
                     </el-tooltip>
                   </nav>
                 </div>

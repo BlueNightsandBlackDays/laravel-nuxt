@@ -112,13 +112,17 @@
                       <nuxt-link
                         class="el-link el-icon-edit el-link--primary"
                         :to="{ name: 'roles-update', params: { id: scope.row.id } }"
-                      />
+                      >
+                        <i class="el-icon-edit tx-18 tx-bold" aria-hidden="true" />
+                      </nuxt-link>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_roles')" placement="top">
                       <el-link
                         class="el-link el-icon-delete el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"
-                      />
+                      >
+                        <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                      </el-link>
                     </el-tooltip>
                   </nav>
                 </div>
