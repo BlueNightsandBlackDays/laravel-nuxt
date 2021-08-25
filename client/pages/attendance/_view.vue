@@ -190,7 +190,7 @@ export default {
     timeDifference (startTime, endTime) {
       const starT = moment(startTime)
       const endT = moment(endTime)
-      return endT.diff(starT).humanize()
+      return endT.diff(starT, 'minutes')
     }
   }
 }
