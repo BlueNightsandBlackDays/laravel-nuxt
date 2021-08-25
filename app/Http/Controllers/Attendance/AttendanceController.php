@@ -31,7 +31,7 @@ class AttendanceController extends Controller
         $attendance = DB::table('attendances')
             ->join('users', 'users.id', '=', 'attendances.user_id')
             ->select('attendances.*', 'users.first_name', 'users.middle_name')
-            ->orderByDesc('id')
+            ->orderByDesc('created_at')
             ->simplePaginate(10);
 
         return response()->json($attendance);

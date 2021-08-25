@@ -16,7 +16,10 @@ class ViewAttendanceController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $attendance = Attendance::query()->where('user_id', $id)->orderByDesc('id')->simplePaginate(31);
+        $attendance = Attendance::query()
+            ->where('user_id', $id)
+            ->orderByDesc('created_at')
+            ->simplePaginate(31);
 
         return response()->json($attendance);
     }
@@ -33,7 +36,7 @@ class ViewAttendanceController extends Controller
             $attendance = Attendance::query()
                 ->select('time_start')
                 ->where('user_id', $id)
-                ->orderByDesc('id')
+                ->orderByDesc('created_at')
                 ->limit(31)->get();
 
             $data = [];

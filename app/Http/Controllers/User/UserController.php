@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = User::query()->orderBy('id')->simplePaginate(10);
+        $users = User::query()->orderBy('created_at', 'desc')->simplePaginate(10);
         return response()->json($users);
     }
 
