@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
@@ -24,11 +25,11 @@ class VerificationController extends Controller
     /**
      * Mark the user's email address as verified.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param Request $request
      * @param  \App\User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function verify(Request $request, User $user)
+    public function verify(Request $request, User $user): JsonResponse
     {
         if (! URL::hasValidSignature($request)) {
             return response()->json([
@@ -54,14 +55,15 @@ class VerificationController extends Controller
     /**
      * Resend the email verification notification.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
      */
-    public function resend(Request $request)
+    public function resend(Request $request): JsonResponse
     {
         $this->validate($request, ['email' => 'required|email']);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::query()->where('email', $request->email)->first();
 
         if (is_null($user)) {
             throw ValidationException::withMessages([

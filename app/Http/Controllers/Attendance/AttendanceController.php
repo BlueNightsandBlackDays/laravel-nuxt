@@ -128,10 +128,6 @@ class AttendanceController extends Controller
 
                 return response()->json('already_ended');
 
-            } else if ($time === $new_end_time) {
-                $attendance->update([
-                    'time_end' => now()
-                ]);
             } else if ($time->lt($new_start_time)) {
 
                 return response()->json('early');
