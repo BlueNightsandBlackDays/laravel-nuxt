@@ -112,7 +112,7 @@
             <label class="col-md-3 col-form-label text-md-right">{{ $t('roles') }}</label>
             <div class="col-md-7">
               <!-- Select role -->
-              <el-form-item prop="role_select" class="m-1 p-0">
+              <el-form-item prop="selected_roles" class="m-1 p-0">
                 <el-select
                   v-model="form.selected_roles"
                   multiple
@@ -163,9 +163,9 @@ export default {
   data () {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Password is required please enter a password'))
+        callback(new Error(this.$t('password_is_required') + ''))
       } else if (value.length < 6) {
-        callback(new Error('Password must be at least 6 characters'))
+        callback(new Error(this.$t('6_characters') + ''))
       } else {
         if (this.form.password_confirmation !== '') {
           this.$refs.form.validateField('password_confirmation')
@@ -175,9 +175,9 @@ export default {
     }
     const validatePasswordConfirm = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please enter the password again'))
+        callback(new Error(this.$t('enter_again') + ''))
       } else if (value !== this.form.password) {
-        callback(new Error('Passwords don\'t match!'))
+        callback(new Error(this.$t('passwords_dont_match') + ''))
       } else {
         callback()
       }
@@ -193,13 +193,14 @@ export default {
         selected_roles: []
       }),
       rules: {
-        first_name: [{ required: true, message: 'First name is required please enter first name', trigger: 'blur' }],
-        middle_name: [{ required: true, message: 'Middle name is required please enter middle name', trigger: 'blur' }],
-        last_name: [{ required: true, message: 'Last name is required please enter last name', trigger: 'blur' }],
-        email: [{ required: true, message: 'Email is required please enter email', trigger: 'blur' }],
+        first_name: [{ required: true, message: this.$t('first_name_is_required'), trigger: 'blur' }],
+        middle_name: [{ required: true, message: this.$t('middle_name_is_required'), trigger: 'blur' }],
+        last_name: [{ required: true, message: this.$t('last_name_is_required'), trigger: 'blur' }],
+        email: [{ required: true, message: this.$t('email_is_required'), trigger: 'blur' },
+          { type: 'email', message: this.$t('input_correct_email'), trigger: ['blur', 'change'] }],
         password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
-        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }]
-        // role_select: [{ required: true, message: 'Role is required please select a role', trigger: 'change' }]
+        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }],
+        selected_roles: [{ required: true, message: this.$t('role_is_required'), trigger: 'change' }]
       }
     }
   },
@@ -223,14 +224,14 @@ export default {
           try {
             await axios.post('/users', this.form)
             this.$notify.success({
-              title: 'Success',
-              message: 'User ' + this.form.first_name + ' ' + this.form.middle_name + ' successfully created.'
+              title: this.$t('success') + '',
+              message: this.$t('user') + ' ' + this.form.first_name + ' ' + this.form.middle_name + ' ' + this.$t('successfully_created')
             })
             // Redirect users.
             await this.$router.push({ name: 'users-list' })
           } catch (e) {
             this.$notify.error({
-              title: 'Error',
+              title: this.$t('error') + '',
               message: e.message
             })
           }

@@ -97,9 +97,7 @@ class AttendanceController extends Controller
                     'time_end' => now()
                 ]);
 
-                return response()->json(
-                    'Work time has stopped at ' . gmdate("H:i:s", $attendance->total_time) . ' hours'
-                );
+                return response()->json(gmdate("H:i:s", $attendance->total_time));
             }
         } else {
             $attendances = Attendance::query()

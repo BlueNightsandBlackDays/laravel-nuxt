@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Lab404\Impersonate\Models\Impersonate;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
     use Notifiable,
+        Impersonate,
         HasFactory,
         HasRoles;
 
@@ -24,6 +26,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $fillable = [
+        'id',
         'first_name',
         'middle_name',
         'last_name',
@@ -101,6 +104,28 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
+    }
+
+    /**
+     * Return true or false if the user can impersonate an other user.
+     *
+     * @param void
+     * @return  bool
+     */
+    public function canImpersonate(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Return true or false if the user can be impersonated.
+     *
+     * @param void
+     * @return bool
+     */
+    public function canBeImpersonated(): bool
+    {
+        return $this->id !== 1;
     }
 
     /**

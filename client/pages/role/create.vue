@@ -34,7 +34,7 @@
             <label class="col-md-3 col-form-label text-md-right">{{ $t('permissions') }}</label>
             <div class="col-md-7">
               <!-- Select permissions -->
-              <el-form-item prop="permission" class="m-1 p-0">
+              <el-form-item prop="selected_permissions" class="m-1 p-0">
                 <el-select
                   v-model="form.selected_permissions"
                   multiple
@@ -89,9 +89,13 @@ export default {
       }),
       loader: false,
       rules: {
-        name: [{ required: true, message: 'Please enter a new role', trigger: 'blur' }]
+        name: [{ required: true, message: this.$t('please_enter_a_new_role'), trigger: 'change' }],
+        selected_permissions: [{ required: true, message: this.$t('permission_is_required'), trigger: 'change' }]
       }
     }
+  },
+  head () {
+    return { title: this.$t('create') }
   },
   computed: mapGetters({
     permissions: 'permissions/permissions',
@@ -111,14 +115,14 @@ export default {
           try {
             await axios.post('/roles/create', this.form)
             this.$notify.success({
-              title: 'Success',
-              message: 'Role successfully created.'
+              title: this.$t('success') + '',
+              message: this.$t('role_successfully_created') + ''
             })
             // Redirect users.
             await this.$router.push({ name: 'roles-list' })
           } catch (e) {
             this.$notify.error({
-              title: 'Error',
+              title: this.$t('error') + '',
               message: e.message
             })
           }

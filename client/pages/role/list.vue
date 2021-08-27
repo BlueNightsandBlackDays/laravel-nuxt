@@ -110,7 +110,7 @@
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="dark" :content="$t('update_roles')" placement="top">
                       <nuxt-link
-                        class="el-link el-icon-edit el-link--primary"
+                        class="el-link el-link--primary"
                         :to="{ name: 'roles-update', params: { id: scope.row.id } }"
                       >
                         <i class="el-icon-edit tx-18 tx-bold" aria-hidden="true" />
@@ -118,7 +118,8 @@
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_roles')" placement="top">
                       <el-link
-                        class="el-link el-icon-delete el-link--danger ml-3"
+                        :underline="false"
+                        class="el-link el-link--danger ml-3"
                         @click="handleDelete(scope.$index, scope.row)"
                       >
                         <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
@@ -152,7 +153,7 @@ export default {
     }
   },
   head () {
-    return { title: this.$t('users') }
+    return { title: this.$t('roles') }
   },
   computed: mapGetters({
     roles: 'roles/roles',
@@ -172,16 +173,16 @@ export default {
       }
     },
     handleDelete (index, row) {
-      this.$confirm(`Are you sure you want to delete ${row.name} role?`).then(async (_) => {
+      this.$confirm(this.$t('are_you_sure_you_want_to_delete_role') + ` ${row.name} ` + this.$t('delete_role_name')).then(async (_) => {
         try {
           await this.$store.dispatch('roles/deleteRole', row.id)
           this.$notify.success({
-            title: 'Success',
-            message: 'Role successfully deleted.'
+            title: this.$t('success') + '',
+            message: this.$t('role_successfully_deleted') + ''
           })
         } catch (e) {
           this.$notify.error({
-            title: 'Error',
+            title: this.$t('error') + '',
             message: e.message
           })
         }

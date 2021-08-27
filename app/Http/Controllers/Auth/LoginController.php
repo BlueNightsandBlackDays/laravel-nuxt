@@ -8,9 +8,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\User\ImpersonateUserRequest;
+use App\Http\Resources\AuthResponse;
 
 class LoginController extends Controller
 {
@@ -26,7 +26,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except('logout', 'impersonate');
     }
 
     /**
@@ -97,7 +97,7 @@ class LoginController extends Controller
      * Log the user out of the application.
      *
      * @param Request $request
-     * @return Response
+     * @return void
      */
     public function logout(Request $request)
     {
@@ -106,10 +106,10 @@ class LoginController extends Controller
 
     /**
      * @param ImpersonateUserRequest $request
-     * @param $id
+     * @param int $id
      * @return AuthResponse
      */
-    public function impersonate(ImpersonateUserRequest $request, $id): AuthResponse
+    public function impersonate(ImpersonateUserRequest $request, int $id): AuthResponse
     {
         $token = $this->guard()->tokenById($id);
 

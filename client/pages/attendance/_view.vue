@@ -136,40 +136,40 @@ export default {
         data = response.data
         if (data === 'already_ended') {
           this.$notify.warning({
-            title: 'Warning',
-            message: 'Work already ended for the day.'
+            title: this.$t('warning') + '',
+            message: this.$t('work_already_ended_for_the_day') + ''
           })
         } else if (data === 'early') {
           this.$notify.warning({
-            title: 'Warning',
-            message: 'Too early to start'
+            title: this.$t('warning') + '',
+            message: this.$t('too_early_to_start') + ''
           })
         } else if (data === 'late') {
           this.$notify.warning({
-            title: 'Warning',
-            message: 'Too late to start'
+            title: this.$t('warning') + '',
+            message: this.$t('too_late_to_start') + ''
           })
         } else if (data === 'Work time has started') {
           this.isStarted = false
           this.$notify.success({
-            title: 'Success',
-            message: data
+            title: this.$t('success') + '',
+            message: this.$t('work_time_has_started') + ''
           })
         } else if (data === 'early_end') {
           this.$notify.warning({
-            title: 'Warning',
-            message: 'To early to end work'
+            title: this.$t('warning') + '',
+            message: this.$t('to_early_to_end') + ''
           })
         } else {
           this.isStarted = true
           this.$notify.info({
-            title: 'Info',
-            message: data
+            title: this.$t('info') + '',
+            message: this.$t('work_time_has_stopped') + ' ' + data + ' ' + this.$t('stop_hours')
           })
         }
       } catch (e) {
         this.$notify.error({
-          title: 'Error',
+          title: this.$t('error') + '',
           message: e.message
         })
       }

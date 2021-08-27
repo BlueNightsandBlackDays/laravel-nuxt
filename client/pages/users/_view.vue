@@ -155,6 +155,7 @@
                       <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                         <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                           <el-link
+                            :underline="false"
                             class="el-link el-link--danger"
                             @click="deleteAttendance(scope.$index, scope.row)"
                           >
@@ -243,7 +244,7 @@ export default {
         ])
       }
       const options = {
-        title: 'Attendance Chart',
+        title: this.$t('chart_attend'),
         height: 175,
         legend: 'none',
         noDataPattern: {
@@ -254,24 +255,24 @@ export default {
       chart.draw(dataTable, options)
     },
     deleteAttendance (index, row) {
-      this.$confirm('Are you sure you want to delete this attendance entry?').then(async (_) => {
+      this.$confirm(this.$t('are_you_sure_you_want_delete_attendance') + '').then(async (_) => {
         try {
           const response = await axios.delete(`/attendances/delete/${row.id}`)
           const data = response.data
           if (data === 'deleted') {
             this.$notify.success({
-              title: 'Success',
-              message: 'Attendance successfully deleted.'
+              title: this.$t('success') + '',
+              message: this.$t('attendance_successfully_deleted') + ''
             })
           } else {
             this.$notify.warning({
-              title: 'Warning',
-              message: 'Unauthorized.'
+              title: this.$t('warning') + '',
+              message: this.$t('unauthorized') + ''
             })
           }
         } catch (e) {
           this.$notify.error({
-            title: 'Error',
+            title: this.$t('error') + '',
             message: e.message
           })
         }

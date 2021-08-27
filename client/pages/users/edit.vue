@@ -99,7 +99,7 @@
                   </el-tag>
 
                   <!-- Select role -->
-                  <el-form-item prop="role_select" class="m-1 p-0">
+                  <el-form-item prop="selected_roles" class="m-1 p-0">
                     <el-select
                       v-model="form.selected_roles"
                       multiple
@@ -206,9 +206,9 @@ export default {
   data () {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Password is required please enter a password'))
+        callback(new Error(this.$t('password_is_required') + ''))
       } else if (value.length < 6) {
-        callback(new Error('Password must be at least 6 characters'))
+        callback(new Error(this.$t('6_characters') + ''))
       } else {
         if (this.passwordForm.password_confirmation !== '') {
           this.$refs.passwordForm.validateField('password_confirmation')
@@ -218,9 +218,9 @@ export default {
     }
     const validatePasswordConfirm = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please enter the password again'))
+        callback(new Error(this.$t('enter_again') + ''))
       } else if (value !== this.passwordForm.password) {
-        callback(new Error('Passwords don\'t match!'))
+        callback(new Error(this.$t('passwords_dont_match') + ''))
       } else {
         callback()
       }
@@ -240,12 +240,14 @@ export default {
         password_confirmation: ''
       }),
       rules: {
-        first_name: [{ required: true, message: 'First name is required please enter first name', trigger: 'blur' }],
-        middle_name: [{ required: true, message: 'Middle name is required please enter middle name', trigger: 'blur' }],
-        last_name: [{ required: true, message: 'Last name is required please enter last name', trigger: 'blur' }],
-        email: [{ required: true, message: 'Email is required please enter email', trigger: 'blur' }],
+        first_name: [{ required: true, message: this.$t('first_name_is_required'), trigger: 'blur' }],
+        middle_name: [{ required: true, message: this.$t('middle_name_is_required'), trigger: 'blur' }],
+        last_name: [{ required: true, message: this.$t('last_name_is_required'), trigger: 'blur' }],
+        email: [{ required: true, message: this.$t('email_is_required'), trigger: 'blur' },
+          { type: 'email', message: this.$t('input_correct_email'), trigger: ['blur', 'change'] }],
         password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
-        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }]
+        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }],
+        selected_roles: [{ required: true, message: this.$t('role_is_required'), trigger: 'change' }]
       }
     }
   },
@@ -290,13 +292,13 @@ export default {
             const data = response.data
             if (data === 'Role exist') {
               this.$notify.warning({
-                title: 'Warning',
-                message: 'Role already assigned to the user .'
+                title: this.$t('warning') + '',
+                message: this.$t('role_already_assigned_to_the_user') + ''
               })
             } else {
               this.$notify.success({
-                title: 'Success',
-                message: 'User ' + this.form.first_name + ' ' + this.form.middle_name + ' successfully updated.'
+                title: this.$t('success') + '',
+                message: this.$t('user') + ' ' + this.form.first_name + ' ' + this.form.middle_name + ' ' + this.$t('successfully_updated')
               })
 
               // Redirect users.
@@ -304,7 +306,7 @@ export default {
             }
           } catch (e) {
             this.$notify.error({
-              title: 'Error',
+              title: this.$t('error') + '',
               message: e.message
             })
           }
@@ -314,24 +316,24 @@ export default {
       })
     },
     removeRole (indexRole) {
-      this.$confirm('Are you sure you want to revoke this role?').then(async (_) => {
+      this.$confirm(this.$t('are_you_sure_you_want_to_revoke_this_role') + '?').then(async (_) => {
         try {
           const response = await axios.post(`/roles/revoke-role/${this.form.id}/${indexRole}`)
           const data = response.data
           if (data === 'revoked') {
             this.$notify.success({
-              title: 'Success',
-              message: 'Role successfully revoked.'
+              title: this.$t('success') + '',
+              message: this.$t('role_successfully_revoked') + ''
             })
           } else {
             this.$notify.warning({
-              title: 'Warning',
-              message: 'You can\'t revoke role.'
+              title: this.$t('warning') + '',
+              message: this.$t('you_cant_revoke_role') + ''
             })
           }
         } catch (e) {
           this.$notify.error({
-            title: 'Error',
+            title: this.$t('error') + '',
             message: e.message
           })
         }
@@ -345,15 +347,15 @@ export default {
             const data = response.data
             if (data === 'Password updated') {
               this.$notify.success({
-                title: 'Success',
-                message: 'User password successfully changed.'
+                title: this.$t('success') + '',
+                message: this.$t('user_password_successfully_changed') + ''
               })
               // Redirect users.
               await this.$router.push({ name: 'users-list' })
             }
           } catch (e) {
             this.$notify.error({
-              title: 'Error',
+              title: this.$t('error') + '',
               message: e.message
             })
           }

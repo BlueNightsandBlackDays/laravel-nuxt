@@ -46,7 +46,7 @@
               </el-tag>
 
               <!-- Select permissions -->
-              <el-form-item prop="permission" class="m-1 p-0">
+              <el-form-item prop="selected_permissions" class="m-1 p-0">
                 <el-select
                   v-model="form.selected_permissions"
                   multiple
@@ -99,7 +99,8 @@ export default {
       }),
       loader: false,
       rules: {
-        name: [{ required: true, message: 'Please enter a new role', trigger: 'change' }]
+        name: [{ required: true, message: this.$t('please_enter_a_new_role'), trigger: 'change' }],
+        selected_permissions: [{ required: true, message: this.$t('permission_is_required'), trigger: 'change' }]
       }
     }
   },
@@ -134,24 +135,24 @@ export default {
       this.$store.dispatch('permissions/fetchPermissions', { limit: 100 })
     },
     removePermission (indexPermission) {
-      this.$confirm('Are you sure you want to revoke this permission?').then(async (_) => {
+      this.$confirm(this.$t('are_you_sure_you_want_revoke_this_permission') + '').then(async (_) => {
         try {
           const response = await axios.post(`/roles/revoke-permission/${this.form.id}/${indexPermission}`)
           const data = response.data
           if (data === 'revoked') {
             this.$notify.success({
-              title: 'Success',
-              message: 'Permission successfully revoked.'
+              title: this.$t('success') + '',
+              message: this.$t('permission_successfully_revoked') + ''
             })
           } else {
             this.$notify.warning({
-              title: 'Warning',
-              message: 'You can\'t revoke permission.'
+              title: this.$t('warning') + '',
+              message: this.$t('you_cant_revoke_permission') + ''
             })
           }
         } catch (e) {
           this.$notify.error({
-            title: 'Error',
+            title: this.$t('error') + '',
             message: e.message
           })
         }
@@ -166,20 +167,20 @@ export default {
             const data = response.data
             if (data === 'Permission Exist') {
               this.$notify.warning({
-                title: 'Warning',
-                message: 'Permission already assigned to the role.'
+                title: this.$t('warning') + '',
+                message: this.$t('permission_already_assigned_to_the_role') + ''
               })
             } else {
               this.$notify.success({
-                title: 'Success',
-                message: 'Role successfully updated.'
+                title: this.$t('success') + '',
+                message: this.$t('role_successfully_updated') + ''
               })
               // Redirect users.
               await this.$router.push({ name: 'roles-list' })
             }
           } catch (e) {
             this.$notify.error({
-              title: 'Error',
+              title: this.$t('error') + '',
               message: e.message
             })
           }
