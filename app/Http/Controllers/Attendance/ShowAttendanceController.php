@@ -3,25 +3,27 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use App\Models\Attendance;
 
-class ViewAttendanceController extends Controller
+class ShowAttendanceController extends Controller
 {
     /**
      * Display the specified resource.
      *
      * @param  int $id
-     * @return JsonResponse
+     * @return Paginator|Collection
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id): Paginator
     {
-        $attendance = Attendance::query()
+        return $attendance = Attendance::query()
             ->where('user_id', $id)
             ->orderByDesc('created_at')
-            ->simplePaginate(31);
+            ->paginate(15);
 
-        return response()->json($attendance);
+        //return response()->json($attendance);
     }
 
     /**
@@ -46,21 +48,6 @@ class ViewAttendanceController extends Controller
             }
 
             return response()->json($data);
-        }
-        return response()->json('Unauthorized');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function destroy(int $id): JsonResponse
-    {
-        if(auth()->user()->isAdmin()) {
-            Attendance::query()->where('id', $id)->delete();
-            return response()->json('deleted');
         }
         return response()->json('Unauthorized');
     }

@@ -2,82 +2,71 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use App\Models\User;
+use Orion\Http\Controllers\Controller;
+use Orion\Http\Requests\Request;
 use Spatie\Permission\Models\Role;
-use App\Http\Requests\User\StoreUserRequest;
+use App\Models\User;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
     /**
-     * Create the controller instance.
-     *
-     * @return void
+     * Fully-qualified model class name
      */
-    public function __construct()
+    protected $model = User::class;
+    protected $resource = UserResource::class;
+
+    /**
+     * Fills attributes on the given entity and stores it in database.
+     *
+     * @param Request $request
+     * @param Model $entity
+     * @param array $attributes
+     */
+    protected function performStore(Request $request, Model $entity, array $attributes): void
     {
-        $this->authorizeResource(User::class, 'users');
+        $attributes['password'] = bcrypt($attributes['password']);
+        $this->performFill($request, $entity, $attributes);
+        $entity->save();
+
+        $entity->roles()->detach();
+        foreach ($request->selected_roles as $role) {
+            $entity->roles()->attach($role);
+        }
     }
 
     /**
-     * Display a listing of the resource.
+     * The hook is executed after updating a resource.
      *
+     * @param Request $request
+     * @param Model $entity
      * @return JsonResponse
      */
-    public function index(): JsonResponse
-    {
-        $users = User::query()->orderBy('created_at', 'desc')->simplePaginate(10);
-        return response()->json($users);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreUserRequest $request
-     * @return JsonResponse
-     */
-    public function store(StoreUserRequest $request): JsonResponse
+    protected function afterUpdate(Request $request, Model $entity): ?JsonResponse
     {
         $data = $request->get('selected_roles');
-        $users = User::query()->create([
-            'first_name' => ucfirst($request['first_name']),
-            'middle_name' => ucfirst($request['middle_name']),
-            'last_name' => ucfirst($request['last_name']),
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-        ]);
-
-        $roles = Role::query()->whereIn('name', $data)->get();
-        $users->syncRoles($roles);
-
-        return response()->json($users);
+        if ($entity->hasRole($data)) {
+            return response()->json('Role exist');
+        } else {
+            $roles = Role::query()->whereIn('name', $data)->get();
+            $entity->assignRole($roles);
+            return response()->json('Success');
+        }
     }
 
     /**
-     * Display the specified resource.
+     * The hook is executed before deleting a resource.
      *
+     * @param Request $request,
+     * @param Model $entity
+     * @return void|JsonResponse
      */
-    public function show()
+    protected function beforeDestroy(Request $request, Model $entity)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     */
-    public function update()
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     */
-    public function destroy()
-    {
-        //
+        if(auth()->user()->getAuthIdentifier() == $entity->id) {
+            return response()->json('Cant_delete');
+        }
     }
 }

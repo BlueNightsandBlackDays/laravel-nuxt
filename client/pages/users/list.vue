@@ -96,18 +96,9 @@
               <div class="d-flex">
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
-                    <el-tooltip class="item" effect="dark" :content="$t('impersonate_users')" placement="top">
-                      <el-link
-                        :underline="false"
-                        class="el-link el-link--default"
-                        @click="impersonateUser(scope.$index, scope.row)"
-                      >
-                        <fa icon="sign-in-alt" fixed-width style="width: 18px;" />
-                      </el-link>
-                    </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('view_users')" placement="top">
                       <nuxt-link
-                        class="el-link el-link--default ml-3"
+                        class="el-link el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.id } }"
                       >
                         <i class="el-icon-view tx-18 tx-bold" aria-hidden="true" />
@@ -161,7 +152,6 @@ export default {
     return { title: this.$t('users') }
   },
   computed: {
-    impersonating () { return Cookies.get('backup_token') === undefined ? null : Cookies.get('backup_token') },
     users () { return this.$store.state.users.users },
     meta () { return this.$store.state.users.meta },
     links () { return this.$store.state.users.links },
@@ -171,23 +161,20 @@ export default {
     getUsers (query) {
       this.$store.dispatch('users/fetchUsers', { limit: query.pageSize, page: query.page })
     },
-    async impersonateUser (index, row) {
-      await this.$store.dispatch('impersonate/impersonateUser', { id: row.id })
-    },
     handleDelete (index, row) {
       this.$confirm(this.$t('are_you_sure_you_want_delete') + ` ${row.first_name} ${row.middle_name}?`).then(async (_) => {
         try {
-          const response = await axios.delete(`/users/delete/${row.id}`)
+          const response = await axios.delete(`/users/${row.id}`)
           const data = response.data
-          if (data === 'deleted') {
-            this.$notify.success({
-              title: this.$t('success') + '',
-              message: this.$t('user_successfully_deleted') + ''
-            })
-          } else {
+          if (data === 'Cant_delete') {
             this.$notify.warning({
               title: this.$t('warning') + '',
               message: this.$t('you_cant_delete_your_self') + ''
+            })
+          } else {
+            this.$notify.success({
+              title: this.$t('success') + '',
+              message: this.$t('user_successfully_deleted') + ''
             })
           }
         } catch (e) {

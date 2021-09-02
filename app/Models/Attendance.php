@@ -43,11 +43,6 @@ class Attendance extends Model
         $this->attributes['time_end'] = $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value) : null;
     }
 
-    public function getDateStartAttribute()
-    {
-        return $this->time_start ? Carbon::createFromFormat('Y-m-d H:i:s', $this->time_start) : null;
-    }
-
     public function getTotalTimeAttribute()
     {
         $time_start = $this->time_start ? Carbon::createFromFormat('Y-m-d H:i:s', $this->time_start) : null;

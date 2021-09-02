@@ -22,14 +22,14 @@
         <!-- Guest -->
         <template v-if="!user">
           <!-- Log in -->
-          <el-menu-item index="10">
+          <el-menu-item index="2">
             <nuxt-link :to="{ name: 'login' }" class="nav-link p-0">
               {{ $t('login') }}
             </nuxt-link>
           </el-menu-item>
 
           <!-- Register -->
-          <el-menu-item index="11">
+          <el-menu-item index="3">
             <nuxt-link :to="{ name: 'register' }" class="nav-link p-0" active-class="active">
               {{ $t('register') }}
             </nuxt-link>

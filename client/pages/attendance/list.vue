@@ -170,19 +170,11 @@ export default {
     handleDelete (index, row) {
       this.$confirm(this.$t('are_you_sure_you_want_delete_attendance') + '').then(async (_) => {
         try {
-          const response = await axios.delete(`/attendances/delete/${row.id}`)
-          const data = response.data
-          if (data === 'deleted') {
-            this.$notify.success({
-              title: this.$t('success') + '',
-              message: this.$t('attendance_successfully_deleted') + ''
-            })
-          } else {
-            this.$notify.warning({
-              title: this.$t('warning') + '',
-              message: this.$t('unauthorized') + ''
-            })
-          }
+          await axios.delete(`/attendances/${row.id}`)
+          this.$notify.success({
+            title: this.$t('success') + '',
+            message: this.$t('attendance_successfully_deleted') + ''
+          })
         } catch (e) {
           this.$notify.error({
             title: this.$t('error') + '',

@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Role;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Role\UpdateRoleRequest;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class ShowRoleController extends Controller
@@ -40,37 +38,6 @@ class ShowRoleController extends Controller
             $role = Role::query()->where('id', $id)->first();
             $permissions = $role->getAllPermissions()->pluck('name', 'name');
             return response()->json($permissions);
-        }
-        return response()->json('Unauthorized');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  UpdateRoleRequest $request
-     * @param  int $id
-     * @return JsonResponse
-     */
-    public function update(UpdateRoleRequest $request, int $id): JsonResponse
-    {
-        if(auth()->user()->isadmin()) {
-            $roles = Role::findById($id);
-            $data = $request->get('selected_permissions');
-            if ($roles->hasAnyDirectPermission($data)) {
-                return response()->json('Permission Exist');
-            } else {
-                $role = Role::query()->where('id', $id)->update([
-                    'name' => strtolower($request['name'])
-                ]);
-
-                $permissions = Permission::query()->whereIn('id', $data)->get()->pluck('name', 'name');
-                foreach ($permissions as $permission) {
-
-                    // Give permission to role
-                    $roles->givePermissionTo($permission);
-                }
-                return response()->json($role);
-            }
         }
         return response()->json('Unauthorized');
     }

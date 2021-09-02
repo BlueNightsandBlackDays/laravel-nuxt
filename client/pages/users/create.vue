@@ -123,9 +123,9 @@
                 >
                   <el-option
                     v-for="role in roles"
-                    :key="role.name"
+                    :key="role.id"
                     :label="role.name"
-                    :value="role.name"
+                    :value="role.id"
                   />
                 </el-select>
               </el-form-item>

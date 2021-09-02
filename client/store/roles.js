@@ -5,10 +5,7 @@ export const state = () => ({
   meta: {},
   loading: false,
   role: {},
-  role_loading: false,
-  delete_loading: false,
-  create_loading: false,
-  update_loading: false
+  role_loading: false
 })
 
 export const getters = {
@@ -17,10 +14,7 @@ export const getters = {
   meta: state => state.meta,
   loading: state => state.loading,
   role: state => state.role,
-  role_loading: state => state.role_loading,
-  delete_loading: state => state.delete_loading,
-  create_loading: state => state.create_loading,
-  update_loading: state => state.update_loading
+  role_loading: state => state.role_loading
 }
 
 export const mutations = {
@@ -45,26 +39,8 @@ export const mutations = {
   SET_ROLES_LOADING (state, loading) {
     state.loading = loading
   },
-  DELETE_ROLE_SUCCESS (state, role) {
-    state.roles = state.roles.filter(v => v.id !== role.id)
-    state.delete_loading = false
-  },
   SET_ROLE_LOADING (state, payload) {
     state.role_loading = payload
-  },
-  SET_DELETE_LOADING (state, payload) {
-    state.delete_loading = payload
-  },
-  SET_CREATE_LOADING (state, payload) {
-    state.create_loading = payload
-  },
-  SET_UPDATE_LOADING (state, payload) {
-    state.update_loading = payload
-  },
-  RESET_ROLES (state) {
-    state.roles = []
-    state.links = {}
-    state.meta = {}
   },
   RESET_ROLE (state) {
     state.role = {}
@@ -85,49 +61,20 @@ export const actions = {
     try {
       commit('SET_ROLE_LOADING', true)
       commit('RESET_ROLE')
-      const data = await axios.get(`/roles/${payload.id}`)
+      const data = await axios.get(`/users/${payload.id}/roles`)
       commit('FETCH_ROLE_SUCCESS', data)
     } catch (e) {
       commit('FETCH_ROLE_FAILURE')
-    }
-  },
-  async showRole ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_ROLE_LOADING', true)
-      commit('RESET_ROLE')
-      const data = await axios.get(`/roles/show-roles/${payload.id}`)
-      commit('FETCH_ROLE_SUCCESS', data)
-    } catch (e) {
-      commit('FETCH_ROLE_FAILURE')
-    }
-  },
-  async createRole ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_CREATE_LOADING', true)
-      await axios.post('/roles', payload)
-      commit('SET_CREATE_LOADING', false)
-    } catch (e) {
-      commit('SET_CREATE_LOADING', false)
-    }
-  },
-  async updateRole ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_UPDATE_LOADING', true)
-      const { id, ...formData } = payload
-      await axios.patch(`/roles/${payload.id}`, formData)
-      commit('SET_UPDATE_LOADING', false)
-    } catch (e) {
-      commit('SET_UPDATE_LOADING', false)
-    }
-  },
-  async deleteRole ({ commit, dispatch }, payload) {
-    try {
-      commit('SET_DELETE_LOADING', true)
-      const { data } = await axios.delete(`/roles/${payload}`)
-      commit('DELETE_ROLE_SUCCESS', data)
-      dispatch('fetchRoles', { limit: 10, page: 1 })
-    } catch (e) {
-      commit('SET_DELETE_LOADING', false)
     }
   }
+/*  async fetchRole ({ commit, dispatch }, payload) {
+      try {
+        commit('SET_ROLE_LOADING', true)
+        commit('RESET_ROLE')
+        const data = await axios.get(`/roles/${payload.id}`)
+        commit('FETCH_ROLE_SUCCESS', data)
+      } catch (e) {
+        commit('FETCH_ROLE_FAILURE')
+      }
+    } */
 }

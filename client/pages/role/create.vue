@@ -113,7 +113,7 @@ export default {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            await axios.post('/roles/create', this.form)
+            await axios.post('/roles', this.form)
             this.$notify.success({
               title: this.$t('success') + '',
               message: this.$t('role_successfully_created') + ''

@@ -140,6 +140,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
+import axios from 'axios'
 
 export default {
   middleware: 'auth',
@@ -164,8 +165,8 @@ export default {
     permissions_loading: 'permissions/loading'
   }),
   methods: {
-    getRoles (query) {
-      this.$store.dispatch('roles/fetchRoles', { limit: query.pageSize, page: query.page })
+    async getRoles (query) {
+      await this.$store.dispatch('roles/fetchRoles', { limit: query.pageSize, page: query.page })
     },
     formatAttendanceDate (starTime) {
       if (starTime) {
@@ -175,7 +176,7 @@ export default {
     handleDelete (index, row) {
       this.$confirm(this.$t('are_you_sure_you_want_to_delete_role') + ` ${row.name} ` + this.$t('delete_role_name')).then(async (_) => {
         try {
-          await this.$store.dispatch('roles/deleteRole', row.id)
+          await axios.delete(`/roles/${row.id}`)
           this.$notify.success({
             title: this.$t('success') + '',
             message: this.$t('role_successfully_deleted') + ''

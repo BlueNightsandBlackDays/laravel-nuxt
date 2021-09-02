@@ -107,28 +107,6 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     }
 
     /**
-     * Return true or false if the user can impersonate an other user.
-     *
-     * @param void
-     * @return  bool
-     */
-    public function canImpersonate(): bool
-    {
-        return $this->isAdmin();
-    }
-
-    /**
-     * Return true or false if the user can be impersonated.
-     *
-     * @param void
-     * @return bool
-     */
-    public function canBeImpersonated(): bool
-    {
-        return $this->id !== 1;
-    }
-
-    /**
      * @return int
      */
     public function getJWTIdentifier(): int

@@ -222,7 +222,7 @@ export default {
       await this.$store.dispatch('users/fetchUser', { id: this.$route.params.id })
     },
     async getRole () {
-      await this.$store.dispatch('roles/showRole', { id: this.$route.params.id })
+      await this.$store.dispatch('roles/fetchRole', { id: this.$route.params.id })
     },
     handleEdit () {
       this.$router.push({ name: 'users-update', params: { id: this.user.id } })

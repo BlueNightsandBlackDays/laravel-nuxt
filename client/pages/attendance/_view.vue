@@ -117,7 +117,9 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      isStarted: true
+      isStarted: true,
+      limit: 10,
+      pageSize: 10
     }
   },
   head () {
@@ -132,7 +134,7 @@ export default {
     async switchWorkStatus () {
       let data
       try {
-        const response = await axios.post('/attendances/update-attendance/')
+        const response = await axios.post('/attendances/update/')
         data = response.data
         if (data === 'already_ended') {
           this.$notify.warning({

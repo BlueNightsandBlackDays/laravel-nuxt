@@ -81,7 +81,8 @@ export const actions = {
   async fetchAttendance ({ commit, dispatch }, payload) {
     try {
       commit('SET_ATTENDANCE_LOADING', true)
-      const data = await axios.get(`/attendances/show/${payload.id}`)
+      // const data = await axios.get(`/attendances/show/${payload.id}`)
+      const data = await axios.get(`/users/${payload.id}/attendances`)
       commit('FETCH_ATTENDANCE_SUCCESS', data)
     } catch (e) {
       commit('FETCH_ATTENDANCE_FAILURE')

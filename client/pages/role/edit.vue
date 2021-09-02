@@ -99,8 +99,7 @@ export default {
       }),
       loader: false,
       rules: {
-        name: [{ required: true, message: this.$t('please_enter_a_new_role'), trigger: 'change' }],
-        selected_permissions: [{ required: true, message: this.$t('permission_is_required'), trigger: 'change' }]
+        name: [{ required: true, message: this.$t('please_enter_a_new_role'), trigger: 'change' }]
       }
     }
   },
@@ -125,8 +124,8 @@ export default {
     },
     async getRole () {
       await this.$store.dispatch('roles/fetchRole', { id: this.$route.params.id })
-      this.form.id = this.role.data.id
-      this.form.name = this.role.data.name
+      this.form.id = this.role.id
+      this.form.name = this.role.name
     },
     async getAssignedPermission () {
       await this.$store.dispatch('permissions/fetchPermission', { id: this.$route.params.id })
@@ -163,7 +162,7 @@ export default {
         if (valid) {
           try {
             // await this.$store.dispatch('roles/updateRole', this.form)
-            const response = await axios.patch(`/roles/update/${this.form.id}`, this.form)
+            const response = await axios.patch(`/roles/${this.form.id}`, this.form)
             const data = response.data
             if (data === 'Permission Exist') {
               this.$notify.warning({

@@ -9,8 +9,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use App\Http\Requests\User\ImpersonateUserRequest;
-use App\Http\Resources\AuthResponse;
 
 class LoginController extends Controller
 {
@@ -26,7 +24,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout', 'impersonate');
+        $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -102,21 +100,5 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $this->guard()->logout();
-    }
-
-    /**
-     * @param ImpersonateUserRequest $request
-     * @param int $id
-     * @return AuthResponse
-     */
-    public function impersonate(ImpersonateUserRequest $request, int $id): AuthResponse
-    {
-        $token = $this->guard()->tokenById($id);
-
-        $this->guard()->setToken($token);
-
-        $this->guard()->onceUsingId($id);
-
-        return new AuthResponse($this->guard());
     }
 }

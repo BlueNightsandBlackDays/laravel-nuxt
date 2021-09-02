@@ -246,8 +246,7 @@ export default {
         email: [{ required: true, message: this.$t('email_is_required'), trigger: 'blur' },
           { type: 'email', message: this.$t('input_correct_email'), trigger: ['blur', 'change'] }],
         password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
-        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }],
-        selected_roles: [{ required: true, message: this.$t('role_is_required'), trigger: 'change' }]
+        password_confirmation: [{ required: true, validator: validatePasswordConfirm, trigger: 'blur' }]
       }
     }
   },
@@ -279,16 +278,41 @@ export default {
       this.form.email = this.user.email
     },
     async getRole () {
-      await this.$store.dispatch('roles/showRole', { id: this.$route.params.id })
+      await this.$store.dispatch('roles/fetchRole', { id: this.$route.params.id })
     },
     getRoles () {
       this.$store.dispatch('roles/fetchRoles', { limit: 100 })
+    },
+    removeRole (indexRole) {
+      this.$confirm(this.$t('are_you_sure_you_want_to_revoke_this_role') + '?').then(async (_) => {
+        try {
+          // const response = await axios.post(`/roles/revoke-role/${this.form.id}/${indexRole}`)
+          const response = await axios.delete(`/users/${this.form.id}/roles/${indexRole}`)
+          const data = response.data
+          if (data === 'revoked') {
+            this.$notify.success({
+              title: this.$t('success') + '',
+              message: this.$t('role_successfully_revoked') + ''
+            })
+          } else {
+            this.$notify.warning({
+              title: this.$t('warning') + '',
+              message: this.$t('you_cant_revoke_role') + ''
+            })
+          }
+        } catch (e) {
+          this.$notify.error({
+            title: this.$t('error') + '',
+            message: e.message
+          })
+        }
+      }).catch((_) => {})
     },
     updateUser (formRule) {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            const response = await axios.patch(`/users/update/${this.form.id}`, this.form)
+            const response = await axios.patch(`/users/${this.form.id}`, this.form)
             const data = response.data
             if (data === 'Role exist') {
               this.$notify.warning({
@@ -314,30 +338,6 @@ export default {
           return false
         }
       })
-    },
-    removeRole (indexRole) {
-      this.$confirm(this.$t('are_you_sure_you_want_to_revoke_this_role') + '?').then(async (_) => {
-        try {
-          const response = await axios.post(`/roles/revoke-role/${this.form.id}/${indexRole}`)
-          const data = response.data
-          if (data === 'revoked') {
-            this.$notify.success({
-              title: this.$t('success') + '',
-              message: this.$t('role_successfully_revoked') + ''
-            })
-          } else {
-            this.$notify.warning({
-              title: this.$t('warning') + '',
-              message: this.$t('you_cant_revoke_role') + ''
-            })
-          }
-        } catch (e) {
-          this.$notify.error({
-            title: this.$t('error') + '',
-            message: e.message
-          })
-        }
-      }).catch((_) => {})
     },
     updatePassword (formRule) {
       this.$refs[formRule].validate(async (valid) => {

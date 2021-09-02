@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
             'middle_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email:filter|max:255',
-            'selected_roles' => 'max:255',
+            'selected_roles' => 'max:255|array',
         ];
     }
 }
