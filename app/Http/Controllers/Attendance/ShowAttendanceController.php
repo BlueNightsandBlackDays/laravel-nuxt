@@ -3,29 +3,11 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use App\Models\Attendance;
 
 class ShowAttendanceController extends Controller
 {
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Paginator|Collection
-     */
-    public function show(int $id): Paginator
-    {
-        return $attendance = Attendance::query()
-            ->where('user_id', $id)
-            ->orderByDesc('created_at')
-            ->paginate(15);
-
-        //return response()->json($attendance);
-    }
-
     /**
      * Display the specified resource.
      *

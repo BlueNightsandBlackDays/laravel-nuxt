@@ -24,6 +24,7 @@
                   v-model="form.name"
                   type="text"
                   name="name"
+                  clearable
                 />
               </el-form-item>
             </div>
@@ -123,9 +124,9 @@ export default {
       this.$router.push({ name: 'roles-list' })
     },
     async getRole () {
-      await this.$store.dispatch('roles/fetchRole', { id: this.$route.params.id })
-      this.form.id = this.role.id
-      this.form.name = this.role.name
+      await this.$store.dispatch('roles/showRole', { id: this.$route.params.id })
+      this.form.id = this.role.data.id
+      this.form.name = this.role.data.name
     },
     async getAssignedPermission () {
       await this.$store.dispatch('permissions/fetchPermission', { id: this.$route.params.id })
@@ -136,7 +137,7 @@ export default {
     removePermission (indexPermission) {
       this.$confirm(this.$t('are_you_sure_you_want_revoke_this_permission') + '').then(async (_) => {
         try {
-          const response = await axios.post(`/roles/revoke-permission/${this.form.id}/${indexPermission}`)
+          const response = await axios.post(`/permissions/revoke/${this.form.id}/${indexPermission}`)
           const data = response.data
           if (data === 'revoked') {
             this.$notify.success({

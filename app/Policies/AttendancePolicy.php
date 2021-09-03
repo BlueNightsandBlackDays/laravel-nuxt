@@ -48,6 +48,7 @@ class AttendancePolicy
     public function view(User $user, Attendance $attendance)
     {
         return $user->can('view attendance');
+        //return $user->id === $attendance->user_id;
     }
 
     /**

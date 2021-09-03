@@ -73,8 +73,8 @@ export const actions = {
     try {
       commit('SET_PERMISSION_LOADING', true)
       commit('RESET_PERMISSION')
-      // const data = await axios.get(`/roles/show-permissions/${payload.id}`)
-      const data = await axios.get(`/roles/${payload.id}/permissions`)
+      // const data = await axios.get(`/roles/${payload.id}/permissions`)
+      const data = await axios.get(`/permissions/show/${payload.id}`)
       commit('FETCH_PERMISSION_SUCCESS', data)
     } catch (e) {
       commit('FETCH_PERMISSION_FAILURE')

@@ -24,6 +24,7 @@
                   v-model="form.first_name"
                   type="text"
                   name="name"
+                  clearable
                 />
               </el-form-item>
             </div>
@@ -39,6 +40,7 @@
                   v-model="form.middle_name"
                   type="text"
                   name="name"
+                  clearable
                 />
               </el-form-item>
             </div>
@@ -54,6 +56,7 @@
                   v-model="form.last_name"
                   type="text"
                   name="name"
+                  clearable
                 />
               </el-form-item>
             </div>
@@ -69,6 +72,7 @@
                   v-model="form.email"
                   type="email"
                   name="email"
+                  clearable
                   autocomplete="off"
                 />
               </el-form-item>
@@ -85,6 +89,7 @@
                   v-model="form.password"
                   type="password"
                   name="password"
+                  clearable
                   autocomplete="off"
                 />
               </el-form-item>
@@ -101,6 +106,7 @@
                   v-model="form.password_confirmation"
                   type="password"
                   name="password_confirmation"
+                  clearable
                   autocomplete="off"
                 />
               </el-form-item>

@@ -24,6 +24,7 @@
                   v-model="form.name"
                   type="text"
                   name="name"
+                  clearable
                 />
               </el-form-item>
             </div>

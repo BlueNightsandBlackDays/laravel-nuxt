@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Role;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Orion\Http\Requests\Request;
+//use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRoleRequest extends FormRequest
+class StoreRoleRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

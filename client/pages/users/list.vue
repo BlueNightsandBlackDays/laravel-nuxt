@@ -41,11 +41,12 @@
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
               <el-input
-                v-model.lazy="filters.search"
-                type="search"
+                v-model="search"
                 name="search"
-                class="float-right" clearable size="mini"
-                hotelholder="Search"
+                class="float-right"
+                clearable
+                size="mini"
+                placeholder="Search"
                 autosize
               >
                 <i slot="prefix" class="el-input__icon el-icon-search" />
@@ -135,15 +136,14 @@
 
 <script>
 import axios from 'axios'
-import Cookies from 'js-cookie'
 
 export default {
   middleware: 'auth',
   data () {
     return {
       filters: {
-        search: ''
       },
+      search: '',
       limit: 10,
       pageSize: 10
     }

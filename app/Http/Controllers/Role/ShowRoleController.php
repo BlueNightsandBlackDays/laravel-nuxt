@@ -15,46 +15,12 @@ class ShowRoleController extends Controller
      * @param  int $id
      * @return JsonResponse
      */
-    public function showRole(int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         if(auth()->user()->isadmin()) {
             $user = User::query()->where('id', $id)->first();
             $role = $user->getRoleNames();
             return response()->json($role);
-        }
-        return response()->json('Unauthorized');
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
-    public function showPermission(int $id): JsonResponse
-    {
-        if(auth()->user()->isadmin()) {
-            $role = Role::query()->where('id', $id)->first();
-            $permissions = $role->getAllPermissions()->pluck('name', 'name');
-            return response()->json($permissions);
-        }
-        return response()->json('Unauthorized');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @param string $permission
-     * @return JsonResponse
-     */
-    public function revokePermission(int $id, string $permission): JsonResponse
-    {
-        if(auth()->user()->isadmin()) {
-            $role = Role::findById($id);
-            $role->revokePermissionTo($permission);
-            return response()->json('revoked');
         }
         return response()->json('Unauthorized');
     }
@@ -66,7 +32,7 @@ class ShowRoleController extends Controller
      * @param string $roles
      * @return JsonResponse
      */
-    public function revokeRole(int $id, string $roles): JsonResponse
+    public function revoke(int $id, string $roles): JsonResponse
     {
         if(auth()->user()->isadmin()) {
             if(auth()->user()->getAuthIdentifier() == $id) {

@@ -31,6 +31,7 @@
                       v-model="form.first_name"
                       type="text"
                       name="name"
+                      clearable
                     />
                   </el-form-item>
                 </div>
@@ -46,6 +47,7 @@
                       v-model="form.middle_name"
                       type="text"
                       name="name"
+                      clearable
                     />
                   </el-form-item>
                 </div>
@@ -61,6 +63,7 @@
                       v-model="form.last_name"
                       type="text"
                       name="name"
+                      clearable
                     />
                   </el-form-item>
                 </div>
@@ -76,6 +79,7 @@
                       v-model="form.email"
                       type="email"
                       name="email"
+                      clearable
                       autocomplete="off"
                     />
                   </el-form-item>
@@ -89,7 +93,7 @@
                   <!-- Roles -->
                   <el-tag
                     v-for="role in roles"
-                    :key="role.name"
+                    :key="role"
                     closable
                     :disable-transitions="false"
                     class="m-2"
@@ -286,8 +290,8 @@ export default {
     removeRole (indexRole) {
       this.$confirm(this.$t('are_you_sure_you_want_to_revoke_this_role') + '?').then(async (_) => {
         try {
-          // const response = await axios.post(`/roles/revoke-role/${this.form.id}/${indexRole}`)
-          const response = await axios.delete(`/users/${this.form.id}/roles/${indexRole}`)
+          // const response = await axios.delete(`/users/${this.form.id}/roles/${indexRole}`)
+          const response = await axios.post(`/roles/revoke/${this.form.id}/${indexRole}`)
           const data = response.data
           if (data === 'revoked') {
             this.$notify.success({
