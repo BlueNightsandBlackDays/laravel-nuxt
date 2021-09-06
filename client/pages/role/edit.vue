@@ -36,14 +36,14 @@
             <div class="col-md-7">
               <!-- Permissions -->
               <el-tag
-                v-for="selected_permission in permissions"
+                v-for="selected_permission in permissions.data"
                 :key="selected_permission.name"
                 closable
                 :disable-transitions="false"
                 class="m-2"
-                @close="removePermission(selected_permission)"
+                @close="removePermission(selected_permission.name)"
               >
-                {{ selected_permission }}
+                {{ selected_permission.name }}
               </el-tag>
 
               <!-- Select permissions -->

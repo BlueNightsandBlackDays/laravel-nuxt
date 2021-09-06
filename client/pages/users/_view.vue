@@ -24,13 +24,13 @@
               <h5 class="mg-b-2 tx-spacing--1">
                 <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
                 <span
-                  v-for="role in roles"
-                  :key="role"
+                  v-for="role in roles.data"
+                  :key="role.name"
                   class="mg-b-25"
                 >
                   <PuSkeleton>
                     <el-tag size="small" class="ml-2">
-                      {{ role }}
+                      {{ role.name }}
                     </el-tag>
                   </PuSkeleton>
                 </span>

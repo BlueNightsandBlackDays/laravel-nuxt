@@ -92,14 +92,14 @@
                 <div class="col-md-7">
                   <!-- Roles -->
                   <el-tag
-                    v-for="role in roles"
-                    :key="role"
+                    v-for="role in roles.data"
+                    :key="role.name"
                     closable
                     :disable-transitions="false"
                     class="m-2"
-                    @close="removeRole(role)"
+                    @close="removeRole(role.name)"
                   >
-                    {{ role }}
+                    {{ role.name }}
                   </el-tag>
 
                   <!-- Select role -->

@@ -6,23 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Role;
 
-class ShowPermissionController extends Controller
+class RevokePermissionController extends Controller
 {
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
-    public function show(int $id): JsonResponse
-    {
-        if(auth()->user()->isadmin()) {
-            $role = Role::query()->where('id', $id)->first();
-            $permissions = $role->getAllPermissions()->pluck('name', 'name');
-            return response()->json($permissions);
-        }
-        return response()->json('Unauthorized');
-    }
 
     /**
      * Display the specified resource.

@@ -57,22 +57,22 @@ export const actions = {
       commit('FETCH_ROLES_FAILURE')
     }
   },
-  async showRole ({ commit, dispatch }, payload) {
+  async fetchRole ({ commit, dispatch }, payload) {
     try {
       commit('SET_ROLE_LOADING', true)
       commit('RESET_ROLE')
-      const data = await axios.get(`/roles/${payload.id}`)
+      const data = await axios.get(`/users/${payload.id}/roles`)
+      // const data = await axios.get(`/roles/show/${payload.id}`)
       commit('FETCH_ROLE_SUCCESS', data)
     } catch (e) {
       commit('FETCH_ROLE_FAILURE')
     }
   },
-  async fetchRole ({ commit, dispatch }, payload) {
+  async showRole ({ commit, dispatch }, payload) {
     try {
       commit('SET_ROLE_LOADING', true)
       commit('RESET_ROLE')
-      // const data = await axios.get(`/users/${payload.id}/roles`)
-      const data = await axios.get(`/roles/show/${payload.id}`)
+      const data = await axios.get(`/roles/${payload.id}`)
       commit('FETCH_ROLE_SUCCESS', data)
     } catch (e) {
       commit('FETCH_ROLE_FAILURE')
