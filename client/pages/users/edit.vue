@@ -92,7 +92,7 @@
                 <div class="col-md-7">
                   <!-- Roles -->
                   <el-tag
-                    v-for="role in roles.data"
+                    v-for="role in roles"
                     :key="role.name"
                     closable
                     :disable-transitions="false"

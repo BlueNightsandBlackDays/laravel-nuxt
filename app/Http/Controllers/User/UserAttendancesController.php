@@ -5,13 +5,11 @@ namespace App\Http\Controllers\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Orion\Http\Controllers\RelationController;
-use Orion\Concerns\DisableAuthorization;
 use App\Models\User;
 use Orion\Http\Requests\Request;
 
 class UserAttendancesController extends RelationController
 {
-    use DisableAuthorization;
     protected $model = User::class;
     protected $relation = 'attendanceEntries';
 

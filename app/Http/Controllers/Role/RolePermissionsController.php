@@ -27,7 +27,7 @@ class RolePermissionsController extends RelationController
     {
         $query = parent::buildRelationFetchQuery($request, $parentEntity, $requestedRelations);
 
-        $query->orderByDesc('name')->pluck('name', 'name');
+        $query->orderBy('name')->pluck('name', 'name');
 
         return $query;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Role;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Orion\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
@@ -48,5 +47,35 @@ class RoleController extends Controller
                 $entity->givePermissionTo($permission);
             }
         }
+    }
+
+    /**
+     * The attributes that are used for searching.
+     *
+     * @return array
+     */
+    public function searchableBy() : array
+    {
+        return ['name'];
+    }
+
+    /**
+     * The attributes that are used for filtering.
+     *
+     * @return array
+     */
+    public function filterableBy() : array
+    {
+        return ['id', 'name'];
+    }
+
+    /**
+     * The attributes that are used for sorting.
+     *
+     * @return array
+     */
+    public function sortableBy() : array
+    {
+        return ['id', 'name'];
     }
 }

@@ -27,7 +27,8 @@
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
-          :data="users.data"
+          ref="filterTable"
+          :data="usersData"
           :total="100"
           :loading="loading"
           :page-size="10"
@@ -48,6 +49,7 @@
                 size="mini"
                 placeholder="Search"
                 autosize
+                @input="searchUsers"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search" />
               </el-input>
@@ -102,24 +104,24 @@
                         class="el-link el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.id } }"
                       >
-                        <i class="el-icon-view tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-view tx-16 tx-bold" aria-hidden="true" />
                       </nuxt-link>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('update_users')" placement="top">
                       <nuxt-link
-                        class="el-link el-link--primary ml-3"
+                        class="el-link el-link--default ml-2"
                         :to="{ name: 'users-update', params: { id: scope.row.id } }"
                       >
-                        <i class="el-icon-edit tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-edit tx-16 tx-bold" aria-hidden="true" />
                       </nuxt-link>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_users')" placement="top">
                       <el-link
                         :underline="false"
-                        class="el-link el-link--danger ml-3"
+                        class="el-link el-link--default ml-2"
                         @click="handleDelete(scope.$index, scope.row)"
                       >
-                        <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-delete tx-16 tx-bold" aria-hidden="true" />
                       </el-link>
                     </el-tooltip>
                   </nav>
@@ -144,6 +146,7 @@ export default {
       filters: {
       },
       search: '',
+      usersData: [],
       limit: 10,
       pageSize: 10
     }
@@ -158,8 +161,18 @@ export default {
     loading () { return this.$store.state.users.loading }
   },
   methods: {
-    getUsers (query) {
-      this.$store.dispatch('users/fetchUsers', { limit: query.pageSize, page: query.page })
+    async getUsers (query) {
+      await this.$store.dispatch('users/fetchUsers', { limit: query.pageSize, page: query.page })
+      this.usersData = this.users
+    },
+    async searchUsers () {
+      const response = await axios.post('users/search', {
+        search: {
+          value: this.search
+        }
+      })
+      const { data } = response.data
+      this.usersData = data
     },
     handleDelete (index, row) {
       this.$confirm(this.$t('are_you_sure_you_want_delete') + ` ${row.first_name} ${row.middle_name}?`).then(async (_) => {

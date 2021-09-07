@@ -10,5 +10,4 @@ use App\Http\Controllers\Role\RevokeRoleController;
 Orion::resource('roles', RoleController::class);
 Orion::morphedByManyResource('roles', 'users', RoleUsersController::class);
 Orion::belongsToManyResource('roles', 'permissions', RolePermissionsController::class);
-// Route::get('roles/show/{user}', [ShowRoleController::class, 'show']);
 Route::post('roles/revoke/{role}/{name}', [RevokeRoleController::class, 'revoke']);

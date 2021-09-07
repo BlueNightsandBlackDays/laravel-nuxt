@@ -16,16 +16,14 @@ class PermissionPolicy
      *
      * @param  User  $user
      * @param  string  $ability
-     * @return void|bool
+     * @return Response|bool
      */
-    public function before(User $user, $ability): bool
+/*    public function before(User $user, $ability): bool
     {
         if ($user->isAdmin()) {
             return true;
-        } else {
-            return false;
         }
-    }
+    }*/
 
     /**
      * Determine whether the user can view any models.
@@ -35,7 +33,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view any permission');
+        return true;
     }
 
     /**
@@ -47,7 +45,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission)
     {
-        return $user->can('view permission');
+        return true;
     }
 
     /**
@@ -94,7 +92,7 @@ class PermissionPolicy
      */
     public function restore(User $user, Permission $permission)
     {
-        //
+        return false;
     }
 
     /**
@@ -106,6 +104,6 @@ class PermissionPolicy
      */
     public function forceDelete(User $user, Permission $permission)
     {
-        //
+        return false;
     }
 }

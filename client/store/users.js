@@ -69,7 +69,7 @@ export const actions = {
   async fetchUsers ({ commit, dispatch }, params) {
     try {
       commit('SET_USERS_LOADING', true)
-      const data = await axios.get('/users', { params })
+      const { data } = await axios.get('/users', { params })
       commit('FETCH_USERS_SUCCESS', data)
     } catch (e) {
       commit('FETCH_USERS_FAILURE')

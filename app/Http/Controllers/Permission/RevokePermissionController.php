@@ -8,7 +8,6 @@ use Spatie\Permission\Models\Role;
 
 class RevokePermissionController extends Controller
 {
-
     /**
      * Display the specified resource.
      *

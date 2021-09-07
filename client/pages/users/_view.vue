@@ -24,7 +24,7 @@
               <h5 class="mg-b-2 tx-spacing--1">
                 <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
                 <span
-                  v-for="role in roles.data"
+                  v-for="role in roles"
                   :key="role.name"
                   class="mg-b-25"
                 >
@@ -70,7 +70,7 @@
             name="list"
           >
             <data-tables-server
-              :data="attendance.data"
+              :data="attendance"
               :total="100"
               :loading="attendance_loading"
               :page-size="10"
@@ -156,10 +156,10 @@
                         <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                           <el-link
                             :underline="false"
-                            class="el-link el-link--danger"
+                            class="el-link el-link--default"
                             @click="deleteAttendance(scope.$index, scope.row)"
                           >
-                            <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                            <i class="el-icon-delete tx-16 tx-bold" aria-hidden="true" />
                           </el-link>
                         </el-tooltip>
                       </nav>

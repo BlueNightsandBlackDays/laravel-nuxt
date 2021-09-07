@@ -27,4 +27,34 @@ class AttendanceController extends Controller
 
         return $query;
     }
+
+    /**
+     * The attributes that are used for searching.
+     *
+     * @return array
+     */
+    public function searchableBy() : array
+    {
+        return ['user.first_name', 'user.middle_name'];
+    }
+
+    /**
+     * The attributes that are used for filtering.
+     *
+     * @return array
+     */
+    public function filterableBy() : array
+    {
+        return ['id', 'first_name', 'middle_name', 'options->visible'];
+    }
+
+    /**
+     * The attributes that are used for sorting.
+     *
+     * @return array
+     */
+    public function sortableBy() : array
+    {
+        return ['id', 'first_name', 'middle_name', 'options->key', 'meta.priority'];
+    }
 }

@@ -36,7 +36,7 @@
             <div class="col-md-7">
               <!-- Permissions -->
               <el-tag
-                v-for="selected_permission in permissions.data"
+                v-for="selected_permission in permissions"
                 :key="selected_permission.name"
                 closable
                 :disable-transitions="false"
@@ -55,7 +55,7 @@
                   @focus="getPermission"
                 >
                   <el-option
-                    v-for="permission in all_permissions.data"
+                    v-for="permission in all_permissions"
                     :key="permission.id"
                     :label="permission.name"
                     :value="permission.id"
@@ -162,7 +162,6 @@ export default {
       this.$refs[formRule].validate(async (valid) => {
         if (valid) {
           try {
-            // await this.$store.dispatch('roles/updateRole', this.form)
             const response = await axios.patch(`/roles/${this.form.id}`, this.form)
             const data = response.data
             if (data === 'Permission Exist') {

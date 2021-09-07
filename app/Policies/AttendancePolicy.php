@@ -16,16 +16,14 @@ class AttendancePolicy
      *
      * @param  User  $user
      * @param  string  $ability
-     * @return void|bool
+     * @return Response|bool
      */
-    public function before(User $user, $ability): bool
+/*    public function before(User $user, $ability)
     {
         if ($user->isAdmin()) {
             return true;
-        } else {
-            return false;
         }
-    }
+    }*/
 
     /**
      * Determine whether the user can view any models.
@@ -35,7 +33,14 @@ class AttendancePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view any attendance');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'view any attendance') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -47,8 +52,14 @@ class AttendancePolicy
      */
     public function view(User $user, Attendance $attendance)
     {
-        return $user->can('view attendance');
-        //return $user->id === $attendance->user_id;
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'view attendance') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -59,7 +70,14 @@ class AttendancePolicy
      */
     public function create(User $user)
     {
-        return $user->can('create attendance');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'create attendance') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -71,7 +89,14 @@ class AttendancePolicy
      */
     public function update(User $user, Attendance $attendance)
     {
-        return $user->can('update attendance');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'update attendance') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -83,7 +108,14 @@ class AttendancePolicy
      */
     public function delete(User $user, Attendance $attendance)
     {
-        return $user->can('delete attendance');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'delete attendance') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -95,7 +127,7 @@ class AttendancePolicy
      */
     public function restore(User $user, Attendance $attendance)
     {
-        //
+        return false;
     }
 
     /**
@@ -107,6 +139,6 @@ class AttendancePolicy
      */
     public function forceDelete(User $user, Attendance $attendance)
     {
-        //
+        return false;
     }
 }

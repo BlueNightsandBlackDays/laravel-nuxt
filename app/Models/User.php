@@ -60,6 +60,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      */
     protected $appends = [
         'photo_url',
+        'full_name',
     ];
 
     /**
@@ -73,6 +74,26 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
             md5(strtolower($this->email)),
             $this->name ? urlencode("https://ui-avatars.com/api/$this->name") : 'mp',
         ]);
+    }
+
+    /**
+     * Get the profile photo URL attribute.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return $this->middle_name
+            ? $this->first_name.' '.$this->middle_name
+            : $this->first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->full_name;
     }
 
     /**

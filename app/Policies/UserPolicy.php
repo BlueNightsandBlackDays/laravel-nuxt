@@ -15,16 +15,14 @@ class UserPolicy
      *
      * @param  User  $user
      * @param  string  $ability
-     * @return void|bool
+     * @return Response|bool
      */
-    public function before(User $user, $ability): bool
+/*    public function before(User $user, $ability)
     {
         if ($user->isAdmin()) {
             return true;
-        } else {
-            return false;
         }
-    }
+    }*/
 
     /**
      * Determine whether the user can view any models.
@@ -34,7 +32,14 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view any user');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'view any user') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -46,7 +51,18 @@ class UserPolicy
      */
     public function view(User $user, user $model)
     {
-        return $user->can('view user');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'view user') {
+                return true;
+            }
+        }
+
+        if (auth()->id() == $model->id) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -57,7 +73,14 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->can('create user');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'create user') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -69,7 +92,14 @@ class UserPolicy
      */
     public function update(User $user, user $model)
     {
-        return $user->can('update user');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'update user') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -81,7 +111,14 @@ class UserPolicy
      */
     public function delete(User $user, user $model)
     {
-        return $user->can('delete user');
+        $abilities = $user->getPermissionsViaRoles()->pluck('name');
+
+        foreach ($abilities as $ability) {
+            if ($ability === 'delete user') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -93,7 +130,7 @@ class UserPolicy
      */
     public function restore(User $user, user $model)
     {
-        //
+        return false;
     }
 
     /**
@@ -105,6 +142,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, user $model)
     {
-        //
+        return false;
     }
 }

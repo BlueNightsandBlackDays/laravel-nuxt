@@ -77,7 +77,7 @@ class UserController extends Controller
      */
     public function searchableBy() : array
     {
-        return ['first_name', 'middle_name', 'options->key'];
+        return ['first_name', 'middle_name'];
     }
 
     /**

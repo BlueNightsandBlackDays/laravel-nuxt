@@ -14,7 +14,7 @@
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
-          :data="attendances.data"
+          :data="attendanceData"
           :total="100"
           :loading="loading"
           :page-size="10"
@@ -35,6 +35,7 @@
                 size="mini"
                 placeholder="Search"
                 autosize
+                @input="searchAttendances"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search" />
               </el-input>
@@ -107,16 +108,16 @@
                         class="el-link el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.user_id } }"
                       >
-                        <i class="el-icon-view tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-view tx-16 tx-bold" aria-hidden="true" />
                       </nuxt-link>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                       <el-link
                         :underline="false"
-                        class="el-link el-link--danger ml-3"
+                        class="el-link el-link--default ml-2"
                         @click="handleDelete(scope.$index, scope.row)"
                       >
-                        <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-delete tx-16 tx-bold" aria-hidden="true" />
                       </el-link>
                     </el-tooltip>
                   </nav>
@@ -144,6 +145,7 @@ export default {
       filters: ({
       }),
       search: '',
+      attendanceData: [],
       limit: 10,
       pageSize: 10
     }
@@ -160,11 +162,18 @@ export default {
     user_loading: 'users/user_loading'
   }),
   methods: {
-    getAttendances (query) {
-      this.$store.dispatch('attendance/fetchAttendances', { limit: query.pageSize, page: query.page })
+    async getAttendances (query) {
+      await this.$store.dispatch('attendance/fetchAttendances', { limit: query.pageSize, page: query.page })
+      this.attendanceData = this.attendances
     },
-    searchAttendance () {
-      //
+    async searchAttendances () {
+      const response = await axios.post('attendances/search', {
+        search: {
+          value: this.search
+        }
+      })
+      const { data } = response.data
+      this.attendanceData = data
     },
     formatAttendanceDate (starTime) {
       if (starTime) {

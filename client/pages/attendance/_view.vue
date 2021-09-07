@@ -29,7 +29,7 @@
       <div class="card-body col-lg-12">
         <!-- Attendance list -->
         <data-tables-server
-          :data="attendance.data"
+          :data="attendance"
           :total="100"
           :loading="attendance_loading"
           :page-size="10"

@@ -24,13 +24,8 @@ class UpdateAttendanceController extends Controller
             ->first();
 
         if ($attendance) {
-            $time_start = Attendance::query()->whereNull('time_end')
-                ->select('time_start')
-                ->where('user_id', auth()->id())
-                ->first();
-
             $current_time = now();
-            $time_diff = $current_time->diffInSeconds($time_start->time_start);
+            $time_diff = $current_time->diffInSeconds($attendance->time_start);
 
             // Check to see if it's been an hour since time has been started
             if ($time_diff < 60) {
@@ -53,7 +48,7 @@ class UpdateAttendanceController extends Controller
 
             // Current date
             $date = now()->format('d-m-Y');
-            $timeStart = $attendances->time_start->format('d-m-Y');
+            $timeStart = $attendances->time_start ? $attendances->time_start->format('d-m-Y'): null;
 
             // Current time
             $time = now();

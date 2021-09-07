@@ -45,7 +45,7 @@
                   @focus="getData"
                 >
                   <el-option
-                    v-for="permission in permissions.data"
+                    v-for="permission in permissions"
                     :key="permission.id"
                     :label="permission.name"
                     :value="permission.id"

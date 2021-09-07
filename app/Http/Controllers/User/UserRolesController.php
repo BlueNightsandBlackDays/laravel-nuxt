@@ -5,13 +5,11 @@ namespace App\Http\Controllers\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Orion\Http\Controllers\RelationController;
-use Orion\Concerns\DisableAuthorization;
 use Orion\Http\Requests\Request;
 use App\Models\User;
 
 class UserRolesController extends RelationController
 {
-    use DisableAuthorization;
     protected $model = User::class;
     protected $relation = 'roles';
 
@@ -27,7 +25,7 @@ class UserRolesController extends RelationController
     {
         $query = parent::buildRelationFetchQuery($request, $parentEntity, $requestedRelations);
 
-        $query->orderByDesc('name')->pluck('name', 'name');
+        $query->orderBy('name')->pluck('name', 'name');
 
         return $query;
     }

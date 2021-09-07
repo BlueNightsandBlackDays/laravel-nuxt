@@ -26,7 +26,7 @@
       <!-- Card-body -->
       <div class="card-body col-lg-12">
         <data-tables-server
-          :data="roles"
+          :data="rolesData"
           :total="100"
           :loading="loading"
           :page-size="10"
@@ -40,13 +40,14 @@
             <div class="col-12 col-xl-10" />
             <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
               <el-input
-                v-model.lazy="filters.search"
+                v-model="search"
                 name="search"
                 class="float-right"
                 clearable
                 size="mini"
                 placeholder="Search"
                 autosize
+                @input="searchRoles"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search" />
               </el-input>
@@ -111,19 +112,19 @@
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="dark" :content="$t('update_roles')" placement="top">
                       <nuxt-link
-                        class="el-link el-link--primary"
+                        class="el-link el-link--default"
                         :to="{ name: 'roles-update', params: { id: scope.row.id } }"
                       >
-                        <i class="el-icon-edit tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-edit tx-16 tx-bold" aria-hidden="true" />
                       </nuxt-link>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_roles')" placement="top">
                       <el-link
                         :underline="false"
-                        class="el-link el-link--danger ml-3"
+                        class="el-link el-link--default ml-2"
                         @click="handleDelete(scope.$index, scope.row)"
                       >
-                        <i class="el-icon-delete tx-18 tx-bold" aria-hidden="true" />
+                        <i class="el-icon-delete tx-16 tx-bold" aria-hidden="true" />
                       </el-link>
                     </el-tooltip>
                   </nav>
@@ -148,8 +149,9 @@ export default {
   data () {
     return {
       filters: {
-        search: ''
       },
+      search: '',
+      rolesData: [],
       limit: 10,
       pageSize: 10
     }
@@ -168,6 +170,16 @@ export default {
   methods: {
     async getRoles (query) {
       await this.$store.dispatch('roles/fetchRoles', { limit: query.pageSize, page: query.page })
+      this.rolesData = this.roles
+    },
+    async searchRoles () {
+      const response = await axios.post('roles/search', {
+        search: {
+          value: this.search
+        }
+      })
+      const { data } = response.data
+      this.rolesData = data
     },
     formatAttendanceDate (starTime) {
       if (starTime) {
