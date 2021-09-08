@@ -45,7 +45,7 @@ class AttendanceController extends Controller
      */
     public function filterableBy() : array
     {
-        return ['id', 'first_name', 'middle_name', 'options->visible'];
+        return ['id', 'time_start', 'time_end'];
     }
 
     /**
@@ -55,6 +55,6 @@ class AttendanceController extends Controller
      */
     public function sortableBy() : array
     {
-        return ['id', 'first_name', 'middle_name', 'options->key', 'meta.priority'];
+        return ['id', 'first_name'];
     }
 }

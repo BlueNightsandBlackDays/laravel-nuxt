@@ -29,4 +29,14 @@ class UserAttendancesController extends RelationController
 
         return $query;
     }
+
+    /**
+     * The attributes that are used for filtering.
+     *
+     * @return array
+     */
+    public function filterableBy() : array
+    {
+        return ['id', 'time_start', 'time_end'];
+    }
 }

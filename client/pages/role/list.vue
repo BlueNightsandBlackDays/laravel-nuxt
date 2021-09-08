@@ -45,7 +45,7 @@
                 class="float-right"
                 clearable
                 size="mini"
-                placeholder="Search"
+                :placeholder="$t('search')"
                 autosize
                 @input="searchRoles"
               >

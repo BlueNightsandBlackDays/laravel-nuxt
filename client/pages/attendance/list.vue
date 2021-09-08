@@ -23,17 +23,32 @@
           layout="tool, table, pagination"
           @query-change="getAttendances"
         >
-          <!-- Search -->
+          <!-- Search and filters -->
           <div slot="tool" class="row my-2">
-            <div class="col-12 col-xl-10" />
-            <div class="col-12 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
+            <!-- Filter by date -->
+            <div class="col-6 col-xl-10 mb-2 mb-xl-0 pr-xl-0 float-left">
+              <el-date-picker
+                v-model="dateValue"
+                type="date"
+                clearable
+                editable
+                size="mini"
+                :placeholder="$t('filter_by_date')"
+                format="yyyy/MM/dd"
+                value-format="yyyy-MM-dd"
+                @change="filterAttendances"
+              />
+            </div>
+
+            <!-- Search -->
+            <div class="col-6 col-xl-2 mb-2 mb-xl-0 pl-xl-0 float-right">
               <el-input
                 v-model="search"
                 name="search"
                 class="float-right"
                 clearable
                 size="mini"
-                placeholder="Search"
+                :placeholder="$t('search')"
                 autosize
                 @input="searchAttendances"
               >
@@ -144,6 +159,7 @@ export default {
     return {
       filters: ({
       }),
+      dateValue: '',
       search: '',
       attendanceData: [],
       limit: 10,
@@ -174,6 +190,23 @@ export default {
       })
       const { data } = response.data
       this.attendanceData = data
+    },
+    async filterAttendances () {
+      if (this.dateValue) {
+        const response = await axios.post('attendances/search', {
+          filters: [
+            {
+              field: 'time_start',
+              operator: '>=',
+              value: this.dateValue
+            }
+          ]
+        })
+        const { data } = response.data
+        this.attendanceData = data
+      } else {
+        this.attendanceData = this.attendances
+      }
     },
     formatAttendanceDate (starTime) {
       if (starTime) {

@@ -87,7 +87,7 @@ class UserController extends Controller
      */
     public function filterableBy() : array
     {
-        return ['id', 'first_name', 'middle_name', 'options->visible'];
+        return ['id', 'first_name', 'middle_name'];
     }
 
     /**
@@ -97,6 +97,6 @@ class UserController extends Controller
      */
     public function sortableBy() : array
     {
-        return ['id', 'first_name', 'middle_name', 'options->key', 'meta.priority'];
+        return ['id', 'first_name'];
     }
 }

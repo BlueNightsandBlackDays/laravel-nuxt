@@ -29,7 +29,7 @@
       <div class="card-body col-lg-12">
         <!-- Attendance list -->
         <data-tables-server
-          :data="attendance"
+          :data="attendanceData"
           :total="100"
           :loading="attendance_loading"
           :page-size="10"
@@ -37,6 +37,23 @@
           layout="tool, table, pagination"
           @query-change="getCurrentAttendance"
         >
+          <!-- Filter by date -->
+          <div slot="tool" class="row my-2">
+            <div class="col-6 col-xl-10 mb-2 mb-xl-0 pr-xl-0 float-left">
+              <el-date-picker
+                v-model="dateValue"
+                type="date"
+                clearable
+                editable
+                size="mini"
+                :placeholder="$t('filter_by_date')"
+                format="yyyy/MM/dd"
+                value-format="yyyy-MM-dd"
+                @change="filterAttendances"
+              />
+            </div>
+          </div>
+
           <!-- id -->
           <el-table-column
             prop="id"
@@ -118,6 +135,8 @@ export default {
   data () {
     return {
       isStarted: true,
+      attendanceData: [],
+      dateValue: '',
       limit: 10,
       pageSize: 10
     }
@@ -176,8 +195,26 @@ export default {
         })
       }
     },
-    getCurrentAttendance () {
-      this.$store.dispatch('attendance/fetchAttendance', { id: this.user.id })
+    async getCurrentAttendance () {
+      await this.$store.dispatch('attendance/fetchAttendance', { id: this.user.id })
+      this.attendanceData = this.attendance
+    },
+    async filterAttendances () {
+      if (this.dateValue) {
+        const response = await axios.post(`/users/${this.user.id}/attendances/search`, {
+          filters: [
+            {
+              field: 'time_start',
+              operator: '>=',
+              value: this.dateValue
+            }
+          ]
+        })
+        const { data } = response.data
+        this.attendanceData = data
+      } else {
+        this.attendanceData = this.attendance
+      }
     },
     formatAttendanceDate (starTime) {
       if (starTime) {

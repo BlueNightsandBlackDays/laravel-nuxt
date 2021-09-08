@@ -39,6 +39,8 @@
   "resend_verification_link": "የማረጋገጫ አገናኝን እንደገና ይላኩ?",
   "failed_to_verify_email": "ኢሜልን ማረጋገጥ አልተሳካም።",
   "verify_email_address": "የማረጋገጫ አገናኝ ያለው ኢሜይል ልከናል።",
+  "search": "ይፈልጉ",
+  "filter_by_date": "በቀን አጣራ",
   "user": "ተጠቃሚ",
   "users": "ተጠቃሚዎች",
   "user_detail": "የተጠቃሚ ዝርዝር",
