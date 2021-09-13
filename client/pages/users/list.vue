@@ -30,11 +30,10 @@
         <data-tables-server
           ref="filterTable"
           :data="usersData"
-          :total="100"
+          :total="meta.total"
           :loading="loading"
           :page-size="10"
           :pagination-props="{ background: false, pageSizes: [10, 20, 30, 40, 50, 100] }"
-          :filters="filters"
           layout="tool, table, pagination"
           @query-change="getUsers"
         >
@@ -164,13 +163,12 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   middleware: 'auth',
   data () {
     return {
-      filters: {
-      },
       search: '',
       usersData: [],
       limit: 10,
@@ -180,12 +178,12 @@ export default {
   head () {
     return { title: this.$t('users') }
   },
-  computed: {
-    users () { return this.$store.state.users.users },
-    meta () { return this.$store.state.users.meta },
-    links () { return this.$store.state.users.links },
-    loading () { return this.$store.state.users.loading }
-  },
+  computed: mapGetters({
+    users: 'users/users',
+    meta: 'users/meta',
+    links: 'users/links',
+    loading: 'users/loading'
+  }),
   methods: {
     async getUsers (query) {
       await this.$store.dispatch('users/fetchUsers', { include: 'roles', limit: query.pageSize, page: query.page })

@@ -113,6 +113,7 @@ export default {
       // Fetch the user.
       await this.$store.dispatch('auth/fetchUser')
 
+      // Fetch user permissions and save it on localstorage.
       const response = await axios.get(`/permissions/fetchPermissions/${this.user.id}`)
       localStorage.setItem('permissions', JSON.stringify(response.data))
 

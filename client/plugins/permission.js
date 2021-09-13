@@ -6,7 +6,7 @@ Vue.directive('can', {
       .includes(binding.expression
         .replace(/'/g, '')
         .replace(/"/g, ''))) {
-      vnode.elm.style.display = 'none'
+      el.style.display = 'none'
     }
   }
 })

@@ -196,6 +196,9 @@ export default {
       // Log out the user.
       await this.$store.dispatch('auth/logout')
 
+      // Clear the localstorage
+      localStorage.removeItem('permissions')
+
       // Redirect to login.
       await this.$router.push({ name: 'login' })
     }

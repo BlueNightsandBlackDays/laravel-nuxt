@@ -28,11 +28,10 @@
       <div class="card-body col-lg-12">
         <data-tables-server
           :data="rolesData"
-          :total="100"
+          :total="meta.total"
           :loading="loading"
           :page-size="10"
           :pagination-props="{ background: false, pageSizes: [10] }"
-          :filters="filters"
           layout="tool, table, pagination"
           @query-change="getRoles"
         >

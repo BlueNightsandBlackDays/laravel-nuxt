@@ -28,7 +28,7 @@ class UpdateAttendanceController extends Controller
             $time_diff = $current_time->diffInSeconds($attendance->time_start);
 
             // Check to see if it's been an hour since time has been started
-            if ($time_diff < 60) {
+            if ($time_diff < 10) {
 
                 return response()->json('early_end');
 

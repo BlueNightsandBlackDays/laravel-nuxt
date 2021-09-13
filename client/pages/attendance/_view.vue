@@ -30,7 +30,7 @@
         <!-- Attendance list -->
         <data-tables-server
           :data="attendanceData"
-          :total="100"
+          :total="meta.total"
           :loading="attendance_loading"
           :page-size="10"
           :pagination-props="{ background: false, pageSizes: [10, 20, 30, 40, 50, 100] }"
@@ -147,6 +147,8 @@ export default {
   computed: mapGetters({
     user: 'auth/user',
     attendance: 'attendance/attendance',
+    meta: 'attendance/attendance_meta',
+    links: 'attendance/attendance_links',
     attendance_loading: 'attendance/attendance_loading'
   }),
   methods: {
@@ -195,8 +197,8 @@ export default {
         })
       }
     },
-    async getCurrentAttendance () {
-      await this.$store.dispatch('attendance/fetchAttendance', { id: this.user.id })
+    async getCurrentAttendance (query) {
+      await this.$store.dispatch('attendance/fetchAttendance', { id: this.user.id, limit: query.pageSize, page: query.page })
       this.attendanceData = this.attendance
     },
     async filterAttendances () {

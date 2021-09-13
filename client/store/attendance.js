@@ -6,6 +6,8 @@ export const state = () => ({
   meta: {},
   loading: false,
   attendance: [],
+  attendance_links: {},
+  attendance_meta: {},
   attendance_loading: false,
   chart_attendance: [],
   chart_attendance_loading: false
@@ -18,6 +20,8 @@ export const getters = {
   meta: state => state.meta,
   loading: state => state.loading,
   attendance: state => state.attendance,
+  attendance_links: state => state.attendance_links,
+  attendance_meta: state => state.attendance_meta,
   attendance_loading: state => state.attendance_loading,
   chart_attendance: state => state.chart_attendance,
   chart_attendance_loading: state => state.chart_attendance_loading
@@ -33,6 +37,8 @@ export const mutations = {
   },
   FETCH_ATTENDANCE_SUCCESS (state, payload) {
     state.attendance = payload.data
+    state.attendance_links = payload.links
+    state.attendance_meta = payload.meta
     state.attendance_loading = false
   },
   FETCH_CHART_ATTENDANCE_SUCCESS (state, payload) {
@@ -48,6 +54,8 @@ export const mutations = {
   FETCH_ATTENDANCE_FAILURE (state) {
     state.attendance_loading = false
     state.attendance = []
+    state.attendance_links = {}
+    state.attendance_meta = {}
   },
   FETCH_CHART_ATTENDANCE_FAILURE (state) {
     state.chart_attendance_loading = false
@@ -78,10 +86,10 @@ export const actions = {
       commit('FETCH_ATTENDANCES_FAILURE')
     }
   },
-  async fetchAttendance ({ commit, dispatch }, payload) {
+  async fetchAttendance ({ commit, dispatch }, payload, params) {
     try {
       commit('SET_ATTENDANCE_LOADING', true)
-      const { data } = await axios.get(`/users/${payload.id}/attendances`)
+      const { data } = await axios.get(`/users/${payload.id}/attendances`, { params })
       commit('FETCH_ATTENDANCE_SUCCESS', data)
     } catch (e) {
       commit('FETCH_ATTENDANCE_FAILURE')
