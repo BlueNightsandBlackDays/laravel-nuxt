@@ -13,6 +13,7 @@
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="dark" :content="$t('create_roles')" placement="top">
             <nuxt-link
+              v-can="'create role'"
               :to="{ name: 'roles-create'}"
               class="el-button el-button--mini el-button--primary m-0"
             >
@@ -112,6 +113,7 @@
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="dark" :content="$t('update_roles')" placement="top">
                       <nuxt-link
+                        v-can="'update role'"
                         class="el-link el-link--default"
                         :to="{ name: 'roles-update', params: { id: scope.row.id } }"
                       >
@@ -120,6 +122,7 @@
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_roles')" placement="top">
                       <el-link
+                        v-can="'delete role'"
                         :underline="false"
                         class="el-link el-link--default ml-2"
                         @click="handleDelete(scope.$index, scope.row)"

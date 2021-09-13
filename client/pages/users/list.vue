@@ -14,6 +14,7 @@
         <div class="d-none d-md-block">
           <el-tooltip class="item" effect="dark" :content="$t('create_users')" placement="top">
             <nuxt-link
+              v-can="'create user'"
               :to="{ name: 'users-create'}"
               class="el-button el-button--mini el-button--primary m-0"
             >
@@ -123,6 +124,7 @@
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                     <el-tooltip class="item" effect="dark" :content="$t('view_users')" placement="top">
                       <nuxt-link
+                        v-can="'view user'"
                         class="el-link el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.id } }"
                       >
@@ -131,6 +133,7 @@
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('update_users')" placement="top">
                       <nuxt-link
+                        v-can="'update user'"
                         class="el-link el-link--default ml-2"
                         :to="{ name: 'users-update', params: { id: scope.row.id } }"
                       >
@@ -139,6 +142,7 @@
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" :content="$t('delete_users')" placement="top">
                       <el-link
+                        v-can="'delete user'"
                         :underline="false"
                         class="el-link el-link--default ml-2"
                         @click="handleDelete(scope.$index, scope.row)"
@@ -152,9 +156,6 @@
             </template>
           </el-table-column>
         </data-tables-server>
-        <div>
-          {{  }}
-        </div>
         <el-divider />
       </div>
     </div>

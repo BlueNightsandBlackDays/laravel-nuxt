@@ -110,12 +110,12 @@
           </li>
 
           <!-- Access management label -->
-          <li class="mg-t-1">
+          <li v-can="'view any user'" class="mg-t-1">
             <span class="nav-label tx-uppercase">Access management</span>
           </li>
 
           <!-- Users -->
-          <li class="nav-item">
+          <li v-can="'view any user'" class="nav-item">
             <nuxt-link :to="{ name: 'users-list'}" class="nav-link ml-1">
               <i class="el-icon-user tx-18 tx-bold" aria-hidden="true" />
               <span class="ml-3">{{ $t('users') }}</span>
@@ -123,7 +123,7 @@
           </li>
 
           <!-- Roles -->
-          <li class="nav-item">
+          <li v-can="'view any role'" class="nav-item">
             <nuxt-link :to="{ name: 'roles-list'}" class="nav-link ml-1">
               <i class="el-icon-bangzhu tx-18 tx-bold" aria-hidden="true" />
               <span class="ml-3">{{ $t('roles') }}</span>
@@ -136,7 +136,7 @@
           </li>
 
           <!-- Attendance list -->
-          <li class="nav-item">
+          <li v-can="'view any attendance'" class="nav-item">
             <nuxt-link :to="{ name: 'attendances-list'}" class="nav-link ml-1">
               <i class="el-icon-time tx-18 tx-bold" aria-hidden="true" />
               <span class="ml-3">{{ $t('attendance_list') }}</span>

@@ -70,6 +70,8 @@
 
 <script>
 import Form from 'vform'
+import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   middleware: 'guest',
@@ -85,6 +87,10 @@ export default {
   head () {
     return { title: this.$t('login') }
   },
+
+  computed: mapGetters({
+    user: 'auth/user'
+  }),
 
   methods: {
     async login () {
@@ -106,6 +112,9 @@ export default {
 
       // Fetch the user.
       await this.$store.dispatch('auth/fetchUser')
+
+      const response = await axios.get(`/permissions/fetchPermissions/${this.user.id}`)
+      localStorage.setItem('permissions', JSON.stringify(response.data))
 
       // Redirect home.
       // await this.$router.push({ name: 'home' })

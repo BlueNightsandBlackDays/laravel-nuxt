@@ -48,6 +48,7 @@ module.exports = {
     '~plugins/datatable.js',
     '~plugins/skeleton.js',
     '~plugins/moment.js',
+    '~plugins/permission.js',
     { src: '~plugins/bootstrap', mode: 'client' }
   ],
 

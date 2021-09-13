@@ -46,6 +46,7 @@
               <!-- Edit button -->
               <div class="d-flex mg-b-25">
                 <el-button
+                  v-can="'update user'"
                   class="el-button el-icon-edit el-button--small el-button--primary"
                   @click="handleEdit()"
                 >
@@ -172,6 +173,7 @@
                       <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
                         <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                           <el-link
+                            v-can="'delete attendance'"
                             :underline="false"
                             class="el-link el-link--default"
                             @click="deleteAttendance(scope.$index, scope.row)"
