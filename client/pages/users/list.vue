@@ -89,6 +89,28 @@
             filter-hotelment="bottom-end"
           />
 
+          <!-- Role -->
+          <el-table-column
+            prop="roles"
+            :label="$t('role')"
+            sortable
+            filter-hotelment="bottom-end"
+          >
+            <template slot-scope="scope">
+              <span
+                v-for="role in scope.row.roles"
+                :key="role.name"
+                class="mg-b-25"
+              >
+                <PuSkeleton>
+                  <el-tag size="small" class="ml-2">
+                    {{ role.name }}
+                  </el-tag>
+                </PuSkeleton>
+              </span>
+            </template>
+          </el-table-column>
+
           <!-- Action buttons -->
           <el-table-column
             :label="$t('action')"
@@ -130,6 +152,9 @@
             </template>
           </el-table-column>
         </data-tables-server>
+        <div>
+          {{  }}
+        </div>
         <el-divider />
       </div>
     </div>
@@ -162,7 +187,7 @@ export default {
   },
   methods: {
     async getUsers (query) {
-      await this.$store.dispatch('users/fetchUsers', { limit: query.pageSize, page: query.page })
+      await this.$store.dispatch('users/fetchUsers', { include: 'roles', limit: query.pageSize, page: query.page })
       this.usersData = this.users
     },
     async searchUsers () {

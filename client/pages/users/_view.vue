@@ -24,7 +24,7 @@
               <h5 class="mg-b-2 tx-spacing--1">
                 <PuSkeleton> {{ user.first_name + ' ' + user.middle_name + ' ' + user.last_name }} </PuSkeleton>
                 <span
-                  v-for="role in roles"
+                  v-for="role in user.roles"
                   :key="role.name"
                   class="mg-b-25"
                 >

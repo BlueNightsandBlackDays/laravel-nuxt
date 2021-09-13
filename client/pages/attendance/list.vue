@@ -78,7 +78,7 @@
             filter-placement="bottom-end"
           >
             <template slot-scope="scope">
-              <span class="text-muted"> {{ scope.row.first_name + ' ' + scope.row.middle_name }}</span>
+              <span class="text-muted"> {{ scope.row.user.first_name + ' ' + scope.row.user.middle_name }}</span>
             </template>
           </el-table-column>
 
@@ -118,16 +118,21 @@
               <div class="d-flex">
                 <div class="d-flex align-self-center ">
                   <nav class="nav nav-icon-only flex-nowrap" style="margin-left: auto;">
+                    <!-- View attendance button -->
                     <el-tooltip class="item" effect="dark" :content="$t('view_attendances')" placement="top">
                       <nuxt-link
+                        v-if="userPermission('view attendance')"
                         class="el-link el-link--default"
                         :to="{ name: 'users-view', params: { id: scope.row.user_id } }"
                       >
                         <i class="el-icon-view tx-16 tx-bold" aria-hidden="true" />
                       </nuxt-link>
                     </el-tooltip>
+
+                    <!-- Delete attendance button -->
                     <el-tooltip class="item" effect="dark" :content="$t('delete_attendances')" placement="top">
                       <el-link
+                        v-if="userPermission('delete attendance')"
                         :underline="false"
                         class="el-link el-link--default ml-2"
                         @click="handleDelete(scope.$index, scope.row)"
@@ -162,6 +167,7 @@ export default {
       dateValue: '',
       search: '',
       attendanceData: [],
+      permissionData: [],
       limit: 10,
       pageSize: 10
     }
@@ -174,13 +180,32 @@ export default {
     meta: 'attendance/meta',
     links: 'attendance/links',
     loading: 'attendance/loading',
+    auth_user: 'auth/user',
+    roles: 'roles/role',
     user: 'users/user',
     user_loading: 'users/user_loading'
   }),
+  async mounted () {
+    await this.getRole()
+  },
   methods: {
     async getAttendances (query) {
-      await this.$store.dispatch('attendance/fetchAttendances', { limit: query.pageSize, page: query.page })
+      await this.$store.dispatch('attendance/fetchAttendances', { include: 'user', limit: query.pageSize, page: query.page })
       this.attendanceData = this.attendances
+    },
+    async getRole () {
+      await this.$store.dispatch('roles/fetchRole', { include: 'permissions', id: this.auth_user.id })
+    },
+    userPermission (permissionName) {
+      let role
+      let permission
+      for (role in this.roles) {
+        for (permission in role.permissions) {
+          if (permission.name === permissionName) {
+            return true
+          }
+        }
+      }
     },
     async searchAttendances () {
       const response = await axios.post('attendances/search', {

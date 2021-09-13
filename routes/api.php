@@ -27,7 +27,6 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('user', [UserController::class, 'current']);
 
-    Route::get('impersonate/{id}', [LoginController::class, 'impersonate'])->name('impersonate');
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
 

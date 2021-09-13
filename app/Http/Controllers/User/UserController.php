@@ -19,6 +19,16 @@ class UserController extends Controller
     protected $resource = UserResource::class;
 
     /**
+     * The relations that are allowed to be included together with a resource.
+     *
+     * @return array
+     */
+    public function includes() : array
+    {
+        return ['roles'];
+    }
+
+    /**
      * Fills attributes on the given entity and stores it in database.
      *
      * @param Request $request

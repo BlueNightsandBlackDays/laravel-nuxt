@@ -16,14 +16,21 @@ class AttendanceController extends Controller
     protected $model = Attendance::class;
     protected $resource = AttendanceResource::class;
 
+    /**
+     * The relations that are allowed to be included together with a resource.
+     *
+     * @return array
+     */
+    public function includes() : array
+    {
+        return ['user'];
+    }
+
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
     {
         $query = parent::buildIndexFetchQuery($request, $requestedRelations);
 
-        $query->join('users', 'users.id', '=', 'attendances.user_id')
-            ->select('attendances.*', 'users.first_name', 'users.middle_name')
-            ->orderByDesc('created_at')
-            ->simplePaginate(10);
+        $query->orderByDesc('created_at');
 
         return $query;
     }
